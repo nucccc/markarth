@@ -1,0 +1,5 @@
+stuff/
+.pytest_cache/
+
+__pycache__/
+*.so
