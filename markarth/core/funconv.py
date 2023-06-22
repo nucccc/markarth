@@ -4,6 +4,8 @@ func_conv shall account for converting a function to cython - nobody knows how, 
 
 import ast
 
+from typing import Iterator
+
 from markarth.core.utils import toASTCodelines
 from markarth.core.typestore import TypeStore, DictTypeStore, WrapTypeStore
 
@@ -22,16 +24,24 @@ def code_portion(ast_node : ast.AST, codelines : list[str]) -> str:
     portion_codelines[0] = portion_codelines[0][ast_node.col_offset:]
     return '\n'.join(portion_codelines)
 
+def cdef_lines_from_iter(iter : Iterator[ tuple[str, str] ], tab_level : int = 0) -> list[str]:
+    '''
+    cdef_lines_from_iter shall take in input an iterator of (varname, vartype)
+    and turn it inot a list of cdef lines with a given tab_level
+    '''
+    cdef_str = ( '\t' * tab_level ) + 'cdef {vartype} {varname}'
+    return [
+        cdef_str.format(varname=varname, vartype=vartype)
+        for varname, vartype in iter
+    ]
+
 def cdef_lines_from_tg(tg : TypeStore, tab_level : int = 0) -> list[str]:
     '''
     cdef_lines_from_tg takes in input a type getter, and returns as an output
     a list of cdef codelines declaring with a type the vars indicated,
     '''
-    cdef_str = ( '\t' * tab_level ) + 'cdef {vartype} {varname}'
-    return [
-        cdef_str.format(varname=varname, vartype=vartype)
-        for varname, vartype in tg.iter_types()
-    ]
+    return cdef_lines_from_iter(iter=tg.iter_types(), tab_level=tab_level)
+    
 
 class FuncConverter():
     '''
