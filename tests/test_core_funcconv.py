@@ -1,5 +1,5 @@
 from markarth.core.utils import process_code
-from markarth.core.func_conv import FuncConverter
+from markarth.core.funconv import FuncConverter
 
 import pytest
 
