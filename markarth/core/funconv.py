@@ -6,7 +6,7 @@ import ast
 
 from typing import Iterator
 
-from markarth.core.utils import toASTCodelines
+from markarth.core.utils import toASTCodelines, indentation_pattern
 from markarth.core.typestore import TypeStore, DictTypeStore, WrapTypeStore
 
 VALID_CTYPES = {
@@ -69,6 +69,7 @@ class FuncConverter():
     arg_types : dict[str, str] = dict()
     return_type : str | None = None
     cdef_lines : list[str] = list()
+    indent_pattern : str
 
     def __init__(self, func_ast : ast.FunctionDef, codelines : list[str]):
         self.func_ast = func_ast
@@ -94,6 +95,7 @@ class FuncConverter():
         _collect_start_attributes shall collect all that can be taken at the
         beginning (function arguments, their types, return type and stuff)
         '''
+        self.indent_pattern = indentation_pattern(self.func_ast, self.codelines)
         self.arg_types = self._collect_arg_types()
         self.return_type = self._collect_return_type()
 
@@ -114,7 +116,11 @@ class FuncConverter():
                 for varname, typename in tc.get_input_var_tg().iter_types()
             }
         #this could be better something coming out directly as a result from types collector, or a dedicated function
-        self.cdef_lines = cdef_lines_from_tg(tg = tc.get_collected_tg(), indent_level= 1)
+        self.cdef_lines = cdef_lines_from_tg(
+            tg = tc.get_collected_tg(),
+            indent_level= 1,
+            indent_pattern=self.indent_pattern
+        )
 
     def _regen_def_line(self) -> str:
         '''
