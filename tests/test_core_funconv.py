@@ -1,7 +1,19 @@
 from markarth.core.utils import process_code
 from markarth.core.funconv import FuncConverter
+from markarth.core.funconv import cdef_lines_from_iter
 
 import pytest
+
+def test_cdef_lines_from_iter():
+    iter = [
+        ('a', 'int'),
+        ('b', 'float'),
+        ('d', 'int')
+    ]
+    cdef_lines = cdef_lines_from_iter(iter=iter)
+    assert 'cdef int a' in cdef_lines
+    assert 'cdef float b' in cdef_lines
+    assert 'cdef int d' in cdef_lines 
 
 def test_1():
     code = '''
