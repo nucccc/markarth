@@ -24,24 +24,36 @@ def code_portion(ast_node : ast.AST, codelines : list[str]) -> str:
     portion_codelines[0] = portion_codelines[0][ast_node.col_offset:]
     return '\n'.join(portion_codelines)
 
-def cdef_lines_from_iter(iter : Iterator[ tuple[str, str] ], tab_level : int = 0) -> list[str]:
+def cdef_lines_from_iter(
+        iter : Iterator[ tuple[str, str] ],
+        indent_level : int = 0,
+        indent_pattern : str = '\t'
+    ) -> list[str]:
     '''
     cdef_lines_from_iter shall take in input an iterator of (varname, vartype)
-    and turn it inot a list of cdef lines with a given tab_level
+    and turn it inot a list of cdef lines with a given indent_level
     '''
-    cdef_str = ( '\t' * tab_level ) + 'cdef {vartype} {varname}'
+    cdef_str = ( indent_pattern * indent_level ) + 'cdef {vartype} {varname}'
     return [
         cdef_str.format(varname=varname, vartype=vartype)
         for varname, vartype in iter
     ]
 
-def cdef_lines_from_tg(tg : TypeStore, tab_level : int = 0) -> list[str]:
+def cdef_lines_from_tg(
+        tg : TypeStore,
+        indent_level : int = 0,
+        indent_pattern : str = '\t'
+    ) -> list[str]:
     '''
     cdef_lines_from_tg takes in input a type getter, and returns as an output
     a list of cdef codelines declaring with a type the vars indicated,
     '''
-    return cdef_lines_from_iter(iter=tg.iter_types(), tab_level=tab_level)
-    
+    return cdef_lines_from_iter(
+        iter=tg.iter_types(),
+        indent_level=indent_level,
+        indent_pattern=indent_pattern
+    )
+
 
 class FuncConverter():
     '''
@@ -102,7 +114,7 @@ class FuncConverter():
                 for varname, typename in tc.get_input_var_tg().iter_types()
             }
         #this could be better something coming out directly as a result from types collector, or a dedicated function
-        self.cdef_lines = cdef_lines_from_tg(tg = tc.get_collected_tg(), tab_level= 1)
+        self.cdef_lines = cdef_lines_from_tg(tg = tc.get_collected_tg(), indent_level= 1)
 
     def _regen_def_line(self) -> str:
         '''

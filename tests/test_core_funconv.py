@@ -13,7 +13,27 @@ def test_cdef_lines_from_iter():
     cdef_lines = cdef_lines_from_iter(iter=iter)
     assert 'cdef int a' in cdef_lines
     assert 'cdef float b' in cdef_lines
-    assert 'cdef int d' in cdef_lines 
+    assert 'cdef int d' in cdef_lines
+    assert len(cdef_lines) == 3
+    cdef_lines = cdef_lines_from_iter(
+        iter=iter,
+        indent_level=1,
+        indent_pattern='    '
+    )
+    assert '    cdef int a' in cdef_lines
+    assert '    cdef float b' in cdef_lines
+    assert '    cdef int d' in cdef_lines
+    assert len(cdef_lines) == 3
+    cdef_lines = cdef_lines_from_iter(
+        iter=iter,
+        indent_level=2,
+        indent_pattern='    '
+    )
+    assert len(cdef_lines) == 3
+    assert '        cdef int a' in cdef_lines
+    assert '        cdef float b' in cdef_lines
+    assert '        cdef int d' in cdef_lines 
+
 
 def test_1():
     code = '''
