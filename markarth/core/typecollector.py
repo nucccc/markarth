@@ -76,6 +76,15 @@ def type_from_call(
             return call_type
     return None
 
+def get_type_from_iter(iter_stat : ast.AST) -> str | None:
+    '''
+    get_type_from_iter shall get the type of a variable "extracted"
+    out of an iterable statement
+    '''
+    if type(iter_stat) == ast.Call:
+        if iter_stat.func.id == 'range':
+            return 'int'
+    return None
 
 
 class TypesCollector:
@@ -149,7 +158,17 @@ class TypesCollector:
                             self._collected_types.add_type(varname, vartype)
                         elif vartype != old_vartype:
                             self._handle_type_mutation(varname)
-            elif hasattr(stat, 'body') and self._deep_coll:
+            elif type(stat) == ast.For:
+                varname = stat.target
+                if varname not in self._mutating_types_varnames:
+                    vartype = get_type_from_iter(stat.iter)
+                    if vartype is not None:
+                        old_vartype = self._wrap_tg.get_varname_type(varname)
+                        if old_vartype is None:
+                            self._collected_types.add_type(varname, vartype)
+                        elif vartype != old_vartype:
+                            self._handle_type_mutation(varname)
+            if hasattr(stat, 'body') and self._deep_coll:
                 self.collect_types(stat.body)
 
     def collision_input_type(self) -> bool:
