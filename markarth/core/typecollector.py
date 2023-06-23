@@ -29,6 +29,9 @@ def get_value_type(
     return None
         
 def type_from_constant(const : ast.Constant) -> str | None:
+    '''
+    type_from_constant returns the type of a constant
+    '''
     typ = type(const.n).__name__
     match typ:
         case 'int':
@@ -137,6 +140,10 @@ class TypesCollector:
         return self._collected_types
 
     def collect_types(self, statements : list[ast.AST]):
+        '''
+        collect_types shall run (eventually recurvively) taking bodies and
+        collecting types from statements
+        '''
         for stat in statements:
             if type(stat) == ast.Assign:
                 varname = stat.targets[0].id # i hypothetize the assignment to be
@@ -167,9 +174,15 @@ class TypesCollector:
         return self._n_original_outer_types != len(self._outer_lever_var_tg)
     
     def get_input_var_tg(self) -> DictTypeStore:
+        '''
+        get_input_var_tg shall return the args type store
+        '''
         return self._input_var_tg
     
     def get_collected_tg(self) -> DictTypeStore:
+        '''
+        get_collected_tg shall return the 
+        '''
         return self._collected_types
 
     def _handle_type_mutation(self, varname : str):
