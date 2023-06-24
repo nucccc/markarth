@@ -151,25 +151,30 @@ class TypesCollector:
                 varname = stat.targets[0].id # i hypothetize the assignment to be
                 if varname not in self._mutating_types_varnames:
                     vartype = get_value_type(stat.value, self._wrap_tg)
-                    # here i should also check if i have something
-                    if vartype is not None:
-                        old_vartype = self._wrap_tg.get_varname_type(varname)
-                        if old_vartype is None:
-                            self._collected_types.add_type(varname, vartype)
-                        elif vartype != old_vartype:
-                            self._handle_type_mutation(varname)
+                    # here i colelct the vartype found
+                    self._collect_vartype(varname, vartype)
             elif type(stat) == ast.For:
                 varname = stat.target
                 if varname not in self._mutating_types_varnames:
                     vartype = get_type_from_iter(stat.iter)
-                    if vartype is not None:
-                        old_vartype = self._wrap_tg.get_varname_type(varname)
-                        if old_vartype is None:
-                            self._collected_types.add_type(varname, vartype)
-                        elif vartype != old_vartype:
-                            self._handle_type_mutation(varname)
+                    # here i colelct the vartype found
+                    self._collect_vartype(varname, vartype)
             if hasattr(stat, 'body') and self._deep_coll:
                 self.collect_types(stat.body)
+
+    def _collect_vartype(self, varname : str, vartype: str | None) -> None:
+        '''
+        _collect_vartype shall add an eventual vartype to the collected
+        variables, while eventually checking for collisions and stuff
+
+        it also checks if the vartype is not None
+        '''
+        if vartype is not None:
+            old_vartype = self._wrap_tg.get_varname_type(varname)
+            if old_vartype is None:
+                self._collected_types.add_type(varname, vartype)
+            elif vartype != old_vartype:
+                self._handle_type_mutation(varname)
 
     def collision_input_type(self) -> bool:
         '''
@@ -191,6 +196,6 @@ class TypesCollector:
     def get_collected_tg(self) -> DictTypeStore:
         return self._collected_types
 
-    def _handle_type_mutation(self, varname : str):
+    def _handle_type_mutation(self, varname : str) -> None:
         self._wrap_tg.delete_varname(varname)
         self._mutating_types_varnames.add(varname)
