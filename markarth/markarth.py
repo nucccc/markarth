@@ -4,8 +4,8 @@ now in this file here some usage functions shall be introduced
 
 import ast
 
-from markarth.core.utils import process_code
-from markarth.core.funconv import FuncConverter
+from .core.utils import process_code
+from .core.funconv import FuncConverter
 
 class InvalidCode(Exception):
     'Raised when the code provided is invalid'

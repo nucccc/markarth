@@ -6,9 +6,9 @@ import ast
 
 from typing import Iterator
 
-from markarth.core.utils import indentation_pattern
-from markarth.core.typestore import TypeStore
-from markarth.core.typecollector import TypesCollector
+from .utils import indentation_pattern
+from .typestore import TypeStore
+from .typecollector import TypesCollector
 
 def code_portion(ast_node : ast.AST, codelines : list[str]) -> str:
     '''

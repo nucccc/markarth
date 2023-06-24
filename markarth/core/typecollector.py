@@ -1,6 +1,6 @@
 import ast
 
-from markarth.core.typestore import DictTypeStore, WrapTypeStore
+from .typestore import DictTypeStore, WrapTypeStore
 
 VALID_CTYPES = {
     'int',
@@ -161,6 +161,7 @@ class TypesCollector:
                     # here i colelct the vartype found
                     self._collect_vartype(varname, vartype)
             elif type(stat) == ast.For:
+                # TODO: here some code should be place to verify that this thing actually has a name
                 varname = stat.target.id
                 if varname not in self._mutating_types_varnames:
                     vartype = type_from_iter(stat.iter)
