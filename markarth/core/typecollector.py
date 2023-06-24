@@ -79,9 +79,9 @@ def type_from_call(
             return call_type
     return None
 
-def get_type_from_iter(iter_stat : ast.AST) -> str | None:
+def type_from_iter(iter_stat : ast.AST) -> str | None:
     '''
-    get_type_from_iter shall get the type of a variable "extracted"
+    type_from_iter shall get the type of a variable "extracted"
     out of an iterable statement
     '''
     if type(iter_stat) == ast.Call:
@@ -163,7 +163,7 @@ class TypesCollector:
             elif type(stat) == ast.For:
                 varname = stat.target
                 if varname not in self._mutating_types_varnames:
-                    vartype = get_type_from_iter(stat.iter)
+                    vartype = type_from_iter(stat.iter)
                     # here i colelct the vartype found
                     self._collect_vartype(varname, vartype)
             if hasattr(stat, 'body') and self._deep_coll:
