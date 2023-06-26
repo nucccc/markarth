@@ -38,6 +38,8 @@ def type_from_constant(const : ast.Constant) -> str | None:
             return typ
         case 'float':
             return typ
+        case 'bool':
+            return typ
     return None
 
 def type_from_bin_op(
