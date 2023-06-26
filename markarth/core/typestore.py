@@ -48,7 +48,23 @@ class DictTypeStore():
     def size(self) -> int:
         return len(self)
 
-
+def py2cy_dict_store(
+    origin_type_store : TypeStore,
+    py2cy_map : dict[str, str]
+) -> DictTypeStore:
+    '''
+    py2cy_dict_store returns a DictTypeStore with the contained types
+    remapped from python types to c types
+    '''
+    # result is the DictTypeStore i'm going to return
+    result = DictTypeStore()
+    # then for all the elements in the type store i check if its type
+    # is in the py2cy_map
+    for varname, vartype in origin_type_store.iter_types():
+        ctype = py2cy_map.get(vartype, None)
+        if ctype is not None:
+            result.add_type(varname, ctype)
+    return result
 
 class WrapTypeStore():
     '''
