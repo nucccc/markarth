@@ -6,8 +6,9 @@ import ast
 
 from typing import Iterator
 
+from.conv_opts import ConvOpts, default_convopts
 from .utils import indentation_pattern
-from .typestore import TypeStore
+from .typestore import DictTypeStore, TypeStore, py2cy_dict_store
 from .typecollector import TypesCollector
 
 def code_portion(ast_node : ast.AST, codelines : list[str]) -> str:
@@ -67,10 +68,11 @@ class FuncConverter():
     cdef_lines : list[str] = list()
     indent_pattern : str
 
-    def __init__(self, func_ast : ast.FunctionDef, codelines : list[str]):
+    def __init__(self, func_ast : ast.FunctionDef, codelines : list[str], conversion_options : ConvOpts = default_convopts()):
         self.func_ast = func_ast
         self.statements = self.func_ast.body
         self.codelines = codelines
+        self.convertion_options = conversion_options
 
     def convert(self) -> str:
         '''
@@ -80,7 +82,8 @@ class FuncConverter():
 
         # then i shall actually collect the types
         self._collect_types()
-        self._add_ctypes_to_args()
+        #self._add_ctypes_to_args()
+        self._remove_return_annotation()
         self.func_decl = self._get_func_decl()
         self.func_decl = self._regen_def_line()
         new_codelines = [self.func_decl] + self.cdef_lines + self.codelines[self.func_ast.body[0].lineno:self.func_ast.body[-1].end_lineno+1]
@@ -104,6 +107,7 @@ class FuncConverter():
             arg_types=self.arg_types
         )
         tc.run()
+        # i check whether or not there was a type collision with an input type
         if tc.collision_input_type():
             # in case of input type collision i shall have a new dictionary for
             # input arguments types
@@ -111,9 +115,12 @@ class FuncConverter():
                 varname : typename
                 for varname, typename in tc.get_input_var_tg().iter_types()
             }
+        # before actually generating the cdef lines i shall regen the type store in order for it to contain
+        # the actual c types
+        c_types_tg = py2cy_dict_store(tc.get_collected_tg(), self.convertion_options.py2cy_typemap())
         #this could be better something coming out directly as a result from types collector, or a dedicated function
         self.cdef_lines = cdef_lines_from_tg(
-            tg = tc.get_collected_tg(),
+            tg = c_types_tg,
             indent_level= 1,
             indent_pattern=self.indent_pattern
         )
@@ -131,9 +138,11 @@ class FuncConverter():
     
     def _add_ctypes_to_args(self) -> list[str]:
         line_inc = dict()
+        arg_types_tg = DictTypeStore(self.arg_types)
+        arg_types_tg = py2cy_dict_store(arg_types_tg, self.convertion_options.py2cy_typemap())
         for arg in self.func_ast.args.args:
             argname = arg.arg
-            argtype = self.arg_types.get(argname, None)
+            argtype = arg_types_tg.get_type(argname)
             if argtype is not None:
                 lineno = arg.lineno
                 line = self.codelines[lineno]
@@ -157,5 +166,26 @@ class FuncConverter():
         return arg_types
     
     def _collect_return_type(self) -> str | None:
-        return self.func_ast.returns.id \
+        return_type = self.func_ast.returns.id \
             if hasattr(self.func_ast.returns, 'id') else None
+        return_type = self.convertion_options.py2cy_typemap().get(return_type, None)
+        return return_type
+    
+    def _remove_return_annotation(self) -> None:
+        '''
+        _remove_return_annotation shall remove the annotation regarding
+        the return type (as this will go in the cpdef definition)
+        
+        this assumes the return annotation is going to be on just one line
+        '''
+        if self.return_type is not None:
+            return_lineno = self.func_ast.returns.lineno
+            start_pos = self.func_ast.returns.col_offset
+            end_pos = self.func_ast.returns.end_col_offset
+            return_line = self.codelines[ return_lineno ]
+            # now i need to search for the first parenthes to modify the statement
+            while return_line[start_pos-1] != ')':
+                start_pos -= 1
+            new_def = return_line[:start_pos] + return_line[end_pos:]
+            print(new_def)
+            self.codelines[ return_lineno ] = new_def
