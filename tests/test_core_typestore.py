@@ -100,6 +100,7 @@ def test_py2cy_dict_store():
     origin_type_store.add_type('a_float', 'float')
     origin_type_store.add_type('a_whatever', 'whatever')
     origin_type_store.add_type('a_bool', 'bool')
+
     py2cy_map={
         'int':'long',
         'float':'float',
@@ -112,4 +113,18 @@ def test_py2cy_dict_store():
     assert len(new_type_store) == 3
     assert new_type_store.get_type('an_int') == 'long'
     assert new_type_store.get_type('a_float') == 'float'
+    assert new_type_store.get_type('a_bool') == 'char'
+
+    py2cy_map={
+        'int':'int',
+        'float':'double',
+        'bool':'char',
+    }
+    new_type_store = typestore.py2cy_dict_store(
+        origin_type_store=origin_type_store,
+        py2cy_map=py2cy_map
+    )
+    assert len(new_type_store) == 3
+    assert new_type_store.get_type('an_int') == 'int'
+    assert new_type_store.get_type('a_float') == 'double'
     assert new_type_store.get_type('a_bool') == 'char'
