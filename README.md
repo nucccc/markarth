@@ -46,7 +46,7 @@ At the moment there is no PyPI package, so if someone really (really?) wants to 
 ```
 git clone https://github.com/nucccc/markarth
 cd markarth
-python3 setup.py
+python3 setup.py install
 ```
 
 ## Possible improvements
