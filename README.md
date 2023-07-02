@@ -1,6 +1,6 @@
 # markarth
 
-markarth is a library that would like to automatically cdef types to python code, possibly improving its performance when  cython.
+markarth is a library that would like to automatically add cython cdef to python code, possibly improving its performance transpiling it into cython.
 
 It makes heavy usage of the `ast` module in order to parse python code, while leveraging type annotations to infer variable types, thus adding some `cdef` at the beginning of the code.
 
