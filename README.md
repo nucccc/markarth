@@ -21,7 +21,8 @@ def stuff(a : int, b : int, c : float = 0.4, d = None) -> int:
 
 cycode = convert_func(code)
 
-print(cycode)```
+print(cycode)
+```
 
 ```
 cpdef int stuff(a : int, b : int, c : float = 0.4, d = None):
