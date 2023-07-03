@@ -67,6 +67,9 @@ class FuncConverter():
     return_type : str | None = None
     cdef_lines : list[str] = list()
     indent_pattern : str
+    # i also save the types stores as i'm going to use them for unit testing
+    collected_ptypes : DictTypeStore
+    collected_ctypes : DictTypeStore
 
     def __init__(self, func_ast : ast.FunctionDef, codelines : list[str], conversion_options : ConvOpts = default_convopts()):
         self.func_ast = func_ast
@@ -83,6 +86,14 @@ class FuncConverter():
         # then i shall actually collect the types
         self._collect_types()
         #self._add_ctypes_to_args()
+        
+        return self._regen_code()
+        
+    
+    def _regen_code(self) -> str:
+        '''
+        _regen_code returns the newly generated function code
+        '''
         self._remove_return_annotation()
         self.func_decl = self._get_func_decl()
         self.func_decl = self._regen_def_line()
@@ -115,12 +126,13 @@ class FuncConverter():
                 varname : typename
                 for varname, typename in tc.get_input_var_tg().iter_types()
             }
+        self.collected_ptypes = tc.get_collected_tg()
         # before actually generating the cdef lines i shall regen the type store in order for it to contain
         # the actual c types
-        c_types_tg = py2cy_dict_store(tc.get_collected_tg(), self.convertion_options.py2cy_typemap())
+        self.collected_ctypes = py2cy_dict_store(self.collected_ptypes, self.convertion_options.py2cy_typemap())
         #this could be better something coming out directly as a result from types collector, or a dedicated function
         self.cdef_lines = cdef_lines_from_tg(
-            tg = c_types_tg,
+            tg = self.collected_ctypes,
             indent_level= 1,
             indent_pattern=self.indent_pattern
         )
