@@ -138,10 +138,11 @@ class TypesCollector:
         self._wrap_tg = WrapTypeStore(var_types_tgs, self._func_return_tg)
 
     def run(self) -> dict[str, str]:
-        if len(self._collected_types) == 0:
-            return self._run()
-        else:
-            return self._collected_types
+        return self._run()
+        #if len(self._collected_types) == 0:
+        #    return self._run()
+        #else:
+        #    return self._collected_types
 
     def _run(self) -> dict[str, str]:
         '''
@@ -167,7 +168,7 @@ class TypesCollector:
                 varname = stat.target.id
                 if varname not in self._mutating_types_varnames:
                     vartype = type_from_iter(stat.iter)
-                    # here i colelct the vartype found
+                    # here i collect the vartype found
                     self._collect_vartype(varname, vartype)
             if hasattr(stat, 'body') and self._deep_coll:
                 self.collect_types(stat.body)

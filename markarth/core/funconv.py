@@ -199,5 +199,4 @@ class FuncConverter():
             while return_line[start_pos-1] != ')':
                 start_pos -= 1
             new_def = return_line[:start_pos] + return_line[end_pos:]
-            print(new_def)
             self.codelines[ return_lineno ] = new_def
