@@ -55,7 +55,7 @@ def type_from_bin_op(
     right_type = get_value_type(binop.right, types_getter)
     if right_type is None:
         return None
-    if left_type == 'float' or right_type == 'float' or binop.op == ast.Div:
+    if left_type == 'float' or right_type == 'float' or type(binop.op) == ast.Div:
         return 'float'
     return 'int'
 

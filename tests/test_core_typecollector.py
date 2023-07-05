@@ -1,5 +1,5 @@
 import ast
-from markarth.core.typecollector import type_from_iter
+from markarth.core.typecollector import type_from_iter, type_from_bin_op
 
 def test_type_from_iter():
     code = '''for i in range(7):\n\tpass'''
@@ -14,3 +14,34 @@ def test_type_from_iter():
     m = ast.parse(code)
     f = m.body[0]
     assert type_from_iter(f.iter) is None
+
+def test_type_from_binop():
+    op_code = '6 + 7'
+    op_mod = ast.parse(op_code)
+    bin_op = op_mod.body[0].value
+    typ = type_from_bin_op(bin_op)
+    assert typ == 'int'
+
+    op_code = '6 + 7.1'
+    op_mod = ast.parse(op_code)
+    bin_op = op_mod.body[0].value
+    typ = type_from_bin_op(bin_op)
+    assert typ == 'float'
+
+    op_code = '6.8 + 7.1'
+    op_mod = ast.parse(op_code)
+    bin_op = op_mod.body[0].value
+    typ = type_from_bin_op(bin_op)
+    assert typ == 'float'
+
+    op_code = '8 / 4'
+    op_mod = ast.parse(op_code)
+    bin_op = op_mod.body[0].value
+    typ = type_from_bin_op(bin_op)
+    assert typ == 'float'
+
+    op_code = '8 / 3'
+    op_mod = ast.parse(op_code)
+    bin_op = op_mod.body[0].value
+    typ = type_from_bin_op(bin_op)
+    assert typ == 'float'
