@@ -85,6 +85,10 @@ def test_wrap_type_store():
     assert wtg.get_varname_type('h') is None
     assert wtg.get_varname_type('i') is None
 
+    wtg.delete_varname('a')
+
+    assert wtg.get_varname_type('a') is None
+
     v1_tp.delete_name('a')
 
     assert wtg.get_varname_type('a') is None
@@ -111,6 +115,7 @@ def test_py2cy_dict_store():
         py2cy_map=py2cy_map
     )
     assert len(new_type_store) == 3
+    assert new_type_store.size() == 3
     assert new_type_store.get_type('an_int') == 'long'
     assert new_type_store.get_type('a_float') == 'float'
     assert new_type_store.get_type('a_bool') == 'char'
@@ -125,6 +130,7 @@ def test_py2cy_dict_store():
         py2cy_map=py2cy_map
     )
     assert len(new_type_store) == 3
+    assert new_type_store.size() == 3
     assert new_type_store.get_type('an_int') == 'int'
     assert new_type_store.get_type('a_float') == 'double'
     assert new_type_store.get_type('a_bool') == 'char'

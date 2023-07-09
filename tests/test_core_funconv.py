@@ -1,7 +1,7 @@
 import sys
 sys.path.append('../')
 
-from markarth.core.utils import process_code
+from markarth.core.utils import process_code, process_func_code
 from markarth.core.funconv import FuncConverter
 from markarth.core.funconv import cdef_lines_from_iter
 
@@ -49,11 +49,13 @@ def stuff(a : int, b : int, c : float = 0.4, d = None) -> int:
         sum = 5 * 18
     return sum
     '''
-    ast_code, codelines = process_code(code)
-    func_ast = ast_code.body[0]
+    func_ast, codelines = process_func_code(code)
     fc = FuncConverter(func_ast, codelines)
     
-    input_var_dict = fc._collect_arg_types()
+    fc._collect_start_attributes()
+
+    input_var_dict = fc.arg_types
+    
     assert input_var_dict['a'] == 'int'
     assert input_var_dict['b'] == 'int'
     assert input_var_dict['c'] == 'float'
@@ -62,7 +64,7 @@ def stuff(a : int, b : int, c : float = 0.4, d = None) -> int:
     def_line = fc._get_func_decl()
     assert def_line == 'def stuff(a : int, b : int, c : float = 0.4, d = None) -> int:'
 
-    r_type = fc._collect_return_type()
+    r_type = fc.return_type
     assert r_type == 'int'
 
     fc.convert()
@@ -86,11 +88,12 @@ def stuff(
         sum = 5 * 18
     return sum
     '''
-    ast_code, codelines = process_code(code)
-    func_ast = ast_code.body[0]
+    func_ast, codelines = process_func_code(code)
     fc = FuncConverter(func_ast, codelines)
+
+    fc._collect_start_attributes()
     
-    input_var_dict = fc._collect_arg_types()
+    input_var_dict = fc.arg_types
     assert input_var_dict['a'] == 'int'
     assert input_var_dict['b'] == 'int'
     assert input_var_dict['c'] == 'float'
@@ -105,7 +108,7 @@ def stuff(
     def_line = fc._get_func_decl()
     assert def_line == expected_def_line
     
-    r_type = fc._collect_return_type()
+    r_type = fc.return_type
     assert r_type == 'int'
 
 def test6():
@@ -134,8 +137,7 @@ def stuff(a : int, b : int, c : float = 0.4, d = None) -> int:
         p += i
     return sum
 '''
-    ast_nodes, codelines = process_code(code)
-    func_ast = ast_nodes.body[0]
+    func_ast, codelines = process_func_code(code)
     print(f'real func body: {func_ast.body}')
     fc = FuncConverter(func_ast, codelines)
     print(f'fc.statements: {fc.statements}')

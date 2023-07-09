@@ -24,6 +24,14 @@ def process_code(code : str) -> tuple[ast.AST, list[str]]:
     '''
     return (ast.parse(code), to_ast_codelines(code))
 
+def process_func_code(code : str) -> tuple[ast.AST, list[str]]:
+    '''
+    process_func_code
+    '''
+    ast_code, codelines = process_code(code)
+    func_ast = ast_code.body[0]
+    return (func_ast, codelines)
+
 def indentation_pattern(
         ast_with_body : ast.AST,
         codelines : list[str],

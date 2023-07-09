@@ -1,6 +1,6 @@
 import pytest
 
-from markarth.core.utils import to_codelines, process_code, indentation_pattern
+from markarth.core.utils import to_codelines, process_code, indentation_pattern, ASTWithoutBody
 from markarth.core.typecollector import type_from_call
 
 import ast
@@ -36,3 +36,12 @@ def test_indentation_pattern():
     ast_nodes, codelines = process_code(code)
     func_ast = ast_nodes.body[0]
     assert indentation_pattern(func_ast, codelines) == '    '
+
+def test_indentation_pattern_ast_without_body():
+    code = '''a = 0'''
+
+    ast_nodes, codelines = process_code(code)
+    func_ast = ast_nodes.body[0]
+
+    with pytest.raises(ASTWithoutBody) as ast_without_body:
+        indentation_pattern(func_ast, codelines)
