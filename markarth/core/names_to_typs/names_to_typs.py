@@ -32,7 +32,7 @@ class TypStore(Protocol):
         pass # pragma: no cover
 
 
-class DictTypeStore():
+class DictTypStore():
     _types_dict : dict[str, str]
 
     def __init__(self, types_dict : dict[str, Typ] = dict()):
@@ -84,10 +84,10 @@ class NamesToTyps():
 
     def __init__(
         self,
-        local_typs : TypStore = DictTypeStore(),
-        input_typs : TypStore = DictTypeStore(),
-        global_typs : TypStore = DictTypeStore(),
-        call_typs : TypStore  = DictTypeStore()
+        local_typs : TypStore = DictTypStore(),
+        input_typs : TypStore = DictTypStore(),
+        global_typs : TypStore = DictTypStore(),
+        call_typs : TypStore  = DictTypStore()
     ):
         self._local_typs : TypStore = local_typs
         self._input_typs : TypStore = input_typs
