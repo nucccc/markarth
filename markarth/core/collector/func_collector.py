@@ -1,6 +1,6 @@
 import ast
 
-from markarth.core.names_to_typs.names_to_typs import DictTypStore, TypStore
+from markarth.core.names_to_typs.names_to_typs import DictTypStore, TypStore, NamesToTyps
 from markarth.core.types.typs_parse import parse_type_str
 from markarth.core.types.types import Typ
 
@@ -33,6 +33,15 @@ class Func:
         self._func_ast = func_ast
         self._codelines = codelines
 
+        # _outer_global_store shall at certain point be assigned with a
+        # typestore from the module above, containing types related to const
+        # variable names
+        self._outer_global_store : TypStore | None = None
+        # _outer_call_store shall at certain point be assigned with a
+        # typestore from the module above, containing types related to other
+        # functions in the module
+        self._outer_call_store : TypStore | None = None
+
 
     @property
     def func_ast_body(self):
@@ -42,6 +51,14 @@ class Func:
     @property
     def name(self):
         return self._func_ast.name
+    
+
+    def set_global_store(self, global_store : TypStore) -> None:
+        self._outer_global_store = global_store
+
+    
+    def set_call_store(self, call_store : TypStore) -> None:
+        self._outer_call_store = call_store
 
 
     def _collect_assignments(self):
@@ -77,3 +94,4 @@ class Func:
             input_types.add_typ(arg_name, parse_type_str(arg_type_str))
 
         return input_types
+    
