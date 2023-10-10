@@ -67,18 +67,19 @@ class Func:
 
     def filter_const_candidates(
             self,
-            const_candidate_names : set[str]
-        ) -> None:
+            const_candidate_names : TypStore
+        ) -> TypStore:
         '''
-        filter_const_candidates modifies the set provided in input by remove
-        const candidates which went through a modification
+        filter_const_candidates modifies the TypStore provided in input by
+        removing const candidates which went through a modification
         '''
+        # TODO: check also for variables being set in for loops
         for assign in self._assignments:
             for target in assign.targets:
                 varname = target.id
                 assert type(varname) == str
-                if varname in const_candidate_names:
-                    const_candidate_names.remove(varname)
+                const_candidate_names.delete_name(varname)
+        return const_candidate_names
 
 
     def _collect_input_typs(self) -> TypStore:
@@ -96,7 +97,8 @@ class Func:
         return input_types
     
 
-    def _collect_return_typ(self) -> Typ:
+    @property
+    def return_typ(self) -> Typ:
         '''
         _collect_return_typ shall collect the type from the function's return
         '''
