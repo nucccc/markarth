@@ -2,7 +2,7 @@ import ast
 
 from markarth.core.names_to_typs.names_to_typs import DictTypStore, TypStore, NamesToTyps
 from markarth.core.types.typs_parse import parse_type_str
-from markarth.core.types.types import Typ
+from markarth.core.types.types import Typ, TypNone
 
 
 def assignments_from_body(
@@ -30,8 +30,8 @@ class Func:
     '''
 
     def __init__(self, func_ast : ast.FunctionDef, codelines : list[str]):
-        self._func_ast = func_ast
-        self._codelines = codelines
+        self._func_ast : ast.FunctionDef = func_ast
+        self._codelines : list[str] = codelines
 
         # _outer_global_store shall at certain point be assigned with a
         # typestore from the module above, containing types related to const
@@ -44,12 +44,12 @@ class Func:
 
 
     @property
-    def func_ast_body(self):
+    def func_ast_body(self) -> list[ast.AST]:
         return self._func_ast.body
 
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._func_ast.name
     
 
@@ -61,7 +61,7 @@ class Func:
         self._outer_call_store = call_store
 
 
-    def _collect_assignments(self):
+    def _collect_assignments(self) -> list[ast.AST]:
         self._assignments = assignments_from_body(self._func_ast.body)
 
 
@@ -95,3 +95,15 @@ class Func:
 
         return input_types
     
+
+    def _collect_return_typ(self) -> Typ:
+        '''
+        _collect_return_typ shall collect the type from the function's return
+        '''
+        if not hasattr(self.func_ast.returns, 'id'):
+            return TypNone
+        return parse_type_str(self.func_ast.returns.id)
+
+
+    def _collect_typs(self) -> TypStore:
+        pass
