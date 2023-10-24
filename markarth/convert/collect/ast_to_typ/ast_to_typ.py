@@ -5,65 +5,65 @@ and obtain strings representing types out of them
 
 import ast
 
-from markarth.core.types import types
-from markarth.core.names_to_typs.names_to_typs import NamesToTyps
+from markarth.convert.typs import typs
+from markarth.convert.typs.names_to_typs import NamesToTyps
 
 def ast_val_to_typ(
         val : ast.AST,
-        types_getter : WrapTypeStore | None = None
-    ) -> types.Typ:
+        name_typs : NamesToTyps | None = None
+    ) -> typs.Typ:
     '''
     get_value_type shall take in input the value
     '''
     if type(val) == ast.Constant:
         return typ_from_constant(val)
     if type(val) == ast.BinOp:
-        return typ_from_bin_op(val, types_getter)
-    if types_getter is not None:
+        return typ_from_bin_op(val, name_typs)
+    if name_typs is not None:
         if type(val) == ast.Name:
             # here some more code could be placed to handle a none and see if
             # returning known or unknown
-            return types_getter.get_varname_type( val.id ) #vars_dict.get( val.id )
+            return name_typs.get_varname_typ( val.id ) #vars_dict.get( val.id )
         if type(val) == ast.Call:
-            return typ_from_call(val, types_getter)#types_getter.get_callname_type( val.func.id )
+            return typ_from_call(val, name_typs)#name_typs.get_callname_type( val.func.id )
     return None
 
 
-def typ_from_constant(const : ast.Constant) -> types.TypPrimitive | types.TypUnknown:
+def typ_from_constant(const : ast.Constant) -> typs.TypPrimitive | typs.TypUnknown:
     '''
     typ_from_constant returns the type of a constant
     '''
     typ_str = type(const.n).__name__
-    prim_cod = types.str_to_primitive_cod_or_none(typ_str)
+    prim_cod = typs.str_to_primitive_cod_or_none(typ_str)
     if prim_cod is None:
-        return types.TypUnknown()
-    return types.TypPrimitive(prim_cod)
+        return typs.TypUnknown()
+    return typs.TypPrimitive(prim_cod)
 
 
 def typ_from_bin_op(
         binop : ast.BinOp,
-        types_getter : WrapTypeStore | None = None
+        name_typs : NamesToTyps | None = None
     ) -> str | None:
     '''
     typ_from_bin_op shall return a string out of some binary operation
     '''
-    left_type = ast_val_to_typ(binop.left, types_getter)
+    left_type = ast_val_to_typ(binop.left, name_typs)
     if not left_type.is_primitive():
-        return types.TypUnknown()
-    right_type = ast_val_to_typ(binop.right, types_getter)
+        return typs.TypUnknown()
+    right_type = ast_val_to_typ(binop.right, name_typs)
     if not right_type.is_primitive():
-        return types.TypUnknown()
+        return typs.TypUnknown()
     # at this stage both types should be primitives
-    left_prim : types.TypPrimitive = left_type
-    right_prim : types.TypPrimitive = right_type
+    left_prim : typs.TypPrimitive = left_type
+    right_prim : typs.TypPrimitive = right_type
     if left_prim.is_float() or right_prim.is_float() or type(binop.op) == ast.Div:
-        return types.TypPrimitive( types.PrimitiveCod.FLOAT )
-    return types.TypPrimitive( types.PrimitiveCod.INT )
+        return typs.TypPrimitive( typs.PrimitiveCod.FLOAT )
+    return typs.TypPrimitive( typs.PrimitiveCod.INT )
 
 
 def typ_from_call(
         call : ast.Call,
-        typs_getter : WrapTypeStore | None = None
+        name_typs : NamesToTyps | None = None
     ) -> str | None:
     '''
     typ_from_call shall return the type from a function call - basically
@@ -72,15 +72,17 @@ def typ_from_call(
     call_id = call.func.id if (hasattr(call, 'func') and hasattr(call.func, 'id')) else None
     if call_id is None:
         return None
+    # TODO: this could become a dictionary with several entries for each built-in
+    # function with call names
     match call_id:
         case 'int':
-            return types.TypPrimitive(types.PrimitiveCod.INT)
+            return typs.TypPrimitive(typs.PrimitiveCod.INT)
         case 'float':
-            return types.TypPrimitive(types.PrimitiveCod.FLOAT)
+            return typs.TypPrimitive(typs.PrimitiveCod.FLOAT)
         case 'bool':
-            return types.TypPrimitive(types.PrimitiveCod.BOOL)
-    if typs_getter is not None:
-        call_type = typs_getter.get_callname_typ(call_id)
+            return typs.TypPrimitive(typs.PrimitiveCod.BOOL)
+    if name_typs is not None:
+        call_type = name_typs.get_callname_typ(call_id)
         if call_type is not None:
             return call_type
     return None

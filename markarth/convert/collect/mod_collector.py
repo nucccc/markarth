@@ -1,10 +1,10 @@
 import ast
 from typing import Iterable
 
-from markarth.core.collector.func_collector import assignments_from_body, Func
-from markarth.core.types.typs_parse import parse_type_str
-from markarth.core.names_to_typs.names_to_typs import DictTypStore
-from markarth.core.ast_to_type.ast_to_type import ast_val_to_typ, typ_from_constant
+from markarth.convert.collect.func_collector import assignments_from_body, Func
+from markarth.convert.typs.typs_parse import parse_type_str
+from markarth.convert.typs.names_to_typs import DictTypStore
+from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_constant
 
 
 def const_candidates_from_assignments(assignments : list[ast.Assign]) -> DictTypStore:

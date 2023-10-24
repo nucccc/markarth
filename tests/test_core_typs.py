@@ -1,31 +1,31 @@
 import pytest
 
-from markarth.core.types import types
+from markarth.convert.typs import typs
 
 def test_str_to_prim_cod():
-    assert types.str_to_prim_cod('bool') == types.PrimitiveCod.BOOL
-    assert types.str_to_prim_cod('float') == types.PrimitiveCod.FLOAT
-    assert types.str_to_prim_cod('int') == types.PrimitiveCod.INT
-    assert types.str_to_prim_cod('str') == types.PrimitiveCod.STR
+    assert typs.str_to_prim_cod('bool') == typs.PrimitiveCod.BOOL
+    assert typs.str_to_prim_cod('float') == typs.PrimitiveCod.FLOAT
+    assert typs.str_to_prim_cod('int') == typs.PrimitiveCod.INT
+    assert typs.str_to_prim_cod('str') == typs.PrimitiveCod.STR
 
-    assert types.str_to_prim_cod_or_none('bool') == types.PrimitiveCod.BOOL
-    assert types.str_to_prim_cod_or_none('float') == types.PrimitiveCod.FLOAT
-    assert types.str_to_prim_cod_or_none('int') == types.PrimitiveCod.INT
-    assert types.str_to_prim_cod_or_none('str') == types.PrimitiveCod.STR
+    assert typs.str_to_prim_cod_or_none('bool') == typs.PrimitiveCod.BOOL
+    assert typs.str_to_prim_cod_or_none('float') == typs.PrimitiveCod.FLOAT
+    assert typs.str_to_prim_cod_or_none('int') == typs.PrimitiveCod.INT
+    assert typs.str_to_prim_cod_or_none('str') == typs.PrimitiveCod.STR
 
-    assert types.str_to_prim_cod_or_none('hakahakahaka') is None
+    assert typs.str_to_prim_cod_or_none('hakahakahaka') is None
 
 
 def test_prim_cod_to_str():
-    assert types.prim_cod_to_str(types.PrimitiveCod.BOOL) == 'bool'
-    assert types.prim_cod_to_str(types.PrimitiveCod.FLOAT) == 'float'
-    assert types.prim_cod_to_str(types.PrimitiveCod.INT) == 'int'
-    assert types.prim_cod_to_str(types.PrimitiveCod.STR) == 'str'
+    assert typs.prim_cod_to_str(typs.PrimitiveCod.BOOL) == 'bool'
+    assert typs.prim_cod_to_str(typs.PrimitiveCod.FLOAT) == 'float'
+    assert typs.prim_cod_to_str(typs.PrimitiveCod.INT) == 'int'
+    assert typs.prim_cod_to_str(typs.PrimitiveCod.STR) == 'str'
 
 
 def test_typ_primitive():
     # bool test
-    typ = types.TypPrimitive('bool')
+    typ = typs.TypPrimitive('bool')
 
     assert typ.is_primitive()
     assert not typ.is_container()
@@ -38,10 +38,10 @@ def test_typ_primitive():
     assert not typ.is_str()
 
     assert typ.as_string() == 'bool'
-    assert typ.get_primitive_cod() == types.PrimitiveCod.BOOL
+    assert typ.get_primitive_cod() == typs.PrimitiveCod.BOOL
 
     # int test
-    typ = types.TypPrimitive('int')
+    typ = typs.TypPrimitive('int')
 
     assert typ.is_primitive()
     assert not typ.is_container()
@@ -54,10 +54,10 @@ def test_typ_primitive():
     assert not typ.is_str()
 
     assert typ.as_string() == 'int'
-    assert typ.get_primitive_cod() == types.PrimitiveCod.INT
+    assert typ.get_primitive_cod() == typs.PrimitiveCod.INT
 
     # float test
-    typ = types.TypPrimitive('float')
+    typ = typs.TypPrimitive('float')
 
     assert typ.is_primitive()
     assert not typ.is_container()
@@ -70,10 +70,10 @@ def test_typ_primitive():
     assert not typ.is_str()
 
     assert typ.as_string() == 'float'
-    assert typ.get_primitive_cod() == types.PrimitiveCod.FLOAT
+    assert typ.get_primitive_cod() == typs.PrimitiveCod.FLOAT
 
     # str test
-    typ = types.TypPrimitive('str')
+    typ = typs.TypPrimitive('str')
 
     assert typ.is_primitive()
     assert not typ.is_container()
@@ -86,11 +86,11 @@ def test_typ_primitive():
     assert typ.is_str()
 
     assert typ.as_string() == 'str'
-    assert typ.get_primitive_cod() == types.PrimitiveCod.STR
+    assert typ.get_primitive_cod() == typs.PrimitiveCod.STR
 
 
 def test_typ_unknown():
-    typ = types.TypUnknown()
+    typ = typs.TypUnknown()
 
     assert typ.is_unkown()
     assert not typ.is_container()
@@ -101,7 +101,7 @@ def test_typ_unknown():
     
 
 def test_typ_none():
-    typ = types.TypNone()
+    typ = typs.TypNone()
 
     assert typ.is_none()
     assert not typ.is_container()

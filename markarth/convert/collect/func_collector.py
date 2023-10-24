@@ -1,8 +1,8 @@
 import ast
 
-from markarth.core.names_to_typs.names_to_typs import DictTypStore, TypStore, NamesToTyps
-from markarth.core.types.typs_parse import parse_type_str
-from markarth.core.types.types import Typ, TypNone
+from markarth.convert.typs.names_to_typs import DictTypStore, TypStore, NamesToTyps
+from markarth.convert.typs.typs_parse import parse_type_str
+from markarth.convert.typs.typs import Typ, TypNone
 
 
 def assignments_from_body(
@@ -88,7 +88,7 @@ class Func:
         arg_types = {
             arg.arg : arg.annotation.id
             for arg in self.func_ast.args.args
-            if hasattr(arg.annotation, 'id') and (arg.annotation.id == 'int' or arg.annotation.id == 'float')
+            if hasattr(arg.annotation, 'id')
         }
 
         for arg_name, arg_type_str in arg_types:

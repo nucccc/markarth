@@ -8,7 +8,7 @@ from copy import deepcopy
 from enum import Enum
 from typing import Iterator, Protocol
 
-from markarth.core.types.types import Typ, TypUnknown
+from markarth.convert.typs.typs import Typ, TypUnknown
 
 class TypStore(Protocol):
     '''
