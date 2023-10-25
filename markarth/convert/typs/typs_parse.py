@@ -17,6 +17,6 @@ def parse_type_str(type_str : str) -> typs.Typ:
     
     # TODO: a lot
     
-    return typs.TypUnknown()
+    return typs.TypAny()
 
 

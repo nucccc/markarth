@@ -1,11 +1,11 @@
 import pytest
 
 from markarth.convert.typs import names_to_typs
-from markarth.convert.typs.typs import PrimitiveCod, TypPrimitive, TypUnknown
+from markarth.convert.typs.typs import PrimitiveCod, TypPrimitive, TypAny
 
 def test_dict_type_store():
     types_dict = {
-        'a' : TypUnknown(),
+        'a' : TypAny(),
         'b' : TypPrimitive(PrimitiveCod.INT),
         'c' : TypPrimitive(PrimitiveCod.FLOAT)
     }
@@ -14,7 +14,7 @@ def test_dict_type_store():
 
     a_typ = tp.get_typ('a')
     assert a_typ is not None
-    assert type(a_typ) == TypUnknown
+    assert type(a_typ) == TypAny
 
     b_typ = tp.get_typ('b')
     assert b_typ is not None
@@ -92,15 +92,15 @@ def test_names_to_typs():
         call_typs=cll_tp
     )
 
-    assert wtg.get_callname_typ('a').is_unkown()
-    assert wtg.get_callname_typ('b').is_unkown()
-    assert wtg.get_callname_typ('c').is_unkown()
-    assert wtg.get_callname_typ('d').is_unkown()
-    assert wtg.get_callname_typ('e').is_unkown()
-    assert wtg.get_callname_typ('f').is_unkown()
-    assert wtg.get_callname_typ('g').is_unkown()
-    assert wtg.get_callname_typ('h').is_unkown()
-    assert wtg.get_callname_typ('i').is_unkown()
+    assert wtg.get_callname_typ('a').is_any()
+    assert wtg.get_callname_typ('b').is_any()
+    assert wtg.get_callname_typ('c').is_any()
+    assert wtg.get_callname_typ('d').is_any()
+    assert wtg.get_callname_typ('e').is_any()
+    assert wtg.get_callname_typ('f').is_any()
+    assert wtg.get_callname_typ('g').is_any()
+    assert wtg.get_callname_typ('h').is_any()
+    assert wtg.get_callname_typ('i').is_any()
 
     assert wtg.get_callname_typ('j') is not None
     assert wtg.get_callname_typ('j').is_int()
@@ -128,9 +128,9 @@ def test_names_to_typs():
     assert wtg.get_varname_typ('i') is not None
     assert wtg.get_varname_typ('i').is_int()
 
-    assert wtg.get_varname_typ('j').is_unkown()
-    assert wtg.get_varname_typ('k').is_unkown()
-    assert wtg.get_varname_typ('l').is_unkown()
+    assert wtg.get_varname_typ('j').is_any()
+    assert wtg.get_varname_typ('k').is_any()
+    assert wtg.get_varname_typ('l').is_any()
 
     #wtg.delete_varname('a')
 

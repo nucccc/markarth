@@ -67,7 +67,7 @@ class Typ:
         # atual primitive types shall have this a 
         return False
     
-    def is_unkown(self) -> bool:
+    def is_any(self) -> bool:
         return False
 
     def is_container(self) -> bool:
@@ -133,15 +133,15 @@ class TypPrimitive(Typ):
         return self._prim_cod == PrimitiveCod.STR
 
 
-class TypUnknown(Typ):
+class TypAny(Typ):
     '''
-    TypUnknown shall describe an unknown type
+    TypAny shall describe an any type
     '''
 
     def __init__(self):
         pass
 
-    def is_unkown(self) -> bool:
+    def is_any(self) -> bool:
         return True
     
     def as_string(self) -> str:
@@ -170,7 +170,7 @@ class TypUnion(Typ):
     def __init__(self):
         self.union_types :list[Typ] = list()
 
-    def is_unkown(self) -> bool:
+    def is_any(self) -> bool:
         return True
     
     @property

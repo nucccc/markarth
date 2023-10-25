@@ -8,6 +8,8 @@ import ast
 from markarth.convert.typs import typs
 from markarth.convert.typs.names_to_typs import NamesToTyps
 
+# TODO: just decide if these things can return a None or typ unknown
+
 def ast_val_to_typ(
         val : ast.AST,
         name_typs : NamesToTyps | None = None
@@ -29,14 +31,14 @@ def ast_val_to_typ(
     return None
 
 
-def typ_from_constant(const : ast.Constant) -> typs.TypPrimitive | typs.TypUnknown:
+def typ_from_constant(const : ast.Constant) -> typs.TypPrimitive | typs.TypAny:
     '''
     typ_from_constant returns the type of a constant
     '''
     typ_str = type(const.n).__name__
     prim_cod = typs.str_to_prim_cod_or_none(typ_str)
     if prim_cod is None:
-        return typs.TypUnknown()
+        return typs.TypAny()
     return typs.TypPrimitive(prim_cod)
 
 
@@ -49,10 +51,10 @@ def typ_from_bin_op(
     '''
     left_type = ast_val_to_typ(binop.left, name_typs)
     if not left_type.is_primitive():
-        return typs.TypUnknown()
+        return typs.TypAny()
     right_type = ast_val_to_typ(binop.right, name_typs)
     if not right_type.is_primitive():
-        return typs.TypUnknown()
+        return typs.TypAny()
     # at this stage both types should be primitives
     left_prim : typs.TypPrimitive = left_type
     right_prim : typs.TypPrimitive = right_type

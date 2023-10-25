@@ -30,7 +30,7 @@ def test_typ_primitive():
     assert typ.is_primitive()
     assert not typ.is_container()
     assert not typ.is_none()
-    assert not typ.is_unkown()
+    assert not typ.is_any()
 
     assert typ.is_bool()
     assert not typ.is_float()
@@ -46,7 +46,7 @@ def test_typ_primitive():
     assert typ.is_primitive()
     assert not typ.is_container()
     assert not typ.is_none()
-    assert not typ.is_unkown()
+    assert not typ.is_any()
 
     assert not typ.is_bool()
     assert not typ.is_float()
@@ -62,7 +62,7 @@ def test_typ_primitive():
     assert typ.is_primitive()
     assert not typ.is_container()
     assert not typ.is_none()
-    assert not typ.is_unkown()
+    assert not typ.is_any()
 
     assert not typ.is_bool()
     assert typ.is_float()
@@ -78,7 +78,7 @@ def test_typ_primitive():
     assert typ.is_primitive()
     assert not typ.is_container()
     assert not typ.is_none()
-    assert not typ.is_unkown()
+    assert not typ.is_any()
 
     assert not typ.is_bool()
     assert not typ.is_float()
@@ -90,9 +90,9 @@ def test_typ_primitive():
 
 
 def test_typ_unknown():
-    typ = typs.TypUnknown()
+    typ = typs.TypAny()
 
-    assert typ.is_unkown()
+    assert typ.is_any()
     assert not typ.is_container()
     assert not typ.is_none()
     assert not typ.is_primitive()
@@ -106,6 +106,6 @@ def test_typ_none():
     assert typ.is_none()
     assert not typ.is_container()
     assert not typ.is_primitive()
-    assert not typ.is_unkown()
+    assert not typ.is_any()
 
     assert typ.as_string() == 'None'

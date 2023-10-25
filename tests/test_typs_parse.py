@@ -22,4 +22,4 @@ def test_typs_parse():
     assert str_typ.get_primitive_cod() == typs.PrimitiveCod.STR
 
     typ = parse_type_str('hakahakahaka')
-    assert type(typ) == typs.TypUnknown
+    assert type(typ) == typs.TypAny
