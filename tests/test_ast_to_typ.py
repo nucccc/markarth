@@ -40,7 +40,7 @@ def test_type_from_iter():
     code = '''for i in boh:\n\tpass'''
     m = ast.parse(code)
     f = m.body[0]
-    assert typ_from_iter(f.iter) is None
+    assert typ_from_iter(f.iter).is_any()
 
 def test_type_from_bin_op():
     op_code = '6 + 7'

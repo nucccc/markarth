@@ -45,7 +45,7 @@ def typ_from_constant(const : ast.Constant) -> typs.TypPrimitive | typs.TypAny:
 def typ_from_bin_op(
         binop : ast.BinOp,
         name_typs : NamesToTyps | None = None
-    ) -> typs.Typ | None:
+    ) -> typs.Typ:
     '''
     typ_from_bin_op shall return a string out of some binary operation
     '''
@@ -66,7 +66,7 @@ def typ_from_bin_op(
 def typ_from_call(
         call : ast.Call,
         name_typs : NamesToTyps | None = None
-    ) -> typs.Typ | None:
+    ) -> typs.Typ:
     '''
     typ_from_call shall return the type from a function call - basically
     checks if that func is an explicit call of 
@@ -87,9 +87,9 @@ def typ_from_call(
         call_type = name_typs.get_callname_typ(call_id)
         if call_type is not None:
             return call_type
-    return None
+    return typs.TypAny()
 
-def typ_from_iter(iter_stat : ast.AST) -> typs.Typ | None:
+def typ_from_iter(iter_stat : ast.AST) -> typs.Typ:
     '''
     type_from_iter shall get the type of a variable "extracted"
     out of an iterable statement
@@ -97,4 +97,4 @@ def typ_from_iter(iter_stat : ast.AST) -> typs.Typ | None:
     if type(iter_stat) == ast.Call:
         if iter_stat.func.id == 'range':
             return typs.TypPrimitive(typs.PrimitiveCod.INT)
-    return None
+    return typs.TypAny()
