@@ -1,66 +1,74 @@
 import ast
-from markarth.core.typecollector import type_from_constant, type_from_iter, type_from_bin_op
+from markarth.convert.collect.ast_to_typ.ast_to_typ import (
+    typ_from_bin_op,
+    typ_from_constant,
+    typ_from_iter
+)
+
 
 def test_type_from_constant():
     const_code = '7'
     const_mod = ast.parse(const_code)
     const = const_mod.body[0].value
 
-    assert type_from_constant(const) == 'int'
+    t = typ_from_constant(const)
+    assert t.is_int()
 
     const_code = 'True'
     const_mod = ast.parse(const_code)
     const = const_mod.body[0].value
 
-    assert type_from_constant(const) == 'bool'
+    t = typ_from_constant(const)
+    assert t.is_bool()
 
     const_code = '7.0'
     const_mod = ast.parse(const_code)
     const = const_mod.body[0].value
 
-    assert type_from_constant(const) == 'float'
+    t = typ_from_constant(const)
+    assert t.is_float()
 
 def test_type_from_iter():
     code = '''for i in range(7):\n\tpass'''
     m = ast.parse(code)
     f = m.body[0]
-    assert type_from_iter(f.iter) == 'int'
+    assert typ_from_iter(f.iter).is_int()
     code = '''for i in range(len([2.3,4.5])):\n\tpass'''
     m = ast.parse(code)
     f = m.body[0]
-    assert type_from_iter(f.iter) == 'int'
+    assert typ_from_iter(f.iter).is_int()
     code = '''for i in boh:\n\tpass'''
     m = ast.parse(code)
     f = m.body[0]
-    assert type_from_iter(f.iter) is None
+    assert typ_from_iter(f.iter) is None
 
 def test_type_from_bin_op():
     op_code = '6 + 7'
     op_mod = ast.parse(op_code)
     bin_op = op_mod.body[0].value
-    typ = type_from_bin_op(bin_op)
-    assert typ == 'int'
+    t = typ_from_bin_op(bin_op)
+    assert t.is_int()
 
     op_code = '6 + 7.1'
     op_mod = ast.parse(op_code)
     bin_op = op_mod.body[0].value
-    typ = type_from_bin_op(bin_op)
-    assert typ == 'float'
+    t = typ_from_bin_op(bin_op)
+    assert t.is_float()
 
     op_code = '6.8 + 7.1'
     op_mod = ast.parse(op_code)
     bin_op = op_mod.body[0].value
-    typ = type_from_bin_op(bin_op)
-    assert typ == 'float'
+    t = typ_from_bin_op(bin_op)
+    assert t.is_float()
 
     op_code = '8 / 4'
     op_mod = ast.parse(op_code)
     bin_op = op_mod.body[0].value
-    typ = type_from_bin_op(bin_op)
-    assert typ == 'float'
+    t = typ_from_bin_op(bin_op)
+    assert t.is_float()
 
     op_code = '8 / 3'
     op_mod = ast.parse(op_code)
     bin_op = op_mod.body[0].value
-    typ = type_from_bin_op(bin_op)
-    assert typ == 'float'
+    t = typ_from_bin_op(bin_op)
+    assert t.is_float()
