@@ -128,7 +128,7 @@ class NamesToTyps():
 
 
     def get_callname_typ(self, call_name : str) -> Typ:
-        typ = self._call_typs.get_type(call_name)
+        typ = self._call_typs.get_typ(call_name)
         if typ is None:
             typ = TypUnknown()
         return typ
