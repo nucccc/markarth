@@ -84,11 +84,8 @@ def test_merge_to_union():
 
 def test_merge_basic_with_union():
     t_bool = typs.TypPrimitive(prim=typs.PrimitiveCod.BOOL)
-
     t_int = typs.TypPrimitive(prim=typs.PrimitiveCod.INT)
-
     t_str = typs.TypPrimitive(prim=typs.PrimitiveCod.STR)
-
     t_float = typs.TypPrimitive(prim=typs.PrimitiveCod.FLOAT)
 
     t_union = typs.TypUnion()
