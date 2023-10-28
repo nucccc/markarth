@@ -1,5 +1,6 @@
 import ast
 
+from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_iter
 from markarth.convert.typs.names_to_typs import DictTypStore, TypStore, NamesToTyps
 from markarth.convert.typs.typs_parse import parse_type_str
 from markarth.convert.typs.typs import Typ, TypNone
@@ -108,4 +109,43 @@ class Func:
 
 
     def _collect_typs(self) -> TypStore:
+        '''
+        so maybe this shall scan the actual code and then return
+        the types that were collected (which at a certain point
+        i would like to type)
+        '''
+        collected_typs = DictTypStore()
+
+
+    def _record_vartyp(varname, vartyp):
+        '''
+        TO IMPLEMENT
+        '''
         pass
+
+
+    def collect_typs(self, statements : list[ast.AST]):
+        '''
+        TODO: READAPT THIS
+
+        collect_types shall run (eventually recurvively) taking bodies and
+        collecting types from statements
+        '''
+        for stat in statements:
+            if type(stat) == ast.Assign:
+                varname = stat.targets[0].id # i hypothetize the assignment to be
+                # A COMMENT ON THIS... YOU SHOULDN'T NEED ANYTHING
+                # LIKE THIS IF AT THE END OF THE DAY YOU HAVE SOMETHING
+                # LIKE THIS, BUT NAMES TO TYPS SHOULD HANDLE THIS
+                # TODO: handle this _mutating_typs, it doesn't mean nothing
+                vartyp = ast_val_to_typ(stat.value, self._wrap_tg)
+                # here i colelct the vartype found
+                self._record_vartyp(varname, vartyp)
+            elif type(stat) == ast.For:
+                # TODO: here some code should be place to verify that this thing actually has a name
+                varname = stat.target.id
+                vartyp = typ_from_iter(stat.iter)
+                # here i collect the vartype found
+                self._record_vartyp(varname, vartyp)
+            if hasattr(stat, 'body') and self._deep_coll:
+                self.collect_typs(stat.body)
