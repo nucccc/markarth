@@ -87,6 +87,9 @@ class Typ:
     
     def is_str(self) -> bool:
         return False
+    
+    def is_union(self) -> bool:
+        return False
 
     def as_string(self) -> str:
         '''
@@ -170,17 +173,17 @@ class TypUnion(Typ):
     def __init__(self):
         self.union_types :list[Typ] = list()
 
-    def is_any(self) -> bool:
+    def is_union(self) -> bool:
         return True
     
     @property
     def get_union_types(self) -> list[Typ]:
         return self.union_types
     
-    def add_type(self, typ : Typ):
+    def add_typ(self, typ : Typ) -> None:
         if type(typ) == TypUnion:
             for sub_typ in typ.get_union_types:
-                self.add_type(sub_typ)
+                self.add_typ(sub_typ)
         else:
             for sub_typ in self.union_types:
                 if sub_typ == typ:
