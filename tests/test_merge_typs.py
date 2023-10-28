@@ -44,7 +44,7 @@ def test_merge_equal():
     merged = merge_typs(t_float1, t_float2)
     assert merged.is_float()
 
-def test_merge_unions():
+def test_merge_to_unions():
     t_bool = typs.TypPrimitive(prim=typs.PrimitiveCod.BOOL)
 
     t_int = typs.TypPrimitive(prim=typs.PrimitiveCod.INT)
@@ -82,3 +82,32 @@ def test_merge_unions():
     assert merged.is_union()
     assert t_float in merged.get_union_types
     assert t_int in merged.get_union_types
+
+def test_merge_to_union():
+    t_bool = typs.TypPrimitive(prim=typs.PrimitiveCod.BOOL)
+
+    t_int = typs.TypPrimitive(prim=typs.PrimitiveCod.INT)
+
+    t_str = typs.TypPrimitive(prim=typs.PrimitiveCod.STR)
+
+    t_float = typs.TypPrimitive(prim=typs.PrimitiveCod.FLOAT)
+
+    t_union = typs.TypUnion()
+    t_union.add_typ(t_bool)
+    t_union.add_typ(t_int)
+
+    merged = merge_typs(t_union, t_int)
+    assert merged.is_union()
+    assert len(merged.get_union_types) == 2
+
+    t_union = typs.TypUnion()
+    t_union.add_typ(t_bool)
+    t_union.add_typ(t_int)
+
+    merged = merge_typs(t_str, t_union)
+    assert merged.is_union()
+    assert len(merged.get_union_types) == 3
+    assert t_bool in merged.get_union_types
+    assert t_int in merged.get_union_types
+    assert t_str in merged.get_union_types
+    assert t_float not in merged.get_union_types
