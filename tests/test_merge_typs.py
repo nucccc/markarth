@@ -44,13 +44,11 @@ def test_merge_equal():
     merged = merge_typs(t_float1, t_float2)
     assert merged.is_float()
 
-def test_merge_to_unions():
+
+def test_merge_to_union():
     t_bool = typs.TypPrimitive(prim=typs.PrimitiveCod.BOOL)
-
     t_int = typs.TypPrimitive(prim=typs.PrimitiveCod.INT)
-
     t_str = typs.TypPrimitive(prim=typs.PrimitiveCod.STR)
-
     t_float = typs.TypPrimitive(prim=typs.PrimitiveCod.FLOAT)
 
     merged = merge_typs(t_bool, t_int)
@@ -83,7 +81,8 @@ def test_merge_to_unions():
     assert t_float in merged.get_union_types
     assert t_int in merged.get_union_types
 
-def test_merge_to_union():
+
+def test_merge_basic_with_union():
     t_bool = typs.TypPrimitive(prim=typs.PrimitiveCod.BOOL)
 
     t_int = typs.TypPrimitive(prim=typs.PrimitiveCod.INT)
@@ -111,3 +110,29 @@ def test_merge_to_union():
     assert t_int in merged.get_union_types
     assert t_str in merged.get_union_types
     assert t_float not in merged.get_union_types
+
+
+def test_merge_unions():
+    t_bool = typs.TypPrimitive(prim=typs.PrimitiveCod.BOOL)
+    t_int = typs.TypPrimitive(prim=typs.PrimitiveCod.INT)
+    t_str = typs.TypPrimitive(prim=typs.PrimitiveCod.STR)
+    t_float = typs.TypPrimitive(prim=typs.PrimitiveCod.FLOAT)
+    t_none = typs.TypNone()
+
+    t_union1 = typs.TypUnion()
+    t_union1.add_typ(t_bool)
+    t_union1.add_typ(t_int)
+    
+    t_union2 = typs.TypUnion()
+    t_union2.add_typ(t_str)
+    t_union2.add_typ(t_float)
+
+    merged = merge_typs(t_union1, t_union2)
+    assert merged.is_union()
+    assert len(merged.get_union_types) == 4
+
+    assert t_bool in merged.get_union_types
+    assert t_int in merged.get_union_types
+    assert t_str in merged.get_union_types
+    assert t_float in merged.get_union_types
+    assert t_none not in merged.get_union_types
