@@ -109,3 +109,31 @@ def test_typ_none():
     assert not typ.is_any()
 
     assert typ.as_string() == 'None'
+
+
+def test_typ_union():
+    typ = typs.TypUnion()
+
+    assert typ.is_union()
+    assert not typ.is_str()
+    assert not typ.is_any()
+    assert not typ.is_bool()
+    assert not typ.is_container()
+    assert not typ.is_float()
+    assert not typ.is_int()
+    assert not typ.is_none()
+    assert not typ.is_primitive()
+
+    t_int1 = typs.TypPrimitive(prim=typs.PrimitiveCod.INT)
+
+    typ.add_typ(t_int1)
+    assert len(typ.get_union_types) == 1
+
+    t_int2 = typs.TypPrimitive(prim=typs.PrimitiveCod.INT)
+
+    typ.add_typ(t_int2)
+    assert len(typ.get_union_types) == 1
+
+    t_float = typs.TypPrimitive(prim=typs.PrimitiveCod.FLOAT)
+    typ.add_typ(t_float)
+    assert len(typ.get_union_types) == 2
