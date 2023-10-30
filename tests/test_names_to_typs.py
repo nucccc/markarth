@@ -92,15 +92,15 @@ def test_names_to_typs():
         call_typs=cll_tp
     )
 
-    assert wtg.get_callname_typ('a').is_any()
-    assert wtg.get_callname_typ('b').is_any()
-    assert wtg.get_callname_typ('c').is_any()
-    assert wtg.get_callname_typ('d').is_any()
-    assert wtg.get_callname_typ('e').is_any()
-    assert wtg.get_callname_typ('f').is_any()
-    assert wtg.get_callname_typ('g').is_any()
-    assert wtg.get_callname_typ('h').is_any()
-    assert wtg.get_callname_typ('i').is_any()
+    assert wtg.get_callname_typ('a') is None
+    assert wtg.get_callname_typ('b') is None
+    assert wtg.get_callname_typ('c') is None
+    assert wtg.get_callname_typ('d') is None
+    assert wtg.get_callname_typ('e') is None
+    assert wtg.get_callname_typ('f') is None
+    assert wtg.get_callname_typ('g') is None
+    assert wtg.get_callname_typ('h') is None
+    assert wtg.get_callname_typ('i') is None
 
     assert wtg.get_callname_typ('j') is not None
     assert wtg.get_callname_typ('j').is_int()
@@ -128,9 +128,9 @@ def test_names_to_typs():
     assert wtg.get_varname_typ('i') is not None
     assert wtg.get_varname_typ('i').is_int()
 
-    assert wtg.get_varname_typ('j').is_any()
-    assert wtg.get_varname_typ('k').is_any()
-    assert wtg.get_varname_typ('l').is_any()
+    assert wtg.get_varname_typ('j') is None
+    assert wtg.get_varname_typ('k') is None
+    assert wtg.get_varname_typ('l') is None
 
     #wtg.delete_varname('a')
 
