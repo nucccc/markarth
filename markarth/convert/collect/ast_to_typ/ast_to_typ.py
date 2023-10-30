@@ -23,9 +23,13 @@ def ast_val_to_typ(
         return typ_from_bin_op(val, name_typs)
     if name_typs is not None:
         if type(val) == ast.Name:
-            # here some more code could be placed to handle a none and see if
-            # returning known or unknown
-            return name_typs.get_varname_typ( val.id ) #vars_dict.get( val.id )
+            supposed_typ = name_typs.get_varname_typ( val.id )
+            # i check if a value was actually present by checking for none
+            # to be returned by the typstore, in such case i just return
+            # any
+            if supposed_typ is None:
+                return typs.TypAny() 
+            return supposed_typ
         if type(val) == ast.Call:
             return typ_from_call(val, name_typs)#name_typs.get_callname_type( val.func.id )
     return None
