@@ -8,7 +8,8 @@ from copy import deepcopy
 from enum import Enum
 from typing import Iterator, Protocol
 
-from markarth.convert.typs.typs import Typ, TypAny
+from markarth.convert.typs.typs import Typ
+from markarth.convert.typs.merge_typs import merge_typs
 
 class TypStore(Protocol):
     '''
@@ -106,29 +107,42 @@ class NamesToTyps():
         # to change the type of an input variable (weird stuff in code may be
         # found)
         self._collided_input_varnames : set[str] = set()
+        self._collided_global_varnames : set[str] = set()
 
 
-    def get_varname_typ(self, varname : str) -> Typ:
+    def get_varname_typ(self, varname : str) -> Typ | None:
         for typ_store in self._var_typ_stores:
             typ = typ_store.get_typ(varname)
             if typ is not None:
                 return typ
-        return TypAny()
+        return None
 
     
-    def delete_varname(self, varname : str):
+    #def delete_varname(self, varname : str):
+    #    '''
+    #    HERE THIS THING SHALL BE HEAVILY REFACTORED
+    #    '''
+    #    for i, typ_store in enumerate(self._var_typ_stores):
+    #        typ_store.delete_name(varname)
+    #
+    #        if i == VarNameSource.INPUT:
+    #            self._collided_input_varnames.add(varname)
+
+
+    def get_callname_typ(self, call_name : str) -> Typ | None:
+        return self._call_typs.get_typ(call_name)
+    
+
+    def update_varname_typ(self, varname : str, typ : Typ) -> None:
         '''
-        HERE THIS THING SHALL BE HEAVILY REFACTORED
+        this shall be sued somehow when
         '''
-        for i, typ_store in enumerate(self._var_typ_stores):
-            typ_store.delete_name(varname)
-
-            if i == VarNameSource.INPUT:
-                self._collided_input_varnames.add(varname)
-
-
-    def get_callname_typ(self, call_name : str) -> Typ:
-        typ = self._call_typs.get_typ(call_name)
-        if typ is None:
-            typ = TypAny()
-        return typ
+        for index, typ_store in enumerate(self._var_typ_stores):
+            old_typ = typ_store.get_typ()
+            if old_typ is not None:
+                typ_store.add_typ(varname, merge_typs(typ, old_typ))
+                if index == VarNameSource.INPUT:
+                    self._collided_global_varnames.add(varname)
+                elif index == VarNameSource.GLOBAL:
+                    self._collided_global_varnames.add(varname)
+                return
