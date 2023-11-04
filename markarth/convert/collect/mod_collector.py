@@ -13,8 +13,8 @@ def const_candidates_from_assignments(assignments : list[ast.Assign]) -> DictTyp
     anything comes out as a target only once, in such case that is a candidate
     for being a constant
     '''
-    modified_vars : set[str]
-    result : DictTypStore = DictTypStore
+    modified_vars : set[str] = set()
+    result : DictTypStore = DictTypStore()
 
     for assign in assignments:
         # i consider a const candidate only if it is from a single
@@ -24,17 +24,17 @@ def const_candidates_from_assignments(assignments : list[ast.Assign]) -> DictTyp
 
             target = assign.targets[0]
             varname = target.id
-            if type(assign.value) == ast.Constant and varname not in result.keys() and varname not in modified_vars:
+            if type(assign.value) == ast.Constant and result.get_typ(varname) is not None and varname not in modified_vars:
                 result.add_typ(varname, typ_from_constant(assign.value))
             else:
-                result.pop(varname, None)
+                result.delete_name(varname)
                 modified_vars.add(varname)
         # if the assignments are the result of a multiple assignment, then
         # for simplicity i do not consider as const candidates
         else:
             for target in assign.targets:
                 varname = target.id
-                result.pop(varname, None)
+                result.delete_name(varname)
                 modified_vars.add(varname)
 
     return result
