@@ -43,6 +43,8 @@ class Func:
         # functions in the module
         self._outer_call_store : TypStore | None = None
 
+        self._collect_assignments()
+
 
     @property
     def func_ast_body(self) -> list[ast.AST]:
@@ -103,9 +105,9 @@ class Func:
         '''
         _collect_return_typ shall collect the type from the function's return
         '''
-        if not hasattr(self.func_ast.returns, 'id'):
+        if not hasattr(self._func_ast.returns, 'id'):
             return TypNone
-        return parse_type_str(self.func_ast.returns.id)
+        return parse_type_str(self._func_ast.returns.id)
 
 
     def _collect_typs(self) -> TypStore:
