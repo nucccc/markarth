@@ -16,10 +16,6 @@ def test_collector1(code1 : tuple[ast.AST, list[str]]):
     assert 'func1' in func_defs.keys()
     assert 'func2' in func_defs.keys()
 
-    print(assignments)
-    for ass in assignments:
-        print(ass.value)
-
     assert len(assignments) == 4
 
     expected_assignment_varnames : set[str] = {
@@ -37,3 +33,16 @@ def test_collector1(code1 : tuple[ast.AST, list[str]]):
                 found_assignment_varnames.add(assignment.target.id)
     
     assert expected_assignment_varnames == found_assignment_varnames
+
+def test_const_assignments1(assignments1):
+    const_candidates = mod_collector.const_candidates_from_assignments(assignments=assignments1)
+
+    assert len(const_candidates) == 2
+
+    assert 'a' in const_candidates
+    assert 'b' not in const_candidates
+    assert 'c' not in const_candidates
+    assert 'd' not in const_candidates
+    assert 'e' in const_candidates
+    
+    

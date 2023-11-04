@@ -8,6 +8,7 @@ from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_f
 
 # TODO: in general a better handling of const candidates would be auspicable
 
+# TODO: better handling of multiple variables
 
 def const_candidates_from_assignments(assignments : list[ast.Assign|ast.AnnAssign]) -> DictTypStore:
     '''
@@ -22,22 +23,22 @@ def const_candidates_from_assignments(assignments : list[ast.Assign|ast.AnnAssig
 
         match type(assign):
             case ast.Assign:
-                if len(assign.targets) > 1:
+                target = assign.targets[0]
+                if type(target) == ast.Tuple:
                     # in case i find any targets list which is bigger than one
                     # for now i just ignore them, and consider them as
                     # modified variables
-                    for target in assign.targets:
-                        varname = target.id
+                    for t in target.elts:
+                        varname = t.id
                         result.delete_name(varname)
                         modified_vars.add(varname)
                     continue
-                target = assign.targets[0]
             case ast.AnnAssign:
                 target = assign.target
 
         #val_typ = ast_val_to_typ(assign.value)
         varname = target.id
-        if type(assign.value) == ast.Constant and result.get_typ(varname) is not None and varname not in modified_vars:
+        if type(assign.value) == ast.Constant and result.get_typ(varname) is None and varname not in modified_vars:
             result.add_typ(varname, typ_from_constant(assign.value))
         else:
             result.delete_name(varname)

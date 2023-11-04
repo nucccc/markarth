@@ -26,3 +26,16 @@ def func2() -> bool:
 def code1() -> tuple[ast.AST, list[str]]:
     #source_code1
     return code_process.process_code(source_code1)
+
+source_assignments1 = '''a = 7
+b = 5
+c = 3
+b = 7.12
+d, c = 7.1, 2
+e = 40
+'''
+
+@pytest.fixture
+def assignments1() -> list[ast.AnnAssign|ast.Assign]:
+    parse_result = ast.parse(source_assignments1)
+    return parse_result.body
