@@ -12,6 +12,16 @@ def test_dict_type_store():
 
     tp = names_to_typs.DictTypStore(types_dict)
 
+    assert tp.has('a')
+    assert tp.has('b')
+    assert tp.has('c')
+    assert not tp.has('d')
+
+    assert 'a' in tp
+    assert 'b' in tp
+    assert 'c' in tp
+    assert 'd' not in tp
+
     a_typ = tp.get_typ('a')
     assert a_typ is not None
     assert type(a_typ) == TypAny
