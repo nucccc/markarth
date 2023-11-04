@@ -23,6 +23,6 @@ def func2() -> bool:
     pass'''
 
 @pytest.fixture
-def code1():# -> tuple[ast.AST, list[str]]:
+def code1() -> tuple[ast.AST, list[str]]:
     #source_code1
     return code_process.process_code(source_code1)
