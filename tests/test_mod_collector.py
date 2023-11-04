@@ -21,3 +21,19 @@ def test_collector1(code1 : tuple[ast.AST, list[str]]):
         print(ass.value)
 
     assert len(assignments) == 4
+
+    expected_assignment_varnames : set[str] = {
+        'A', 'B', 'C', 'D'
+    }
+
+    found_assignment_varnames : set[str] = set()
+
+    for assignment in assignments:
+        match type(assignment):
+            case ast.Assign:
+                for target in assignment.targets:
+                    found_assignment_varnames.add(target.id)
+            case ast.AnnAssign:
+                found_assignment_varnames.add(assignment.target.id)
+    
+    assert expected_assignment_varnames == found_assignment_varnames
