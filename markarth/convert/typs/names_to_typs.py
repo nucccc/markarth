@@ -32,6 +32,9 @@ class TypStore(Protocol):
     def size(self) -> int:
         pass # pragma: no cover
 
+    def has(self, name : str) -> bool:
+        pass # pragma: no cover
+
 
 class DictTypStore():
     _types_dict : dict[str, str]
@@ -58,6 +61,12 @@ class DictTypStore():
     
     def size(self) -> int:
         return len(self)
+    
+    def __contains__(self, name : str) -> bool:
+        return name in self._types_dict.keys()
+
+    def has(self, name : str) -> bool:
+        return name in self
 
 
 class VarNameSource(Enum):
