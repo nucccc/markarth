@@ -6,8 +6,10 @@ from markarth.convert.typs.typs_parse import parse_type_str
 from markarth.convert.typs.names_to_typs import DictTypStore
 from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_constant
 
+# TODO: in general a better handling of const candidates would be auspicable
 
-def const_candidates_from_assignments(assignments : list[ast.Assign]) -> DictTypStore:
+
+def const_candidates_from_assignments(assignments : list[ast.Assign|ast.AnnAssign]) -> DictTypStore:
     '''
     const_candidates_from_assignments takes some assignments and checks if
     anything comes out as a target only once, in such case that is a candidate
@@ -17,25 +19,29 @@ def const_candidates_from_assignments(assignments : list[ast.Assign]) -> DictTyp
     result : DictTypStore = DictTypStore()
 
     for assign in assignments:
-        # i consider a const candidate only if it is from a single
-        # assignment for now
-        if len(assign.targets) == 1:
-            val_typ = ast_val_to_typ(assign.value)
 
-            target = assign.targets[0]
-            varname = target.id
-            if type(assign.value) == ast.Constant and result.get_typ(varname) is not None and varname not in modified_vars:
-                result.add_typ(varname, typ_from_constant(assign.value))
-            else:
-                result.delete_name(varname)
-                modified_vars.add(varname)
-        # if the assignments are the result of a multiple assignment, then
-        # for simplicity i do not consider as const candidates
+        match type(assign):
+            case ast.Assign:
+                if len(assign.targets) > 1:
+                    # in case i find any targets list which is bigger than one
+                    # for now i just ignore them, and consider them as
+                    # modified variables
+                    for target in assign.targets:
+                        varname = target.id
+                        result.delete_name(varname)
+                        modified_vars.add(varname)
+                    continue
+                target = assign.targets[0]
+            case ast.AnnAssign:
+                target = assign.target
+
+        #val_typ = ast_val_to_typ(assign.value)
+        varname = target.id
+        if type(assign.value) == ast.Constant and result.get_typ(varname) is not None and varname not in modified_vars:
+            result.add_typ(varname, typ_from_constant(assign.value))
         else:
-            for target in assign.targets:
-                varname = target.id
-                result.delete_name(varname)
-                modified_vars.add(varname)
+            result.delete_name(varname)
+            modified_vars.add(varname)
 
     return result
 
@@ -82,7 +88,7 @@ class ModCollector:
             if type(stat) == ast.FunctionDef:
                 func = Func(stat, self._codelines)
                 func_defs[func.name] = func
-            elif type(stat) == ast.Assign:
+            elif type(stat) == ast.Assign or type(stat) == ast.AnnAssign:
                 assignments.append(stat)
         return (func_defs, assignments)
 

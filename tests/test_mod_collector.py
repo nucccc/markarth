@@ -15,3 +15,9 @@ def test_collector1(code1 : tuple[ast.AST, list[str]]):
     assert 'func0' in func_defs.keys()
     assert 'func1' in func_defs.keys()
     assert 'func2' in func_defs.keys()
+
+    print(assignments)
+    for ass in assignments:
+        print(ass.value)
+
+    assert len(assignments) == 4
