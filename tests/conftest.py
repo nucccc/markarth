@@ -23,7 +23,7 @@ def func2() -> bool:
     pass'''
 
 @pytest.fixture
-def code1() -> tuple[ast.AST, list[str]]:
+def code1() -> tuple[ast.Module, list[str]]:
     #source_code1
     return code_process.process_code(source_code1)
 
@@ -39,3 +39,23 @@ e = 40
 def assignments1() -> list[ast.AnnAssign|ast.Assign]:
     parse_result = ast.parse(source_assignments1)
     return parse_result.body
+
+source_func1 = '''def f():
+    return 7 * 7
+'''
+
+@pytest.fixture
+def func1() -> tuple[ast.FunctionDef, list[str]]:
+    return code_process.process_func_code(source_func1)
+
+source_func2 = '''def f(a : int, b : int) -> int:
+    res = a + 2
+    b = b * a
+    res -= b
+    c = res + 7
+    return res
+'''
+
+@pytest.fixture
+def func2() -> tuple[ast.FunctionDef, list[str]]:
+    return code_process.process_func_code(source_func2)
