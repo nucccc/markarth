@@ -3,7 +3,7 @@ import ast
 from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_iter
 from markarth.convert.typs.names_to_typs import DictTypStore, TypStore, NamesToTyps
 from markarth.convert.typs.typs_parse import parse_type_str
-from markarth.convert.typs.typs import Typ, TypNone
+from markarth.convert.typs.typs import Typ, TypAny
 
 
 def assignments_from_body(
@@ -106,7 +106,7 @@ class Func:
         _collect_return_typ shall collect the type from the function's return
         '''
         if not hasattr(self._func_ast.returns, 'id'):
-            return TypNone
+            return TypAny()
         return parse_type_str(self._func_ast.returns.id)
 
 
