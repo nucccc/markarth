@@ -90,11 +90,11 @@ class Func:
 
         arg_types = {
             arg.arg : arg.annotation.id
-            for arg in self.func_ast.args.args
+            for arg in self._func_ast.args.args
             if hasattr(arg.annotation, 'id')
         }
 
-        for arg_name, arg_type_str in arg_types:
+        for arg_name, arg_type_str in arg_types.items():
             input_types.add_typ(arg_name, parse_type_str(arg_type_str))
 
         return input_types
