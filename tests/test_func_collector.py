@@ -1,6 +1,6 @@
 import pytest
 
-from markarth.convert.collect.func_collector import Func, _collect_typs
+from markarth.convert.collect.func_collector import Func, CollisionEnum, _collect_typs, _record_vartyp
 from markarth.convert.typs.names_to_typs import DictTypStore, NamesToTyps
 from markarth.convert.typs import typs
 
@@ -44,8 +44,26 @@ def test_filter_const_candidates(func2):
     assert len(const_candidates) == 1
 
 
-def test_record_vartyp(statements2):
-    pass
+def test_record_vartyp():
+    names_to_typs : NamesToTyps = NamesToTyps(
+        local_typs=DictTypStore(),
+        input_typs=DictTypStore({'inp1': typs.TypPrimitive(typs.PrimitiveCod.INT)}),
+        global_typs=DictTypStore(),
+        call_typs=DictTypStore()
+    )
+    collision : CollisionEnum = _record_vartyp(
+        varname='inp1',
+        vartyp=typs.TypPrimitive(typs.PrimitiveCod.INT),
+        names_to_typs=names_to_typs
+    )
+    assert collision == CollisionEnum.NO_COLLISION
+
+    collision = _record_vartyp(
+        varname='inp1',
+        vartyp=typs.TypPrimitive(typs.PrimitiveCod.FLOAT),
+        names_to_typs=names_to_typs
+    )
+    assert collision == CollisionEnum.INPUT_COLLISION
 
 
 def test_collect_typs2(statements2):

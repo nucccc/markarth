@@ -182,17 +182,47 @@ class NamesToTyps():
         return self._call_typs.get_typ(call_name)
     
 
-    def update_varname_typ(self, varname : str, typ : Typ) -> None:
+    def update_varname(
+        self,
+        varname : str,
+        typ : Typ,
+        source : VarNameSource | None = None
+    ) -> None:
         '''
         this shall be sued somehow when
         '''
-        for index, typ_store in enumerate(self._var_typ_stores):
-            old_typ = typ_store.get_typ()
+        if source is not None:
+            self._update_varname_with_source(varname, typ, source)
+        else:
+            self._update_varname_no_source(varname, typ)
+    
+
+    def _update_varname_with_source(
+        self,
+        varname : str,
+        typ : Typ,
+        source : VarNameSource
+    ) -> None:
+        '''
+        _update_varname_with_source selects the store given the source in input
+        '''
+        match source:
+            case VarNameSource.LOCAL:
+                self._local_typs.add_typ(varname, typ)
+            case VarNameSource.INPUT:
+                self._input_typs.add_typ(varname, typ)
+            case VarNameSource.GLOBAL:
+                self._global_typs.add_typ(varname, typ)
+
+
+    def _update_varname_no_source(self, varname : str, typ : Typ) -> None:
+        for typ_store, source in self._var_typ_stores:
+            old_typ = typ_store.get_typ(varname)
             if old_typ is not None:
-                typ_store.add_typ(varname, merge_typs(typ, old_typ))
-                if index == VarNameSource.INPUT:
+                typ_store.add_typ(varname, typ)
+                if source == VarNameSource.INPUT:
                     self._collided_global_varnames.add(varname)
-                elif index == VarNameSource.GLOBAL:
+                elif source == VarNameSource.GLOBAL:
                     self._collided_global_varnames.add(varname)
                 return
 

@@ -52,7 +52,7 @@ def _record_vartyp(
         return CollisionEnum.NO_COLLISION
     elif already_typ != vartyp:
         new_typ = merge_typs(already_typ, vartyp)
-        names_to_typs.update_varname_typ(varname, new_typ)
+        names_to_typs.update_varname(varname, new_typ, source)
         match source:
             case VarNameSource.LOCAL:
                 return CollisionEnum.NO_COLLISION
@@ -60,6 +60,8 @@ def _record_vartyp(
                 return CollisionEnum.INPUT_COLLISION
             case VarNameSource.GLOBAL:
                 return CollisionEnum.GLOBAL_COLLISION
+    else:
+        return CollisionEnum.NO_COLLISION
 
 
 @dataclass
