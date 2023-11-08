@@ -121,7 +121,7 @@ class NamesToTyps():
     
     @property
     def local_typs(self) -> TypStore:
-        return self._var_typ_stores[VarNameSource.LOCAL]
+        return self._local_typs
 
 
     def get_varname_typ(
@@ -144,11 +144,11 @@ class NamesToTyps():
         return (None, VarNameSource.LOCAL) # by default in case of none i return local as the source
     
 
-    def get_varname_typ_from_local(self, varname : str) -> Typ | None:
+    def get_local_varname_typ(self, varname : str) -> Typ | None:
         return self._local_typs.get_typ(varname)
     
 
-    def get_varname_typ_from_input(self, varname : str) -> Typ | None:
+    def get_input_varname_typ(self, varname : str) -> Typ | None:
         return self._input_typs.get_typ(varname)
     
 

@@ -34,8 +34,8 @@ def test_collector1(code1 : tuple[ast.AST, list[str]]):
     
     assert expected_assignment_varnames == found_assignment_varnames
 
-def test_const_assignments1(assignments1):
-    const_candidates = mod_collector.const_candidates_from_assignments(assignments=assignments1)
+def test_const_assignments1(statements1):
+    const_candidates = mod_collector.const_candidates_from_assignments(assignments=statements1)
 
     assert len(const_candidates) == 2
 

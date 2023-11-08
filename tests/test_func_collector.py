@@ -1,7 +1,7 @@
 import pytest
 
-from markarth.convert.collect.func_collector import Func
-from markarth.convert.typs.names_to_typs import DictTypStore
+from markarth.convert.collect.func_collector import Func, _collect_typs
+from markarth.convert.typs.names_to_typs import DictTypStore, NamesToTyps
 from markarth.convert.typs import typs
 
 def test_func1(func1):
@@ -42,3 +42,38 @@ def test_filter_const_candidates(func2):
     assert 'd' in const_candidates
 
     assert len(const_candidates) == 1
+
+
+def test_record_vartyp(statements2):
+    pass
+
+
+def test_collect_typs2(statements2):
+    names_to_typs = NamesToTyps(
+        local_typs=DictTypStore(),
+        input_typs=DictTypStore(),
+        global_typs=DictTypStore(),
+        call_typs=DictTypStore()
+    )
+    
+    coll_result = _collect_typs(statements=statements2, names_to_typs=names_to_typs)
+
+    assert len(coll_result.collected_typs) == 4
+    assert len(coll_result.colliding_input_typs) == 0
+    assert len(coll_result.colliding_global_typs) == 0
+
+    a_typ = coll_result.collected_typs.get_typ('a')
+    assert a_typ is not None
+    assert a_typ.is_int()
+
+    b_typ = coll_result.collected_typs.get_typ('b')
+    assert b_typ is not None
+    assert b_typ.is_int()
+
+    c_typ = coll_result.collected_typs.get_typ('c')
+    assert c_typ is not None
+    assert c_typ.is_int()
+
+    d_typ = coll_result.collected_typs.get_typ('d')
+    assert d_typ is not None
+    assert d_typ.is_int()
