@@ -64,6 +64,8 @@ def test_record_vartyp():
         names_to_typs=names_to_typs
     )
     assert collision == CollisionEnum.INPUT_COLLISION
+    new_typ = names_to_typs.get_input_varname_typ('inp1')
+    assert new_typ.is_union()
 
 
 def test_collect_typs2(statements2):
