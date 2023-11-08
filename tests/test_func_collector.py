@@ -67,6 +67,15 @@ def test_record_vartyp():
     new_typ = names_to_typs.get_input_varname_typ('inp1')
     assert new_typ.is_union()
 
+    collision = _record_vartyp(
+        varname='boh',
+        vartyp=typs.TypPrimitive(typs.PrimitiveCod.FLOAT),
+        names_to_typs=names_to_typs
+    )
+    assert collision == CollisionEnum.NO_COLLISION
+    new_typ = names_to_typs.get_local_varname_typ('boh')
+    assert new_typ.is_float()
+
 
 def test_collect_typs2(statements2):
     names_to_typs = NamesToTyps(
