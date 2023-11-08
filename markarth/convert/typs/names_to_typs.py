@@ -106,10 +106,10 @@ class NamesToTyps():
 
         # for practicality i shall have a quick list of the internal typ stores
         # addressing variable names
-        self._var_typ_stores : list[TypStore] = [
-            local_typs,
-            input_typs,
-            global_typs
+        self._var_typ_stores : list[tuple[TypStore, VarNameSource]] = [
+            (local_typs, VarNameSource.LOCAL),
+            (input_typs, VarNameSource.INPUT),
+            (global_typs, VarNameSource.GLOBAL)
         ]
 
         # i would like this to keep track of the times in which i needed
@@ -118,14 +118,54 @@ class NamesToTyps():
         self._collided_input_varnames : set[str] = set()
         self._collided_global_varnames : set[str] = set()
 
+    
+    @property
+    def local_typs(self) -> TypStore:
+        return self._var_typ_stores[VarNameSource.LOCAL]
 
-    def get_varname_typ(self, varname : str) -> Typ | None:
-        for typ_store in self._var_typ_stores:
+
+    def get_varname_typ(
+        self,
+        varname : str,
+        source : VarNameSource | None = None
+    ) -> Typ | None:
+        if source is None:
+            typ, _ = self.get_varname_typ_and_source(varname)
+            return typ
+        store = self._get_store(source)
+        return store.get_typ(varname)
+    
+
+    def get_varname_typ_and_source(self, varname : str) -> tuple[Typ | None, VarNameSource]:
+        for typ_store, source in self._var_typ_stores:
             typ = typ_store.get_typ(varname)
             if typ is not None:
-                return typ
-        return None
+                return (typ, source)
+        return (None, VarNameSource.LOCAL) # by default in case of none i return local as the source
+    
 
+    def get_varname_typ_from_local(self, varname : str) -> Typ | None:
+        return self._local_typs.get_typ(varname)
+    
+
+    def get_varname_typ_from_input(self, varname : str) -> Typ | None:
+        return self._input_typs.get_typ(varname)
+    
+
+    def get_varname_typ_from_global(self, varname : str) -> Typ | None:
+        return self._global_typs.get_typ(varname)
+    
+    
+    def _get_store(self, source : VarNameSource) -> TypStore:
+        match source:
+            case VarNameSource.LOCAL:
+                return self._local_typs
+            case VarNameSource.INPUT:
+                return self._input_typs
+            case VarNameSource.GLOBAL:
+                return self._global_typs
+            
+    
     
     #def delete_varname(self, varname : str):
     #    '''
@@ -155,3 +195,10 @@ class NamesToTyps():
                 elif index == VarNameSource.GLOBAL:
                     self._collided_global_varnames.add(varname)
                 return
+
+
+    def put_local_typ(self, varname : str, typ : Typ) -> None:
+        '''
+        
+        '''
+        self.local_typs.add_typ(varname, typ)
