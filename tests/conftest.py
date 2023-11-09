@@ -35,6 +35,14 @@ d, c = 7.1, 2
 e = 40
 '''
 
+source_code2 = '''import json
+import cython
+
+a = 0
+b = 7
+c = 17
+'''
+
 @pytest.fixture
 def statements1() -> list[ast.AnnAssign|ast.Assign]:
     parse_result = ast.parse(source_statements1)
