@@ -14,6 +14,7 @@ class FuncOpts(BaseModel):
     internal_default_int_cytyp : CyInt | None = Field(default = None, description='default c type to be used for integers')
     internal_default_float_cytyp : CyFloat | None = Field(default = None, description='default c type to be used for integers')
     parent_mod : "ModOpts"
+    imposed_vars : dict[str, CyInt | CyFloat]  = Field(default=dict())
 
 
     @property
