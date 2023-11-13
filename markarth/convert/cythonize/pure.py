@@ -5,6 +5,16 @@ yes someday here there is the dream of a pure python cythonizer
 import ast
 from dataclasses import dataclass
 
+from typing import Iterable
+
+from markarth.convert.cythonize.cy_typs import (
+    CY_BOOL,
+    CyFloat,
+    CyInt,
+    cy_float_str,
+    cy_int_str
+)
+
 from markarth.convert.typs.names_to_typs import TypStore
 
 @dataclass
@@ -41,6 +51,90 @@ def cython_imported_already(mod_ast : ast.Module) -> tuple[bool, str, int]:
             if check_result[0]:
                 return (check_result[0], check_result[1], stat.lineno)
     return (False, '', 0)
+
+
+def typ_to_cy_ctr() -> str:
+    pass
+
+
+def typ_store_to_varnames(
+    typ_store : TypStore,
+    default_cy_int : CyInt,
+    default_cy_float : CyFloat,
+    imposed_vars : dict[str, CyInt | CyFloat] = dict()
+) -> Iterable[tuple[str, str]]:
+    for varname, typ in typ_store.iter_typs():
+        imposed_typ = imposed_vars.get(varname, None)
+        if imposed_typ is not None:
+            # TODO: maybe some check on the type would be a good
+            # idea to match the found typ and the imposed one
+            # are compatible
+            if type(imposed_typ) == CyFloat:
+                yield (varname, cy_float_str(imposed_typ))
+            elif type(imposed_typ) == CyInt:
+                yield (varname, cy_int_str(imposed_typ))
+        if typ.is_int():
+            yield (varname, cy_int_str(default_cy_int))
+        elif typ.is_float():
+            yield (varname, cy_float_str(default_cy_float))
+        elif typ.is_bool():
+            # TODO: this handwritten 'char' shall become a const
+            yield (varname, CY_BOOL)
+
+
+def typ_store_to_cdeclares(
+    typ_store : TypStore,
+    imposed_vars : dict[str, CyInt | CyFloat],
+    default_cy_int : CyInt,
+    default_cy_float : CyFloat
+) -> list[str]:
+    pass
+
+
+
+
+def _func_typer(codelines : list[str]):
+    '''
+    maybe this thing will just modify inplace the codelines and add something
+    '''
+    pass
+
+
+def gen_declare_line(varname : str, cy_alias : str, cy_typename : str) -> str:
+    '''
+    gen_declare_line shall generate a declare line for a given varname
+    '''
+    return f'{varname} = {cy_alias}.declare({cy_alias}.{cy_typename})'
+
+
+@dataclass
+class CyVarType:
+    '''
+    CyVarType shall just be a pair linking to each variable name a cython type
+    '''
+    varname : str
+    cy_type : str
+
+
+def store_to_cy_types(store : TypStore) -> list[CyVarType]:
+    '''
+    store_to_cy_types shall somehow one day convert a typstore to
+    the actual pairs of varname
+
+    DEPRECATED
+    '''
+    result = list()
+    for varname, typ in store.iter_typs:
+        cy_type = None
+        if typ.is_int():
+            cy_type = 'int'
+        elif typ.is_float():
+            cy_type = 'float'
+        elif typ.is_bool():
+            cy_type = 'char'
+        if cy_type is not None:
+            result.append(CyVarType(varname=varname, cy_type=cy_type))
+    return result
 
 
 def pure_cythonize(

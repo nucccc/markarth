@@ -24,8 +24,19 @@ def func2() -> bool:
 
 @pytest.fixture
 def code1() -> tuple[ast.Module, list[str]]:
-    #source_code1
     return code_process.process_code(source_code1)
+
+source_mod2 = '''import json
+import cython
+
+a = 0
+b = 7
+c = 17
+'''
+
+@pytest.fixture
+def mod2() -> tuple[ast.Module, list[str]]:
+    return code_process.process_code(source_mod2)
 
 source_statements1 = '''a = 7
 b = 5
@@ -33,14 +44,6 @@ c = 3
 b = 7.12
 d, c = 7.1, 2
 e = 40
-'''
-
-source_code2 = '''import json
-import cython
-
-a = 0
-b = 7
-c = 17
 '''
 
 @pytest.fixture
