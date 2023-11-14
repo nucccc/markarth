@@ -5,7 +5,7 @@ yes someday here there is the dream of a pure python cythonizer
 import ast
 from dataclasses import dataclass
 
-from typing import Iterable
+from typing import Iterator
 
 from markarth.convert.cythonize.cy_typs import (
     CY_BOOL,
@@ -62,7 +62,7 @@ def typ_store_to_varnames(
     default_cy_int : CyInt,
     default_cy_float : CyFloat,
     imposed_vars : dict[str, CyInt | CyFloat] = dict()
-) -> Iterable[tuple[str, str]]:
+) -> Iterator[tuple[str, str]]:
     for varname, typ in typ_store.iter_typs():
         imposed_typ = imposed_vars.get(varname, None)
         if imposed_typ is not None:
@@ -84,11 +84,18 @@ def typ_store_to_varnames(
 
 def typ_store_to_cdeclares(
     typ_store : TypStore,
-    imposed_vars : dict[str, CyInt | CyFloat],
     default_cy_int : CyInt,
-    default_cy_float : CyFloat
-) -> list[str]:
-    pass
+    default_cy_float : CyFloat,
+    imposed_vars : dict[str, CyInt | CyFloat] = dict(),
+    cy_alias : str = 'cython'
+) -> Iterator[str]:
+    for varname, cy_type in typ_store_to_varnames(
+        typ_store=typ_store,
+        default_cy_int=default_cy_int,
+        default_cy_float=default_cy_float,
+        imposed_vars=imposed_vars
+    ):
+        yield gen_declare_line(varname=varname, cy_alias=cy_alias, cy_typename=cy_type)
 
 
 
@@ -100,7 +107,7 @@ def _func_typer(codelines : list[str]):
     pass
 
 
-def gen_declare_line(varname : str, cy_alias : str, cy_typename : str) -> str:
+def gen_declare_line(varname : str, cy_typename : str, cy_alias : str = 'cython') -> str:
     '''
     gen_declare_line shall generate a declare line for a given varname
     '''
