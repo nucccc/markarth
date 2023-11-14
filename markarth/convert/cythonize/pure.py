@@ -73,6 +73,7 @@ def typ_store_to_varnames(
                 yield (varname, cy_float_str(imposed_typ))
             elif type(imposed_typ) == CyInt:
                 yield (varname, cy_int_str(imposed_typ))
+            continue
         if typ.is_int():
             yield (varname, cy_int_str(default_cy_int))
         elif typ.is_float():

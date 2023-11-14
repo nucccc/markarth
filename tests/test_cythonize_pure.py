@@ -47,6 +47,30 @@ def test_typ_store_to_varnames():
     assert tuples == expected_tuples
 
 
+def test_typ_store_to_varnames_imposed_vars():
+    typ_store = DictTypStore({
+        'a' : TypPrimitive(PrimitiveCod.INT),
+        'b' : TypPrimitive(PrimitiveCod.FLOAT),
+        'c' : TypPrimitive(PrimitiveCod.BOOL),
+        'd' : TypPrimitive(PrimitiveCod.STR)
+    })
+
+    tuples = set(typ_store_to_varnames(
+        typ_store = typ_store,
+        default_cy_int=CyInt.INT,
+        default_cy_float=CyFloat.FLOAT,
+        imposed_vars={'a':CyInt.LONG}
+    ))
+
+    expected_tuples = {
+        ('a', 'long'),
+        ('b', 'float'),
+        ('c', 'char'),
+    }
+
+    assert tuples == expected_tuples
+
+
 def test_typ_store_to_cdeclares():
     typ_store = DictTypStore({
         'a' : TypPrimitive(PrimitiveCod.INT),
@@ -65,6 +89,32 @@ def test_typ_store_to_cdeclares():
 
     expected_lines = {
         'a = cython.declare(cython.int)',
+        'b = cython.declare(cython.float)',
+        'c = cython.declare(cython.char)'
+    }
+
+    assert lines == expected_lines
+
+
+def test_typ_store_to_cdeclares_imposed_vars():
+    typ_store = DictTypStore({
+        'a' : TypPrimitive(PrimitiveCod.INT),
+        'b' : TypPrimitive(PrimitiveCod.FLOAT),
+        'c' : TypPrimitive(PrimitiveCod.BOOL),
+        'd' : TypPrimitive(PrimitiveCod.STR)
+    })
+
+    lines =  set(
+        typ_store_to_cdeclares(
+            typ_store = typ_store,
+            default_cy_int=CyInt.INT,
+            default_cy_float=CyFloat.FLOAT,
+            imposed_vars={'a':CyInt.LONG}
+        )
+    )
+
+    expected_lines = {
+        'a = cython.declare(cython.long)',
         'b = cython.declare(cython.float)',
         'c = cython.declare(cython.char)'
     }
