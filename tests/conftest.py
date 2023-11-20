@@ -38,6 +38,27 @@ c = 17
 def mod2() -> tuple[ast.Module, list[str]]:
     return code_process.process_code(source_mod2)
 
+source_mod3 = '''a = 7
+b = 3.4
+
+def f1(g : int) -> float:
+    res = b * g
+    return res
+
+def f2() -> int:
+    res = 7 * a
+    return res
+
+def f3(g : int) -> int:
+    c = f2()
+    res = c * g
+    return res
+'''
+
+@pytest.fixture
+def mod3() -> tuple[ast.Module, list[str]]:
+    return code_process.process_code(source_mod3)
+
 source_statements1 = '''a = 7
 b = 5
 c = 3
