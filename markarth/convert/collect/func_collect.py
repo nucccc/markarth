@@ -63,12 +63,14 @@ def filter_const_candidates_at_func(
     removing const candidates which went through a modification
     '''
     # TODO: check also for variables being set in for loops, who knows
-    # walrus operators or something
-    for assign in func_ast.body:
-        for target in assign.targets:
-            varname = target.id
-            assert type(varname) == str
-            const_candidate_names.delete_name(varname)
+    # walrus operators or something, also aug assign shall be kept into
+    # account
+    for stat in func_ast.body:
+        if type(stat) == ast.Assign:
+            for target in stat.targets:
+                varname = target.id
+                assert type(varname) == str
+                const_candidate_names.delete_name(varname)
     return const_candidate_names
 
 
