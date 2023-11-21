@@ -7,8 +7,10 @@ import pytest
 from markarth.convert.collect.mod_collect import (
     collect_func_defs,
     collect_const_candidates,
-    filter_const_candidates
+    filter_const_candidates,
+    collect_call_typs
 )
+
 
 def test_collect_func_defs(mod3):
     mod_ast, _ = mod3
@@ -56,3 +58,26 @@ def test_filter_const_candidates(mod3):
 
     b_typ = const_candidates.get_typ('b')
     assert b_typ is None
+
+
+def test_collect_call_typs(mod3):
+    mod_ast, _ = mod3
+
+    func_asts = collect_func_defs(mod_ast = mod_ast)
+
+    call_typs = collect_call_typs(func_asts.values())
+
+    assert len(call_typs) == 3
+
+    f1_typ = call_typs.get_typ('f1')
+    assert f1_typ is not None
+    assert f1_typ.is_float()
+
+
+    f2_typ = call_typs.get_typ('f2')
+    assert f2_typ is not None
+    assert f2_typ.is_int()
+
+    f3_typ = call_typs.get_typ('f3')
+    assert f3_typ is not None
+    assert f3_typ.is_int()

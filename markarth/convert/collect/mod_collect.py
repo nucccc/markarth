@@ -10,7 +10,8 @@ from typing import Iterable
 from markarth.convert.collect.func_collect import (
     func_name_from_ast,
     filter_const_candidates_at_func,
-    collect_local_typs
+    collect_local_typs,
+    return_typ_from_ast
 )
 from markarth.convert.typs.names_to_typs import DictTypStore, TypStore
 from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_constant
@@ -88,7 +89,7 @@ def collect_call_typs(func_asts : Iterable[ast.FunctionDef]) -> DictTypStore:
     for func_ast in func_asts:
         funcname = func_name_from_ast(func_ast)
         # TODO: maybe some checks shall be done
-        return_typ = func_ast.return_typ
+        return_typ = return_typ_from_ast(func_ast)
         result.add_typ(funcname, return_typ)
     return result
 
