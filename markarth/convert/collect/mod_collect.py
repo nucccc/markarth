@@ -113,7 +113,7 @@ def mod_collect(
 
     const_candidates = filter_const_candidates(const_candidates, func_asts)
 
-    call_typs = collect_call_typs()
+    call_typs = collect_call_typs(func_asts.values())
 
     func_colls : dict[str, TypStore] = dict()
     for func_name, func_ast in func_asts.items():

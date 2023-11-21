@@ -8,7 +8,8 @@ from markarth.convert.collect.mod_collect import (
     collect_func_defs,
     collect_const_candidates,
     filter_const_candidates,
-    collect_call_typs
+    collect_call_typs,
+    mod_collect
 )
 
 
@@ -81,3 +82,15 @@ def test_collect_call_typs(mod3):
     f3_typ = call_typs.get_typ('f3')
     assert f3_typ is not None
     assert f3_typ.is_int()
+
+
+def test_mod_collect(mod3):
+    mod_ast, _ = mod3
+
+    mod_coll_result = mod_collect(mod_ast)
+
+    global_typs = mod_coll_result.global_typs
+    assert len(global_typs) == 1
+
+    func_colls = mod_coll_result.func_colls
+    assert len(func_colls) == 3
