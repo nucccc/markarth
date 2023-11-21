@@ -43,6 +43,7 @@ b = 3.4
 
 def f1(g : int) -> float:
     res = b * g
+    b = res
     return res
 
 def f2() -> int:
