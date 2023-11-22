@@ -111,16 +111,27 @@ def mod_collect(
 
     const_candidates = collect_const_candidates(mod_ast)
 
+    # before filtering stuff from const candidates, i shall save all the
+    # keys in order to recall which ones were global variables, and thus
+    # shall not be stored as global variables
+    global_val_names : set[str] = {
+        varname
+        for varname, _  in const_candidates.iter_typs()
+    }
+
     const_candidates = filter_const_candidates(const_candidates, func_asts)
 
     call_typs = collect_call_typs(func_asts.values())
 
     func_colls : dict[str, TypStore] = dict()
     for func_name, func_ast in func_asts.items():
+        # TODO: when i remove a const candidate, then this can be taken into
+        # account by the 
         local_coll_res = collect_local_typs(
             func_ast = func_ast,
             global_typs = const_candidates,
-            call_typs = call_typs
+            call_typs = call_typs,
+            global_varnames = global_val_names
         )
         func_colls[func_name] = local_coll_res.local_typs
 

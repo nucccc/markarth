@@ -86,14 +86,16 @@ class CollisionEnum(Enum):
 def _record_vartyp(
     varname : str,
     vartyp : Typ,
-    names_to_typs : NamesToTyps
+    names_to_typs : NamesToTyps,
+    global_varnames : set[str] = set()
 ) -> CollisionEnum:
     '''
     _record_vartyp shall handle a new vartyp to the existing names_to_typs
     '''
     already_typ, source = names_to_typs.get_varname_typ_and_source(varname)
     if already_typ is None:
-        names_to_typs.put_local_typ(varname, vartyp)
+        if varname not in global_varnames:
+            names_to_typs.put_local_typ(varname, vartyp)
         return CollisionEnum.NO_COLLISION
     elif already_typ != vartyp:
         new_typ = merge_typs(already_typ, vartyp)
@@ -119,7 +121,8 @@ class LocalCollectionResult:
 def collect_local_typs(
     func_ast : ast.FunctionDef,
     global_typs : TypStore = DictTypStore(),
-    call_typs : TypStore = DictTypStore()
+    call_typs : TypStore = DictTypStore(),
+    global_varnames : set[str] = set()
 ) -> LocalCollectionResult:
     '''
     collect_local_typs
@@ -144,13 +147,13 @@ def collect_local_typs(
             varname = stat.targets[0].id # i hypothetize the assignment to be
             vartyp = ast_val_to_typ(stat.value, names_to_typs)
             # here i colelct the vartype found
-            coll = _record_vartyp(varname, vartyp, names_to_typs)
+            coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
         elif type(stat) == ast.For:
             # TODO: here some code should be place to verify that this thing actually has a name
             varname = stat.target.id
             vartyp = typ_from_iter(stat.iter)
             # here i collect the vartype found
-            coll = _record_vartyp(varname, vartyp, names_to_typs)
+            coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
         else:
             varname = ''
             coll = CollisionEnum.NO_COLLISION

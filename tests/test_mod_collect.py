@@ -92,5 +92,28 @@ def test_mod_collect(mod3):
     global_typs = mod_coll_result.global_typs
     assert len(global_typs) == 1
 
+    a_typ = global_typs.get_typ('a')
+    assert a_typ is not None
+    assert a_typ.is_int()
+
+    b_typ = global_typs.get_typ('b')
+    assert b_typ is None
+
     func_colls = mod_coll_result.func_colls
     assert len(func_colls) == 3
+    assert 'f1' in func_colls.keys()
+    assert 'f2' in func_colls.keys()
+    assert 'f3' in func_colls.keys()
+
+    f1_typs = func_colls.get('f1')
+    for typ_name , typ in f1_typs.iter_typs():
+        print(typ_name)
+    assert len(f1_typs) == 1
+
+    f2_typs = func_colls.get('f2')
+    assert len(f2_typs) == 1
+
+    f3_typs = func_colls.get('f3')
+    for typ_name , typ in f3_typs.iter_typs():
+        print(typ_name)
+    assert len(f3_typs) == 2
