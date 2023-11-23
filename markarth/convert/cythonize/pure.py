@@ -204,71 +204,32 @@ def add_c_lines(
     return codelines
 
 
-class FuncToTypify:
-    '''
-    like yeah this class shall just somehow be used to add its lines to existing codelines
-    '''
-
-    # TODO: a lot of work to be done in here in order to yeah readapt to the
-    # fact that these old archaic classes were removed
-
-    def __init__(
-        self,
-        func_ast : ast.FunctionDef,
-        collect_result : LocalCollectionResult,
-        func_opts : FuncOpts
-    ):
-        self._c_declares_insertion_point : int = func_ast.body[0].lineno
-        self._collected_typs : TypStore = collect_result.local_typs
-        self._func_opts : FuncOpts = func_opts
-
-    
-    def add_collected_lines(self, codelines : list[str], cy_alias : str = 'cython'):
-        '''
-        add_collected_lines shall take the lines generated from the collected
-        local typs and add them to the codelines
-        '''        
-        cdeclares = typ_store_to_cdeclares(
-            typ_store = self._collected_typs,
-            default_cy_int = self._func_opts.default_int_cytyp,
-            default_cy_float = self._func_opts.default_float_cytyp,
-            imposed_vars = self._func_opts.imposed_vars,
-            cy_alias = cy_alias
-        )
-        for cdeclare in cdeclares:
-            codelines.insert(self._c_declares_insertion_point, cdeclare)
+def add_global_c_lines(
+    codelines : list[str],
+    gloabal_typs : TypStore,
+    m_opts : ModOpts,
+    cy_alias : str = 'cython'
+) -> list[str]:
+    cdeclares = typ_store_to_cdeclares(
+        typ_store = gloabal_typs,
+        default_cy_int = m_opts.default_int_cytyp,
+        default_cy_float = m_opts.default_float_cytyp,
+        imposed_vars = m_opts.imposed_consts,
+        cy_alias = cy_alias,
+        indent_pattern = ''
+    )
+    for cdeclare in cdeclares:
+        codelines.insert(1, cdeclare)
+    return codelines
 
 
-    def __ge__(self, __other_func : 'FuncToTypify') -> bool:
-        return self._c_declares_insertion_point >= __other_func._c_declares_insertion_point
-    
+def add_cython_import(
+    codelines : list[str],
+    cy_alias : str = 'cython'
+) -> list[str]:
+    codelines.insert(1, f'import {cy_alias}')
+    return codelines
 
-    def __le__(self, __other_func : 'FuncToTypify') -> bool:
-        return self._c_declares_insertion_point <= __other_func._c_declares_insertion_point
-
-
-def funcs_to_tipify_lister(
-    collections : dict[str, LocalCollectionResult],
-    m_opts : ModOpts
-) -> list[FuncToTypify]:
-    '''
-    wouldn't it be nice to have a function that actually merges what comes
-    from options into what comes
-
-    yeah and it would be nice to have them already sorted
-    '''
-    funcs_to_tipify : list[FuncToTypify] = list()
-    # TODO: this will probably be passed as a ditionary at a point
-
-    for f_name, f_coll in locals_collected.items():
-        funcs_to_tipify.append( FuncToTypify(
-            func_collected = f_coll,
-            func_opts = m_opts.get_f_opt_or_default(f_name)
-        ) )
-
-    funcs_to_tipify.sort(reverse=True)
-
-    return funcs_to_tipify
 
 
 def pure_cythonize(
@@ -306,5 +267,14 @@ def pure_cythonize(
             func_opts = func_opts,
             cy_alias = alias
         )
+
+    codelines = add_global_c_lines(
+        codelines = codelines,
+        gloabal_typs = consts_typ_store,
+        m_opts = m_opts,
+        cy_alias = alias
+    )
+
+    codelines = add_cython_import(codelines = codelines, cy_alias = alias)
 
     return '\n'.join(codelines)
