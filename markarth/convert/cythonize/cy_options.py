@@ -14,7 +14,7 @@ class FuncOpts(BaseModel):
     internal_default_int_cytyp : CyInt | None = Field(default = None, description='default c type to be used for integers')
     internal_default_float_cytyp : CyFloat | None = Field(default = None, description='default c type to be used for integers')
     parent_mod : "ModOpts"
-    imposed_vars : dict[str, CyInt | CyFloat]  = Field(default=dict())
+    imposed_vars : dict[str, CyInt | CyFloat] = Field(default=dict())
 
 
     @property
@@ -36,3 +36,30 @@ class ModOpts(BaseModel):
     default_float_cytyp : CyFloat = Field(default = CyFloat.FLOAT, description='default c type to be used for integers')
     imposed_consts : dict[str, CyInt | CyFloat] = Field(default=dict())
     funcs_opts : dict[str, FuncOpts] = Field(default=dict())
+
+
+    def gen_default_func_opt(self) -> FuncOpts:
+        '''
+        yeah at times there is this thing that i need, a default option for
+        any function without options
+        '''
+        # NOTE: yeah i know actually passing the default types to the new func
+        # opt doesn't seem to be useful
+        return FuncOpts(
+            internal_default_float_cytyp=self.default_float_cytyp,
+            internal_default_int_cytyp=self.default_int_cytyp,
+            parent_mod=self
+        )
+
+    def get_f_opt_or_default(self, f_name : str) -> FuncOpts:
+        '''
+        get_f_opt_or_default returns func opts of a function, if function has
+        no specific opts then a default opt is generated
+        '''
+        return self.funcs_opts.get(f_name, self.gen_default_func_opt())
+    
+def gen_default_mod_opts() -> ModOpts:
+    '''
+    to return a default module option for when nobody wants to parse anything
+    '''
+    return ModOpts()

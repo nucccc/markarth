@@ -105,15 +105,15 @@ def test_mod_collect(mod3):
     assert 'f2' in func_colls.keys()
     assert 'f3' in func_colls.keys()
 
-    f1_typs = func_colls.get('f1')
+    f1_typs = func_colls.get('f1').local_typs
     for typ_name , typ in f1_typs.iter_typs():
         print(typ_name)
     assert len(f1_typs) == 1
 
-    f2_typs = func_colls.get('f2')
+    f2_typs = func_colls.get('f2').local_typs
     assert len(f2_typs) == 1
 
-    f3_typs = func_colls.get('f3')
+    f3_typs = func_colls.get('f3').local_typs
     for typ_name , typ in f3_typs.iter_typs():
         print(typ_name)
     assert len(f3_typs) == 2

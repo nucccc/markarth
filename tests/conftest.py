@@ -57,6 +57,10 @@ def f3(g : int) -> int:
 '''
 
 @pytest.fixture
+def code_mod3() -> str:
+    return source_mod3
+
+@pytest.fixture
 def mod3() -> tuple[ast.Module, list[str]]:
     return code_process.process_code(source_mod3)
 

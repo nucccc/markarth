@@ -11,7 +11,8 @@ from markarth.convert.collect.func_collect import (
     func_name_from_ast,
     filter_const_candidates_at_func,
     collect_local_typs,
-    return_typ_from_ast
+    return_typ_from_ast,
+    LocalCollectionResult
 )
 from markarth.convert.typs.names_to_typs import DictTypStore, TypStore
 from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_constant
@@ -97,7 +98,8 @@ def collect_call_typs(func_asts : Iterable[ast.FunctionDef]) -> DictTypStore:
 @dataclass
 class ModCollectionResult:
     global_typs : TypStore # these are supposed to be the typs collected from the module, the consts let's say, the global variables
-    func_colls : dict[str, TypStore]
+    func_colls : dict[str, LocalCollectionResult]
+    func_asts : dict[str, ast.FunctionDef]
 
 
 def mod_collect(
@@ -133,9 +135,10 @@ def mod_collect(
             call_typs = call_typs,
             global_varnames = global_val_names
         )
-        func_colls[func_name] = local_coll_res.local_typs
+        func_colls[func_name] = local_coll_res
 
     return ModCollectionResult(
         global_typs = const_candidates,
-        func_colls = func_colls
+        func_colls = func_colls,
+        func_asts = func_asts
     )

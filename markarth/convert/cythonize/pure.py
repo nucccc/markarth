@@ -16,7 +16,9 @@ from markarth.convert.cythonize.cy_typs import (
 )
 from markarth.convert.cythonize.cy_options import FuncOpts, ModOpts
 from markarth.convert.collect.func_collect import LocalCollectionResult
+from markarth.convert.collect.mod_collect import collect_func_defs
 from markarth.convert.typs.names_to_typs import TypStore
+from markarth.convert.cythonize.indent import indentation_pattern
 
 @dataclass
 class FuncConvertData():
@@ -89,7 +91,8 @@ def typ_store_to_cdeclares(
     default_cy_int : CyInt,
     default_cy_float : CyFloat,
     imposed_vars : dict[str, CyInt | CyFloat] = dict(),
-    cy_alias : str = 'cython'
+    cy_alias : str = 'cython',
+    indent_pattern : str = ''
 ) -> Iterator[str]:
     for varname, cy_type in typ_store_to_varnames(
         typ_store=typ_store,
@@ -97,7 +100,12 @@ def typ_store_to_cdeclares(
         default_cy_float=default_cy_float,
         imposed_vars=imposed_vars
     ):
-        yield gen_declare_line(varname=varname, cy_alias=cy_alias, cy_typename=cy_type)
+        yield gen_declare_line(
+            varname=varname,
+            cy_alias=cy_alias,
+            cy_typename=cy_type,
+            indent_pattern=indent_pattern
+        )
 
 
 
@@ -109,11 +117,16 @@ def _func_typer(codelines : list[str]):
     pass
 
 
-def gen_declare_line(varname : str, cy_typename : str, cy_alias : str = 'cython') -> str:
+def gen_declare_line(
+    varname : str,
+    cy_typename : str,
+    cy_alias : str = 'cython',
+    indent_pattern : str = ''
+) -> str:
     '''
     gen_declare_line shall generate a declare line for a given varname
     '''
-    return f'{varname} = {cy_alias}.declare({cy_alias}.{cy_typename})'
+    return f'{indent_pattern}{varname} = {cy_alias}.declare({cy_alias}.{cy_typename})'
 
 
 @dataclass
@@ -156,7 +169,7 @@ def cdeclares_ins_point(func_ast : ast.FunctionDef) -> int:
 def sort_funcs_by_line(func_asts : dict[str, ast.FunctionDef]) -> list[str]:
     '''
     sort_funcs_by_line returns a list with the names of the functions sorted
-    bybthe order they appear in the code
+    by the order they appear in the code
     '''
     # TODO: the performance of this code could be optimized
     func_names_by_line : dict[int, str] = {
@@ -167,6 +180,28 @@ def sort_funcs_by_line(func_asts : dict[str, ast.FunctionDef]) -> list[str]:
     func_lines.sort()
 
     return [func_names_by_line[lineno] for lineno in func_lines]
+
+
+def add_c_lines(
+    func_ast : ast.FunctionDef,
+    codelines : list[str],
+    collect_result : LocalCollectionResult,
+    func_opts : FuncOpts,
+    cy_alias : str = 'cython'
+) -> list[str]:
+    ins_point : int = cdeclares_ins_point(func_ast)
+    indent_pattern = indentation_pattern(func_ast, codelines)
+    cdeclares = typ_store_to_cdeclares(
+        typ_store = collect_result.local_typs,
+        default_cy_int = func_opts.default_int_cytyp,
+        default_cy_float = func_opts.default_float_cytyp,
+        imposed_vars = func_opts.imposed_vars,
+        cy_alias = cy_alias,
+        indent_pattern = indent_pattern
+    )
+    for cdeclare in cdeclares:
+        codelines.insert(ins_point, cdeclare)
+    return codelines
 
 
 class FuncToTypify:
@@ -236,9 +271,6 @@ def funcs_to_tipify_lister(
     return funcs_to_tipify
 
 
-
-
-
 def pure_cythonize(
     mod_ast : ast.Module,
     codelines : list[str],
@@ -254,9 +286,25 @@ def pure_cythonize(
     # its alias
     is_cython_imported, alias, codeline_no = cython_imported_already(mod_ast)
 
-    funcs_to_tipify = funcs_to_tipify_lister(funcs_collected, m_opts)
+    if not is_cython_imported:
+        # TODO: also adding an import line at the end of the function
+        # shall be done
+        alias = 'cython'
 
-    for func_to_tipify in funcs_to_tipify:
-        func_to_tipify.add_collected_lines(codelines)
+    func_asts : dict[str, ast.FunctionDef] = collect_func_defs(mod_ast)
+
+    func_names_sorted : list[str] = sort_funcs_by_line(func_asts)
+
+    for func_name in reversed(func_names_sorted):
+        func_ast = func_asts[func_name]
+        collect_result = funcs_collected[func_name]
+        func_opts = m_opts.get_f_opt_or_default(func_name)
+        codelines = add_c_lines(
+            func_ast = func_ast,
+            codelines = codelines,
+            collect_result = collect_result,
+            func_opts = func_opts,
+            cy_alias = alias
+        )
 
     return '\n'.join(codelines)
