@@ -9,19 +9,22 @@ class TypeStore(Protocol):
     '''
 
     def get_type(self, name : str) -> str | None:
-        pass
+        pass # pragma: no cover
 
     def add_type(self, name : str, typename : str):
-        pass
+        pass # pragma: no cover
 
     def delete_name(self, name : str) -> bool:
-        pass
+        pass # pragma: no cover
 
     def iter_types(self) -> Iterator[ tuple[str, str] ]:
-        pass
+        pass # pragma: no cover
 
     def size(self) -> int:
-        pass
+        pass # pragma: no cover
+
+    def has(self, name : str) -> bool:
+        pass # pragma: no cover
 
 class DictTypeStore():
     _types_dict : dict[str, str]
@@ -47,6 +50,9 @@ class DictTypeStore():
     
     def size(self) -> int:
         return len(self)
+    
+    def has(self, name : str) -> bool:
+        pass # pragma: no cover
 
 def py2cy_dict_store(
     origin_type_store : TypeStore,

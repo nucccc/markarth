@@ -162,5 +162,5 @@ def test_sort_funcs_by_line(mod3):
     assert funcs_names_ordered[2] == 'f3'
 
 
-def test_funcs_to_tipify_lister():
+def test_pure(mod3):
     pass
