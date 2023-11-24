@@ -16,7 +16,7 @@ from markarth.convert.cythonize.cy_typs import (
 )
 from markarth.convert.cythonize.cy_options import FuncOpts, ModOpts
 from markarth.convert.collect.func_collect import LocalCollectionResult
-from markarth.convert.collect.mod_collect import collect_func_defs
+from markarth.convert.collect.mod_collect import ModCollectionResult
 from markarth.convert.typs.names_to_typs import TypStore
 from markarth.convert.cythonize.indent import indentation_pattern
 
@@ -235,8 +235,7 @@ def add_cython_import(
 def pure_cythonize(
     mod_ast : ast.Module,
     codelines : list[str],
-    consts_typ_store : TypStore,
-    funcs_collected : dict[str, LocalCollectionResult],
+    mod_coll : ModCollectionResult,
     m_opts : ModOpts
 ) -> str:
     '''
@@ -252,8 +251,10 @@ def pure_cythonize(
         # shall be done
         alias = 'cython'
 
-    func_asts : dict[str, ast.FunctionDef] = collect_func_defs(mod_ast)
-
+    func_asts : dict[str, ast.FunctionDef] = mod_coll.func_asts
+    funcs_collected : dict[str, LocalCollectionResult] = mod_coll.func_colls
+    consts_typ_store : TypStore = mod_coll.global_typs
+    
     func_names_sorted : list[str] = sort_funcs_by_line(func_asts)
 
     for func_name in reversed(func_names_sorted):

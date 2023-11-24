@@ -22,8 +22,7 @@ def convert_code(
     new_code = pure_cythonize(
         mod_ast = ast_mod,
         codelines = codelines,
-        consts_typ_store = mod_collect_res.global_typs,
-        funcs_collected = mod_collect_res.func_colls,
+        mod_coll = mod_collect_res,
         m_opts = m_opts
     )
 
