@@ -20,12 +20,8 @@ from markarth.convert.collect.mod_collect import ModCollectionResult
 from markarth.convert.typs.names_to_typs import TypStore
 from markarth.convert.cythonize.indent import indentation_pattern
 
-@dataclass
-class FuncConvertData():
-    '''
-    should this represent the data needed by a function
-    '''
-    pass
+
+DEFAULT_CY_ALIAS = 'cython'
 
 
 def is_import_cython(imp_stat : ast.Import) -> tuple[bool, str]:
@@ -37,9 +33,9 @@ def is_import_cython(imp_stat : ast.Import) -> tuple[bool, str]:
      - a str
     '''
     for al in imp_stat.names:
-        if al.name == 'cython':
+        if al.name == DEFAULT_CY_ALIAS:
             asname = al.asname
-            alias_name = asname if asname else 'cython'
+            alias_name = asname if asname else DEFAULT_CY_ALIAS
             return (True, alias_name)
     return (False, '')
 
@@ -56,16 +52,16 @@ def cython_imported_already(mod_ast : ast.Module) -> tuple[bool, str, int]:
     return (False, '', 0)
 
 
-def typ_to_cy_ctr() -> str:
-    pass
-
-
 def typ_store_to_varnames(
     typ_store : TypStore,
     default_cy_int : CyInt,
     default_cy_float : CyFloat,
     imposed_vars : dict[str, CyInt | CyFloat] = dict()
 ) -> Iterator[tuple[str, str]]:
+    '''
+    typ_store_to_varnames converts a typstore in an iterable of the varname
+    and the c type name
+    '''
     for varname, typ in typ_store.iter_typs():
         imposed_typ = imposed_vars.get(varname, None)
         if imposed_typ is not None:
@@ -91,9 +87,13 @@ def typ_store_to_cdeclares(
     default_cy_int : CyInt,
     default_cy_float : CyFloat,
     imposed_vars : dict[str, CyInt | CyFloat] = dict(),
-    cy_alias : str = 'cython',
+    cy_alias : str = DEFAULT_CY_ALIAS,
     indent_pattern : str = ''
 ) -> Iterator[str]:
+    '''
+    typ_store_to_cdeclares converts a typstore into an iterable of
+    c declare lines
+    '''
     for varname, cy_type in typ_store_to_varnames(
         typ_store=typ_store,
         default_cy_int=default_cy_int,
@@ -108,19 +108,10 @@ def typ_store_to_cdeclares(
         )
 
 
-
-
-def _func_typer(codelines : list[str]):
-    '''
-    maybe this thing will just modify inplace the codelines and add something
-    '''
-    pass
-
-
 def gen_declare_line(
     varname : str,
     cy_typename : str,
-    cy_alias : str = 'cython',
+    cy_alias : str = DEFAULT_CY_ALIAS,
     indent_pattern : str = ''
 ) -> str:
     '''
@@ -129,6 +120,7 @@ def gen_declare_line(
     return f'{indent_pattern}{varname} = {cy_alias}.declare({cy_alias}.{cy_typename})'
 
 
+# TODO: this class shall be used in the above methods
 @dataclass
 class CyVarType:
     '''
@@ -136,27 +128,6 @@ class CyVarType:
     '''
     varname : str
     cy_type : str
-
-
-def store_to_cy_types(store : TypStore) -> list[CyVarType]:
-    '''
-    store_to_cy_types shall somehow one day convert a typstore to
-    the actual pairs of varname
-
-    DEPRECATED
-    '''
-    result = list()
-    for varname, typ in store.iter_typs:
-        cy_type = None
-        if typ.is_int():
-            cy_type = 'int'
-        elif typ.is_float():
-            cy_type = 'float'
-        elif typ.is_bool():
-            cy_type = 'char'
-        if cy_type is not None:
-            result.append(CyVarType(varname=varname, cy_type=cy_type))
-    return result
 
 
 def cdeclares_ins_point(func_ast : ast.FunctionDef) -> int:
@@ -187,8 +158,12 @@ def add_c_lines(
     codelines : list[str],
     collect_result : LocalCollectionResult,
     func_opts : FuncOpts,
-    cy_alias : str = 'cython'
+    cy_alias : str = DEFAULT_CY_ALIAS
 ) -> list[str]:
+    '''
+    add_c_lines modifies and returns codelines by adding the cdeclare lines
+    for the types of the function's local variables
+    '''
     ins_point : int = cdeclares_ins_point(func_ast)
     indent_pattern = indentation_pattern(func_ast, codelines)
     cdeclares = typ_store_to_cdeclares(
@@ -208,8 +183,12 @@ def add_global_c_lines(
     codelines : list[str],
     gloabal_typs : TypStore,
     m_opts : ModOpts,
-    cy_alias : str = 'cython'
+    cy_alias : str = DEFAULT_CY_ALIAS
 ) -> list[str]:
+    '''
+    add_global_c_lines adds at the beginning of the script the cdeclares for
+    global variables
+    '''
     cdeclares = typ_store_to_cdeclares(
         typ_store = gloabal_typs,
         default_cy_int = m_opts.default_int_cytyp,
@@ -225,8 +204,11 @@ def add_global_c_lines(
 
 def add_cython_import(
     codelines : list[str],
-    cy_alias : str = 'cython'
+    cy_alias : str = DEFAULT_CY_ALIAS
 ) -> list[str]:
+    '''
+    add_cython_import imports at the first line a codeline importing cython
+    '''
     codelines.insert(1, f'import {cy_alias}')
     return codelines
 
@@ -249,12 +231,12 @@ def pure_cythonize(
     if not is_cython_imported:
         # TODO: also adding an import line at the end of the function
         # shall be done
-        alias = 'cython'
+        alias = DEFAULT_CY_ALIAS
 
     func_asts : dict[str, ast.FunctionDef] = mod_coll.func_asts
     funcs_collected : dict[str, LocalCollectionResult] = mod_coll.func_colls
     consts_typ_store : TypStore = mod_coll.global_typs
-    
+
     func_names_sorted : list[str] = sort_funcs_by_line(func_asts)
 
     for func_name in reversed(func_names_sorted):
