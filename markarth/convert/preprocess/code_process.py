@@ -5,8 +5,6 @@ funcs to process raw code
 import ast
 
 
-# TODO: these are also in some indent function, maybe that should be
-# back to code_process
 class ASTWithoutBody(Exception):
     'Raised when the AST provided does not have a body'
     pass
@@ -50,6 +48,26 @@ def process_file(filepath : str) -> tuple[ast.Module, list[str]]:
     '''
     with open(filepath, 'r') as f:
         return process_code(f.read())
+    
+
+def indentation_pattern(
+    ast_with_body : ast.AST,
+    codelines : list[str],
+    indent_level : int = 1
+) -> str:
+    '''
+    indentation_pattern returns the type of string that may represent
+    the indentation
+    '''
+    if not hasattr(ast_with_body, 'body'):
+        raise ASTWithoutBody
+    first_expr = ast_with_body.body[0]
+    codeline = codelines[first_expr.lineno]
+    indentation = codeline[:first_expr.col_offset]
+    if len(indentation) % indent_level != 0:
+        raise InvalidIndentation
+    n_indent_chars = int(len(indentation) / indent_level)
+    return indentation[:n_indent_chars]
     
 
 def func_codelines(

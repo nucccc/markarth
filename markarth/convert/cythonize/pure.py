@@ -18,7 +18,7 @@ from markarth.convert.cythonize.cy_options import FuncOpts, ModOpts
 from markarth.convert.collect.func_collect import LocalCollectionResult
 from markarth.convert.collect.mod_collect import ModCollectionResult
 from markarth.convert.typs.names_to_typs import TypStore
-from markarth.convert.cythonize.indent import indentation_pattern
+from markarth.convert.preprocess.code_process import indentation_pattern
 
 
 DEFAULT_CY_ALIAS = 'cython'
