@@ -43,10 +43,10 @@ def input_typs_from_ast(func_ast : ast.FunctionDef) -> TypStore:
     input_typs = DictTypStore()
 
     arg_types = {
-            arg.arg : arg.annotation.id
-            for arg in func_ast.args.args
-            if hasattr(arg.annotation, 'id')
-        }
+        arg.arg : arg.annotation.id
+        for arg in func_ast.args.args
+        if hasattr(arg.annotation, 'id')
+    }
 
     for arg_name, arg_type_str in arg_types.items():
         input_typs.add_typ(arg_name, parse_type_str(arg_type_str))
@@ -118,6 +118,45 @@ class LocalCollectionResult:
     colliding_global_varnames : set[str]
 
 
+def collect_from_ast_body(
+    ast_body : list[ast.AST],
+    names_to_typs : NamesToTyps,
+    colliding_input_varnames : set[str],
+    colliding_global_varnames : set[str],
+    global_varnames : set[str]
+):
+    for stat in ast_body:
+        if type(stat) == ast.Assign:
+            varname = stat.targets[0].id # i hypothetize the assignment to be
+            vartyp = ast_val_to_typ(stat.value, names_to_typs)
+            # here i colelct the vartype found
+            coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
+        elif type(stat) == ast.For:
+            # TODO: here some code should be place to verify that this thing actually has a name
+            varname = stat.target.id
+            vartyp = typ_from_iter(stat.iter)
+            # here i collect the vartype found
+            coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
+        else:
+            varname = ''
+            coll = CollisionEnum.NO_COLLISION
+        
+        match coll:
+            case CollisionEnum.INPUT_COLLISION:
+                colliding_input_varnames.add(varname)
+            case CollisionEnum.GLOBAL_COLLISION:
+                colliding_global_varnames.add(varname)
+
+        if hasattr(stat, 'body'):
+            collect_from_ast_body(
+                ast_body = stat.body,
+                names_to_typs = names_to_typs,
+                colliding_input_varnames = colliding_input_varnames,
+                colliding_global_varnames = colliding_global_varnames,
+                global_varnames = global_varnames
+            )
+
+
 def collect_local_typs(
     func_ast : ast.FunctionDef,
     global_typs : TypStore = DictTypStore(),
@@ -142,30 +181,13 @@ def collect_local_typs(
         call_typs=call_typs
     )
 
-    for stat in func_ast.body:
-        if type(stat) == ast.Assign:
-            varname = stat.targets[0].id # i hypothetize the assignment to be
-            vartyp = ast_val_to_typ(stat.value, names_to_typs)
-            # here i colelct the vartype found
-            coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
-        elif type(stat) == ast.For:
-            # TODO: here some code should be place to verify that this thing actually has a name
-            varname = stat.target.id
-            vartyp = typ_from_iter(stat.iter)
-            # here i collect the vartype found
-            coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
-        else:
-            varname = ''
-            coll = CollisionEnum.NO_COLLISION
-        
-        match coll:
-            case CollisionEnum.INPUT_COLLISION:
-                colliding_input_varnames.add(varname)
-            case CollisionEnum.GLOBAL_COLLISION:
-                colliding_global_varnames.add(varname)
-
-        if hasattr(stat, 'body'):
-            collect_local_typs(stat.body, names_to_typs)
+    collect_from_ast_body(
+        ast_body = func_ast.body,
+        names_to_typs = names_to_typs,
+        colliding_input_varnames = colliding_input_varnames,
+        colliding_global_varnames = colliding_global_varnames,
+        global_varnames = global_varnames
+    )
 
     return LocalCollectionResult(
         local_typs = local_typs,
