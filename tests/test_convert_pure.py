@@ -8,7 +8,7 @@ from markarth.convert.preprocess.code_process import (
     process_code
 )
 
-def test_convert_pure(code_mod3):
+def test_convert_pure3(code_mod3):
     converted_code = convert_code(code_mod3)
 
     converted_ast , converted_codelines = process_code(converted_code)
@@ -29,3 +29,23 @@ def test_convert_pure(code_mod3):
 
     assert '    res = cython.declare(cython.int)' in f3_codelines
     assert '    c = cython.declare(cython.int)' in f3_codelines
+
+
+def test_convert_pure4(code_mod4):
+    converted_code = convert_code(code_mod4)
+
+    converted_ast , converted_codelines = process_code(converted_code)
+
+    func_asts = collect_func_defs(converted_ast)
+
+    stuff_codelines = func_codelines(
+        func_ast = func_asts['stuff'],
+        codelines = converted_codelines
+    )
+
+    assert '    h = cython.declare(cython.float)' in stuff_codelines
+    assert '    p = cython.declare(cython.int)' in stuff_codelines
+    assert '    i = cython.declare(cython.int)' in stuff_codelines
+    assert '    onono = cython.declare(cython.float)' in stuff_codelines
+    assert '    m = cython.declare(cython.int)' in stuff_codelines
+    assert '    sum = cython.declare(cython.int)' in stuff_codelines

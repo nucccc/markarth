@@ -64,6 +64,27 @@ def code_mod3() -> str:
 def mod3() -> tuple[ast.Module, list[str]]:
     return code_process.process_code(source_mod3)
 
+source_mod4 = '''
+def stuff(a : int, b : int, c : float = 0.4, d = None) -> int:
+    sum = 0
+    m = 11
+    onono = 17.4
+    for i in range(4):
+        p = 7
+        h = float(64) * p
+        sum += i
+        sum = 5 * 18
+    return float(sum)
+'''
+
+@pytest.fixture
+def code_mod4() -> str:
+    return source_mod4
+
+@pytest.fixture
+def mod4() -> tuple[ast.Module, list[str]]:
+    return code_process.process_code(source_mod4)
+
 source_statements1 = '''a = 7
 b = 5
 c = 3
