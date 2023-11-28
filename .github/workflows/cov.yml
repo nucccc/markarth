@@ -1,0 +1,32 @@
+name: cov
+
+on:
+    push
+
+jobs:
+    cov_job:
+        runs-on: ubuntu latest
+        name: checking coverage
+        permissions:
+            pull-requests: write
+            contents: write
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: set up python
+              id: setup-python
+              uses: actions/setup-python@v4
+              with:
+                python-version: 3
+            
+            - name: install whatever
+              run: pip install .
+
+            - name: launch test
+              run: pytest
+
+            - name: cov comment
+              id: coverage-comment
+              uses: py-cov-action/python-coverage-comment-action@v3
+              with:
+                GITHUB_TOKEN: ${{ github.token }}
