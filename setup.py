@@ -9,5 +9,6 @@ setup(
     license='MIT License',
     description='code conversion from python to cython',
     install_requires=[
-        "pydantic >= 2.4.2"
+        'pydantic >= 2.4.2',
+        'coverage >= 7.3.2'
     ])
