@@ -1,5 +1,7 @@
 # markarth
 
+![Coverage badge](https://raw.githubusercontent.com/nucccc/markarth/python-coverage-comment-action-data/badge.svg)
+
 markarth is a library that would like to automatically add cython cdef to python code, possibly improving its performance transpiling it into cython.
 
 It makes heavy usage of the `ast` module in order to parse python code, while leveraging type annotations to infer variable types, thus adding some declarations that with python would speed the code up.
