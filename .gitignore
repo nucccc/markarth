@@ -1,15 +1,12 @@
 stuff/
 build/
 dist/
-htmlcov/
 venv/
 markarth.egg-info/
 .pytest_cache/
 
 __pycache__/
 *.so
-
-.coverage
 
 tests/ast_samples.py
 tests/samples
