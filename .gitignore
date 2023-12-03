@@ -8,6 +8,9 @@ markarth.egg-info/
 __pycache__/
 *.so
 
+.coverage
+htmlcov/
+
 tests/ast_samples.py
 tests/samples
 
