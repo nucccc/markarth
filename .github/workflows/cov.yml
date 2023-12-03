@@ -31,11 +31,7 @@ jobs:
             - name: launch coverage
               run: 
                 coverage run -m pytest
-
-            - name: force htmlcov
-              run:
-                git add -f htmlcov/*
-
+                
             - name: cov_comment
               id: coverage_comment
               uses: py-cov-action/python-coverage-comment-action@v3
