@@ -2,7 +2,14 @@
 some code should be written to actually run tests on the code process
 '''
 
-from markarth.convert.preprocess.code_process import func_codelines
+import pytest
+
+from markarth.convert.preprocess.code_process import (
+    func_codelines,
+    process_code,
+    indentation_pattern,
+    ASTWithoutBody
+)
 from markarth.convert.collect.mod_collect import collect_func_defs
 
 
@@ -45,3 +52,13 @@ def test_func_codelines(mod3):
         '    res = c * g',
         '    return res'
     ]
+
+    
+def test_indentation_pattern_ast_without_body():
+    code = '''a = 0'''
+
+    ast_nodes, codelines = process_code(code)
+    func_ast = ast_nodes.body[0]
+
+    with pytest.raises(ASTWithoutBody) as ast_without_body:
+        indentation_pattern(func_ast, codelines)
