@@ -17,7 +17,7 @@
 | markarth/convert/cythonize/cy\_typs.py                |       28 |        0 |    100% |           |
 | markarth/convert/cythonize/pure.py                    |       86 |        1 |     99% |        72 |
 | markarth/convert/preprocess/\_\_init\_\_.py           |        0 |        0 |    100% |           |
-| markarth/convert/preprocess/code\_process.py          |       32 |        4 |     88% |49-50, 63, 68 |
+| markarth/convert/preprocess/code\_process.py          |       32 |        3 |     91% | 49-50, 68 |
 | markarth/convert/typs/\_\_init\_\_.py                 |        0 |        0 |    100% |           |
 | markarth/convert/typs/merge\_typs.py                  |       27 |        0 |    100% |           |
 | markarth/convert/typs/names\_to\_typs.py              |      102 |       32 |     69% |63, 135-136, 148, 152, 156, 160-166, 194-197, 209-215, 219-227 |
@@ -25,7 +25,7 @@
 | markarth/convert/typs/typs\_parse.py                  |        6 |        0 |    100% |           |
 | tests/conftest.py                                     |       43 |        5 |     88% |86, 98-99, 128-129 |
 | tests/test\_ast\_to\_typ.py                           |       57 |        0 |    100% |           |
-| tests/test\_code\_process.py                          |       14 |        0 |    100% |           |
+| tests/test\_code\_process.py                          |       21 |        0 |    100% |           |
 | tests/test\_convert\_pure.py                          |       24 |        0 |    100% |           |
 | tests/test\_cy\_opts.py                               |       22 |        0 |    100% |           |
 | tests/test\_cy\_typs.py                               |       10 |        0 |    100% |           |
@@ -36,7 +36,7 @@
 | tests/test\_names\_to\_typs.py                        |       89 |        0 |    100% |           |
 | tests/test\_typs.py                                   |       96 |        0 |    100% |           |
 | tests/test\_typs\_parse.py                            |       18 |        0 |    100% |           |
-|                                             **TOTAL** | **1260** |   **73** | **94%** |           |
+|                                             **TOTAL** | **1267** |   **72** | **94%** |           |
 
 
 ## Setup coverage badge
