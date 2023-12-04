@@ -38,6 +38,15 @@ def test_type_from_constant():
     t = typ_from_constant(const)
     assert t.is_float()
 
+    const_code = 'b\'abc\''
+    const_mod = ast.parse(const_code)
+    const = const_mod.body[0].value
+
+    t = typ_from_constant(const)
+    assert t.is_any()
+
+    
+
 def test_type_from_iter():
     code = '''for i in range(7):\n\tpass'''
     m = ast.parse(code)
@@ -82,3 +91,15 @@ def test_type_from_bin_op():
     bin_op = op_mod.body[0].value
     t = typ_from_bin_op(bin_op)
     assert t.is_float()
+
+    op_code = 'a - 1'
+    op_mod = ast.parse(op_code)
+    bin_op = op_mod.body[0].value
+    t = typ_from_bin_op(bin_op)
+    assert t.is_any()
+
+    op_code = '1 - a'
+    op_mod = ast.parse(op_code)
+    bin_op = op_mod.body[0].value
+    t = typ_from_bin_op(bin_op)
+    assert t.is_any()
