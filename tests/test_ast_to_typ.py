@@ -3,6 +3,7 @@ from markarth.convert.collect.ast_to_typ.ast_to_typ import (
     typ_from_bin_op,
     typ_from_constant,
     typ_from_iter,
+    typ_from_call,
     ast_val_to_typ
 )
 
@@ -44,7 +45,6 @@ def test_type_from_constant():
 
     t = typ_from_constant(const)
     assert t.is_any()
-
     
 
 def test_type_from_iter():
@@ -103,3 +103,35 @@ def test_type_from_bin_op():
     bin_op = op_mod.body[0].value
     t = typ_from_bin_op(bin_op)
     assert t.is_any()
+
+
+def test_typ_from_call():
+    code = 'a = int(7.0)'
+    mod = ast.parse(code)
+    call = mod.body[0].value
+
+    print(type(call))
+
+    call_typ = typ_from_call(call = call)
+    assert call_typ.is_int()
+
+    code = 'a = float(7)'
+    mod = ast.parse(code)
+    call = mod.body[0].value
+
+    call_typ = typ_from_call(call = call)
+    assert call_typ.is_float()
+
+    code = 'a = bool(7)'
+    mod = ast.parse(code)
+    call = mod.body[0].value
+
+    call_typ = typ_from_call(call = call)
+    assert call_typ.is_bool()
+
+    code = 'a = asfasf(7)'
+    mod = ast.parse(code)
+    call = mod.body[0].value
+
+    call_typ = typ_from_call(call = call)
+    assert call_typ.is_any()
