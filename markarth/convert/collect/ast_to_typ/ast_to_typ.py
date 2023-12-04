@@ -32,7 +32,7 @@ def ast_val_to_typ(
             return supposed_typ
         if type(val) == ast.Call:
             return typ_from_call(val, name_typs)#name_typs.get_callname_type( val.func.id )
-    return None
+    return typs.TypAny()
 
 
 def typ_from_constant(const : ast.Constant) -> typs.TypPrimitive | typs.TypAny:

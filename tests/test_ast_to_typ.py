@@ -2,8 +2,18 @@ import ast
 from markarth.convert.collect.ast_to_typ.ast_to_typ import (
     typ_from_bin_op,
     typ_from_constant,
-    typ_from_iter
+    typ_from_iter,
+    ast_val_to_typ
 )
+
+
+def test_ast_val_to_typ():
+    code = 'a = b'
+    mod = ast.parse(code)
+    val = mod.body[0].value
+
+    val_typ = ast_val_to_typ(val = val)
+    assert val_typ.is_any()
 
 
 def test_type_from_constant():
