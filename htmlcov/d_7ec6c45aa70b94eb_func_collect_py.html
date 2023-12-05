@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for markarth/convert/collect/func_collect.py: 86%</title>
+    <title>Coverage for markarth/convert/collect/func_collect.py: 100%</title>
     <link rel="icon" sizes="32x32" href="favicon_32.png">
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="coverage_html.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>markarth/convert/collect/func_collect.py</b>:
-            <span class="pc_cov">86%</span>
+            <span class="pc_cov">100%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -55,8 +55,8 @@
         </aside>
         <h2>
             <span class="text">81 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">70<span class="text"> run</span></button>
-            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">11<span class="text"> missing</span></button>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">81<span class="text"> run</span></button>
+            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
         <p class="text">
@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="d_7ec6c45aa70b94eb_mod_collect_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.3.2">coverage.py v7.3.2</a>,
-            created at 2023-12-04 21:33 +0000
+            created at 2023-12-05 20:56 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"/>
@@ -180,15 +180,15 @@
     <p class="run"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t">            <span class="nam">names_to_typs</span><span class="op">.</span><span class="nam">put_local_typ</span><span class="op">(</span><span class="nam">varname</span><span class="op">,</span> <span class="nam">vartyp</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t">        <span class="key">return</span> <span class="nam">CollisionEnum</span><span class="op">.</span><span class="nam">NO_COLLISION</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t100" href="#t100">100</a></span><span class="t">    <span class="key">elif</span> <span class="nam">already_typ</span> <span class="op">!=</span> <span class="nam">vartyp</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">        <span class="nam">new_typ</span> <span class="op">=</span> <span class="nam">merge_typs</span><span class="op">(</span><span class="nam">already_typ</span><span class="op">,</span> <span class="nam">vartyp</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">        <span class="nam">names_to_typs</span><span class="op">.</span><span class="nam">update_varname</span><span class="op">(</span><span class="nam">varname</span><span class="op">,</span> <span class="nam">new_typ</span><span class="op">,</span> <span class="nam">source</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t103" href="#t103">103</a></span><span class="t">        <span class="key">match</span> <span class="nam">source</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t">            <span class="key">case</span> <span class="nam">VarNameSource</span><span class="op">.</span><span class="nam">LOCAL</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">                <span class="key">return</span> <span class="nam">CollisionEnum</span><span class="op">.</span><span class="nam">NO_COLLISION</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t106" href="#t106">106</a></span><span class="t">            <span class="key">case</span> <span class="nam">VarNameSource</span><span class="op">.</span><span class="nam">INPUT</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t107" href="#t107">107</a></span><span class="t">                <span class="key">return</span> <span class="nam">CollisionEnum</span><span class="op">.</span><span class="nam">INPUT_COLLISION</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t108" href="#t108">108</a></span><span class="t">            <span class="key">case</span> <span class="nam">VarNameSource</span><span class="op">.</span><span class="nam">GLOBAL</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t109" href="#t109">109</a></span><span class="t">                <span class="key">return</span> <span class="nam">CollisionEnum</span><span class="op">.</span><span class="nam">GLOBAL_COLLISION</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">        <span class="nam">new_typ</span> <span class="op">=</span> <span class="nam">merge_typs</span><span class="op">(</span><span class="nam">already_typ</span><span class="op">,</span> <span class="nam">vartyp</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t102" href="#t102">102</a></span><span class="t">        <span class="nam">names_to_typs</span><span class="op">.</span><span class="nam">update_varname</span><span class="op">(</span><span class="nam">varname</span><span class="op">,</span> <span class="nam">new_typ</span><span class="op">,</span> <span class="nam">source</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t103" href="#t103">103</a></span><span class="t">        <span class="key">match</span> <span class="nam">source</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t104" href="#t104">104</a></span><span class="t">            <span class="key">case</span> <span class="nam">VarNameSource</span><span class="op">.</span><span class="nam">LOCAL</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t105" href="#t105">105</a></span><span class="t">                <span class="key">return</span> <span class="nam">CollisionEnum</span><span class="op">.</span><span class="nam">NO_COLLISION</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t106" href="#t106">106</a></span><span class="t">            <span class="key">case</span> <span class="nam">VarNameSource</span><span class="op">.</span><span class="nam">INPUT</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t107" href="#t107">107</a></span><span class="t">                <span class="key">return</span> <span class="nam">CollisionEnum</span><span class="op">.</span><span class="nam">INPUT_COLLISION</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t108" href="#t108">108</a></span><span class="t">            <span class="key">case</span> <span class="nam">VarNameSource</span><span class="op">.</span><span class="nam">GLOBAL</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t109" href="#t109">109</a></span><span class="t">                <span class="key">return</span> <span class="nam">CollisionEnum</span><span class="op">.</span><span class="nam">GLOBAL_COLLISION</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t110" href="#t110">110</a></span><span class="t">    <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t111" href="#t111">111</a></span><span class="t">        <span class="key">return</span> <span class="nam">CollisionEnum</span><span class="op">.</span><span class="nam">NO_COLLISION</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t112" href="#t112">112</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -225,9 +225,9 @@
     <p class="pln"><span class="n"><a id="t143" href="#t143">143</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t144" href="#t144">144</a></span><span class="t">        <span class="key">match</span> <span class="nam">coll</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t145" href="#t145">145</a></span><span class="t">            <span class="key">case</span> <span class="nam">CollisionEnum</span><span class="op">.</span><span class="nam">INPUT_COLLISION</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t146" href="#t146">146</a></span><span class="t">                <span class="nam">colliding_input_varnames</span><span class="op">.</span><span class="nam">add</span><span class="op">(</span><span class="nam">varname</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t146" href="#t146">146</a></span><span class="t">                <span class="nam">colliding_input_varnames</span><span class="op">.</span><span class="nam">add</span><span class="op">(</span><span class="nam">varname</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t147" href="#t147">147</a></span><span class="t">            <span class="key">case</span> <span class="nam">CollisionEnum</span><span class="op">.</span><span class="nam">GLOBAL_COLLISION</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t148" href="#t148">148</a></span><span class="t">                <span class="nam">colliding_global_varnames</span><span class="op">.</span><span class="nam">add</span><span class="op">(</span><span class="nam">varname</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t148" href="#t148">148</a></span><span class="t">                <span class="nam">colliding_global_varnames</span><span class="op">.</span><span class="nam">add</span><span class="op">(</span><span class="nam">varname</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t149" href="#t149">149</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t150" href="#t150">150</a></span><span class="t">        <span class="key">if</span> <span class="nam">hasattr</span><span class="op">(</span><span class="nam">stat</span><span class="op">,</span> <span class="str">'body'</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t151" href="#t151">151</a></span><span class="t">            <span class="nam">collect_from_ast_body</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
@@ -285,7 +285,7 @@
             <a id="nextFileLink" class="nav" href="d_7ec6c45aa70b94eb_mod_collect_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.3.2">coverage.py v7.3.2</a>,
-            created at 2023-12-04 21:33 +0000
+            created at 2023-12-05 20:56 +0000
         </p>
     </div>
 </footer>
