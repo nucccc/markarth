@@ -20,7 +20,7 @@
 | markarth/convert/preprocess/code\_process.py          |       32 |        2 |     94% |     49-50 |
 | markarth/convert/typs/\_\_init\_\_.py                 |        0 |        0 |    100% |           |
 | markarth/convert/typs/merge\_typs.py                  |       27 |        0 |    100% |           |
-| markarth/convert/typs/names\_to\_typs.py              |      102 |       23 |     77% |63, 135-136, 148, 152, 156, 160-166, 197, 219-227 |
+| markarth/convert/typs/names\_to\_typs.py              |      102 |        1 |     99% |       197 |
 | markarth/convert/typs/typs.py                         |       98 |        5 |     95% |41, 60, 98, 185-186 |
 | markarth/convert/typs/typs\_parse.py                  |        6 |        0 |    100% |           |
 | tests/conftest.py                                     |       43 |        5 |     88% |86, 98-99, 128-129 |
@@ -33,10 +33,10 @@
 | tests/test\_func\_collect.py                          |       72 |        0 |    100% |           |
 | tests/test\_merge\_typs.py                            |      100 |        0 |    100% |           |
 | tests/test\_mod\_collect.py                           |       69 |        0 |    100% |           |
-| tests/test\_names\_to\_typs.py                        |       89 |        0 |    100% |           |
+| tests/test\_names\_to\_typs.py                        |      113 |        0 |    100% |           |
 | tests/test\_typs.py                                   |       96 |        0 |    100% |           |
 | tests/test\_typs\_parse.py                            |       18 |        0 |    100% |           |
-|                                             **TOTAL** | **1341** |   **43** | **97%** |           |
+|                                             **TOTAL** | **1365** |   **21** | **98%** |           |
 
 
 ## Setup coverage badge
