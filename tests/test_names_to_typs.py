@@ -60,6 +60,8 @@ def test_dict_type_store():
     assert d_typ is None
 
     assert len(tp) == 2
+    assert tp.size() == 2
+
 
 def test_names_to_typs():
 
@@ -142,52 +144,54 @@ def test_names_to_typs():
     assert wtg.get_varname_typ('k') is None
     assert wtg.get_varname_typ('l') is None
 
-    #wtg.delete_varname('a')
-
-    #assert wtg.get_varname_type('a') is None
-
-    #v1_tp.delete_name('a')
-
-    #assert wtg.get_varname_type('a') is None
-    #assert wtg.get_varname_type('b') == 'float'
-    #assert wtg.get_varname_type('c') == 'float'
-    #assert wtg.get_varname_type('d') == 'float'
-    #assert wtg.get_varname_type('e') == 'int'
-    #assert wtg.get_varname_type('f') == 'int' '''
-
-'''def test_py2cy_dict_store():
-    origin_type_store=names_to_typs.DictTypStore()
-    origin_type_store.add_type('an_int', 'int')
-    origin_type_store.add_type('a_float', 'float')
-    origin_type_store.add_type('a_whatever', 'whatever')
-    origin_type_store.add_type('a_bool', 'bool')
-
-    py2cy_map={
-        'int':'long',
-        'float':'float',
-        'bool':'char',
-    }
-    new_type_store = names_to_typs.py2cy_dict_store(
-        origin_type_store=origin_type_store,
-        py2cy_map=py2cy_map
+    a_typ = wtg.get_varname_typ(
+        varname = 'a',
+        source = names_to_typs.VarNameSource.LOCAL
     )
-    assert len(new_type_store) == 3
-    assert new_type_store.size() == 3
-    assert new_type_store.get_type('an_int') == 'long'
-    assert new_type_store.get_type('a_float') == 'float'
-    assert new_type_store.get_type('a_bool') == 'char'
+    assert a_typ is not None
+    assert a_typ.is_int()
 
-    py2cy_map={
-        'int':'int',
-        'float':'double',
-        'bool':'char',
-    }
-    new_type_store = names_to_typs.py2cy_dict_store(
-        origin_type_store=origin_type_store,
-        py2cy_map=py2cy_map
+    a_typ = wtg.get_varname_typ(
+        varname = 'a',
+        source = names_to_typs.VarNameSource.GLOBAL
     )
-    assert len(new_type_store) == 3
-    assert new_type_store.size() == 3
-    assert new_type_store.get_type('an_int') == 'int'
-    assert new_type_store.get_type('a_float') == 'double'
-    assert new_type_store.get_type('a_bool') == 'char' '''
+    assert a_typ is None
+
+    d_typ = wtg.get_varname_typ(
+        varname = 'd',
+        source = names_to_typs.VarNameSource.INPUT
+    )
+    assert d_typ is not None
+    assert d_typ.is_float()
+
+    d_typ = wtg.get_varname_typ(
+        varname = 'd',
+        source = names_to_typs.VarNameSource.GLOBAL
+    )
+    assert d_typ is None
+
+    g_typ = wtg.get_varname_typ(
+        varname = 'g',
+        source = names_to_typs.VarNameSource.GLOBAL
+    )
+    assert g_typ is not None
+    assert g_typ.is_float()
+
+    g_typ = wtg.get_varname_typ(
+        varname = 'g',
+        source = names_to_typs.VarNameSource.INPUT
+    )
+    assert g_typ is None
+
+    wtg._update_varname_no_source('a', TypAny())
+    wtg._update_varname_no_source('d', TypAny())
+    wtg._update_varname_no_source('g', TypAny())
+
+    assert wtg.get_local_varname_typ('a') is not None
+    assert wtg.get_local_varname_typ('a').is_any()
+
+    assert wtg.get_input_varname_typ('d') is not None
+    assert wtg.get_input_varname_typ('d').is_any()
+
+    assert wtg.get_global_varname_typ('g') is not None
+    assert wtg.get_global_varname_typ('g').is_any()

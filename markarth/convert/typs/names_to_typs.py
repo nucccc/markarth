@@ -152,7 +152,7 @@ class NamesToTyps():
         return self._input_typs.get_typ(varname)
     
 
-    def get_varname_typ_from_global(self, varname : str) -> Typ | None:
+    def get_global_varname_typ(self, varname : str) -> Typ | None:
         return self._global_typs.get_typ(varname)
     
     
