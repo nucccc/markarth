@@ -64,12 +64,12 @@ def test_typ_store_to_varnames_imposed_vars():
         typ_store = typ_store,
         default_cy_int=CyInt.INT,
         default_cy_float=CyFloat.FLOAT,
-        imposed_vars={'a':CyInt.LONG}
+        imposed_vars={'a':CyInt.LONG, 'b':CyFloat.DOUBLE}
     ))
 
     expected_tuples = {
         ('a', 'long'),
-        ('b', 'float'),
+        ('b', 'double'),
         ('c', 'char'),
     }
 
