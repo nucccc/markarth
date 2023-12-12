@@ -8,7 +8,8 @@ from markarth.convert.preprocess.code_process import (
     func_codelines,
     process_code,
     indentation_pattern,
-    ASTWithoutBody
+    ASTWithoutBody,
+    InvalidIndentation
 )
 from markarth.convert.collect.mod_collect import collect_func_defs
 
@@ -62,3 +63,16 @@ def test_indentation_pattern_ast_without_body():
 
     with pytest.raises(ASTWithoutBody) as ast_without_body:
         indentation_pattern(func_ast, codelines)
+
+
+def test_indentation_pattern_invalid_indentation_level():
+    code = '''
+def f():
+   this_code_is_nah = None
+'''
+
+    ast_nodes, codelines = process_code(code)
+    func_ast = ast_nodes.body[0]
+
+    with pytest.raises(InvalidIndentation) as ast_without_body:
+        indentation_pattern(func_ast, codelines, indent_level = 2)
