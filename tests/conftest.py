@@ -85,6 +85,52 @@ def code_mod4() -> str:
 def mod4() -> tuple[ast.Module, list[str]]:
     return code_process.process_code(source_mod4)
 
+# mod5 mostly addresses expressions representing assignments
+source_mod5 = '''
+a = 7
+b = c = d = 5
+e, f, g = fake_tuple()
+b += 3
+b -= 1
+c *= 3
+c /= 5
+'''
+
+@pytest.fixture
+def code_mod5() -> str:
+    return source_mod5
+
+@pytest.fixture
+def mod5() -> tuple[ast.Module, list[str]]:
+    return code_process.process_code(source_mod5)
+
+
+# mod6 regards a module with expressions not exactly being considerable
+# as assignments
+source_mod6 = '''
+import ast
+
+def func() -> bool:
+    return True
+
+def other_func(a : int = 4) -> int:
+    a *= 5
+    return a
+
+class a_class():
+
+    def __init__(self):
+        self.a = 6
+'''
+
+@pytest.fixture
+def code_mod6() -> str:
+    return source_mod5
+
+@pytest.fixture
+def mod6() -> tuple[ast.Module, list[str]]:
+    return code_process.process_code(source_mod6)
+
 source_statements1 = '''a = 7
 b = 5
 c = 3
