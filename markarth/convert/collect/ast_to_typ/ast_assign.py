@@ -4,11 +4,13 @@ maybe one day this could be a set of stuff to elegantly handle assignments
 
 import ast
 
+
 ASSIGN_TYPES = frozenset({
     ast.AnnAssign,
     ast.Assign,
     ast.AugAssign,
 })
+
 
 def is_assign(ast_expr : ast.AST) -> bool:
     '''

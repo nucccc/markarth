@@ -94,6 +94,7 @@ b += 3
 b -= 1
 c *= 3
 c /= 5
+h : float = 3.5
 '''
 
 @pytest.fixture
