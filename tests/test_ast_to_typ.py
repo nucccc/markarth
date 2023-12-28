@@ -142,9 +142,27 @@ def test_eval_op_typ():
     ).is_int()
 
     assert eval_op_typ(
+        op = ast.Mod(),
+        left_typ = typs.TypPrimitive( typs.PrimitiveCod.INT ),
+        right_typ = typs.TypPrimitive( typs.PrimitiveCod.INT )
+    ).is_int()
+
+    assert eval_op_typ(
         op = ast.Div(),
         left_typ = typs.TypPrimitive( typs.PrimitiveCod.INT ),
         right_typ = typs.TypPrimitive( typs.PrimitiveCod.INT )
+    ).is_float()
+
+    assert eval_op_typ(
+        op = ast.Add(),
+        left_typ = typs.TypPrimitive( typs.PrimitiveCod.FLOAT ),
+        right_typ = typs.TypPrimitive( typs.PrimitiveCod.INT )
+    ).is_float()
+
+    assert eval_op_typ(
+        op = ast.Add(),
+        left_typ = typs.TypPrimitive( typs.PrimitiveCod.INT ),
+        right_typ = typs.TypPrimitive( typs.PrimitiveCod.FLOAT )
     ).is_float()
 
 

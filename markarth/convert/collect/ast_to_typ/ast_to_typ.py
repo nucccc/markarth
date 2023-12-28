@@ -53,18 +53,17 @@ def typ_from_bin_op(
     '''
     typ_from_bin_op shall return a string out of some binary operation
     '''
-    left_type = ast_val_to_typ(binop.left, name_typs)
-    if not left_type.is_primitive():
-        return typs.TypAny()
-    right_type = ast_val_to_typ(binop.right, name_typs)
-    if not right_type.is_primitive():
-        return typs.TypAny()
-    # at this stage both types should be primitives
-    left_prim : typs.TypPrimitive = left_type
-    right_prim : typs.TypPrimitive = right_type
-    if left_prim.is_float() or right_prim.is_float() or type(binop.op) == ast.Div:
-        return typs.TypPrimitive( typs.PrimitiveCod.FLOAT )
-    return typs.TypPrimitive( typs.PrimitiveCod.INT )
+
+    left_typ = ast_val_to_typ(binop.left, name_typs)
+    right_typ = ast_val_to_typ(binop.right, name_typs)
+
+    op = binop.op
+
+    return eval_op_typ(
+        op = op,
+        left_typ = left_typ,
+        right_typ = right_typ
+    )
 
 
 def eval_op_typ(
