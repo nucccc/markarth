@@ -1,11 +1,15 @@
 import ast
+
+
 from markarth.convert.collect.ast_to_typ.ast_to_typ import (
     typ_from_bin_op,
     typ_from_constant,
     typ_from_iter,
     typ_from_call,
-    ast_val_to_typ
+    ast_val_to_typ,
+    eval_op_typ
 )
+from markarth.convert.typs import typs
 
 
 def test_ast_val_to_typ():
@@ -103,6 +107,45 @@ def test_type_from_bin_op():
     bin_op = op_mod.body[0].value
     t = typ_from_bin_op(bin_op)
     assert t.is_any()
+
+
+def test_eval_op_typ():
+    
+    assert eval_op_typ(
+        op = ast.Add(),
+        left_typ = typs.TypPrimitive( typs.PrimitiveCod.INT ),
+        right_typ = typs.TypAny()
+    ).is_any()
+
+    assert eval_op_typ(
+        op = ast.Add(),
+        left_typ = typs.TypAny(),
+        right_typ = typs.TypPrimitive( typs.PrimitiveCod.INT )
+    ).is_any()
+
+    assert eval_op_typ(
+        op = ast.Add(),
+        left_typ = typs.TypPrimitive( typs.PrimitiveCod.INT ),
+        right_typ = typs.TypPrimitive( typs.PrimitiveCod.INT )
+    ).is_int()
+
+    assert eval_op_typ(
+        op = ast.Sub(),
+        left_typ = typs.TypPrimitive( typs.PrimitiveCod.INT ),
+        right_typ = typs.TypPrimitive( typs.PrimitiveCod.INT )
+    ).is_int()
+
+    assert eval_op_typ(
+        op = ast.Mult(),
+        left_typ = typs.TypPrimitive( typs.PrimitiveCod.INT ),
+        right_typ = typs.TypPrimitive( typs.PrimitiveCod.INT )
+    ).is_int()
+
+    assert eval_op_typ(
+        op = ast.Div(),
+        left_typ = typs.TypPrimitive( typs.PrimitiveCod.INT ),
+        right_typ = typs.TypPrimitive( typs.PrimitiveCod.INT )
+    ).is_float()
 
 
 def test_typ_from_call():

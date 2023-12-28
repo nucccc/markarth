@@ -49,7 +49,7 @@ class AssignTypRes:
 
 
 def assigned_typs(
-    ast_expr : ast.AST,
+    ast_expr : ast.Assign | ast.AnnAssign | ast.AugAssign,
     name_typs : NamesToTyps | None = None
 ) -> AssignTypRes:
     '''
@@ -77,6 +77,10 @@ def assigned_typs(
                 target_store = assigned_typs,
                 val_typ = val_typ
             )
+    elif type(ast_expr) == ast.AugAssign:
+        target = ast_expr.target
+        # in such case it seems it is illegal for the target to be of
+        # tuple type, it will be of type name
     
     return AssignTypRes(
         assigned_typs = assigned_typs,

@@ -67,6 +67,27 @@ def typ_from_bin_op(
     return typs.TypPrimitive( typs.PrimitiveCod.INT )
 
 
+def eval_op_typ(
+    op : ast.Add | ast.Sub | ast.Mult | ast.Mult | ast.Div,
+    left_typ : typs.Typ,
+    right_typ : typs.Typ
+) -> typs.Typ:
+    '''
+    eval_op_typ shall return a typ from an ast op and two operands
+    '''
+    if not (left_typ.is_primitive() and right_typ.is_primitive()):
+        return typs.TypAny()
+    
+    if left_typ.is_str() and right_typ.is_str():
+        return typs.TypPrimitive( typs.PrimitiveCod.STR )
+    elif left_typ.is_str() or right_typ.is_str():
+        return typs.TypAny()
+    
+    if left_typ.is_float() or right_typ.is_float() or type(op) == ast.Div:
+        return typs.TypPrimitive( typs.PrimitiveCod.FLOAT )
+    return typs.TypPrimitive( typs.PrimitiveCod.INT )
+
+
 def typ_from_call(
         call : ast.Call,
         name_typs : NamesToTyps | None = None
