@@ -7,6 +7,10 @@ import ast
 from dataclasses import dataclass
 from enum import Enum
 
+from markarth.convert.collect.ast_to_typ.ast_assign import (
+    assigned_typs,
+    is_assign
+)
 from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_iter
 from markarth.convert.typs.names_to_typs import (
     DictTypStore,
@@ -126,11 +130,16 @@ def collect_from_ast_body(
     global_varnames : set[str]
 ):
     for stat in ast_body:
-        if type(stat) == ast.Assign:
-            varname = stat.targets[0].id # i hypothetize the assignment to be
-            vartyp = ast_val_to_typ(stat.value, names_to_typs)
-            # here i colelct the vartype found
-            coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
+        if is_assign(ast_expr = stat):
+            assign_result = assigned_typs(ast_expr = stat, name_typs = names_to_typs)
+
+            # TODO: handle in some way the annotation
+
+            for varname, vartyp in assign_result.assigned_typs.iter_typs():
+
+                # TODO: multiple collisions could happen
+
+                coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
         elif type(stat) == ast.For:
             # TODO: here some code should be place to verify that this thing actually has a name
             varname = stat.target.id
