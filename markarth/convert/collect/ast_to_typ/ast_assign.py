@@ -14,8 +14,11 @@ from dataclasses import dataclass
 from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ
 from markarth.convert.typs import typs
 from markarth.convert.typs.merge_typs import merge_typs
-from markarth.convert.typs.names_to_typs import TypStore, DictTypStore
-
+from markarth.convert.typs.names_to_typs import (
+    TypStore,
+    DictTypStore,
+    NamesToTyps
+)
 
 ASSIGN_TYPES = frozenset({
     ast.AnnAssign,
@@ -45,7 +48,10 @@ class AssignTypRes:
     annotation : typs.Typ | None = None
 
 
-def assigned_typs(ast_expr : ast.AST) -> AssignTypRes:
+def assigned_typs(
+    ast_expr : ast.AST,
+    name_typs : NamesToTyps | None = None
+) -> AssignTypRes:
     '''
     assigned_typs return an AssignTypRes from an assignment expression
     '''
@@ -53,7 +59,7 @@ def assigned_typs(ast_expr : ast.AST) -> AssignTypRes:
     # my assignment is not being annotated
     annotation = merge_typs(ast_expr.annotation.id) if type(ast_expr) == ast.AnnAssign else None
 
-    val_typ = ast_val_to_typ(ast_expr.value)
+    val_typ = ast_val_to_typ(ast_expr.value, name_typs)
 
     assigned_typs : TypStore = DictTypStore()
 

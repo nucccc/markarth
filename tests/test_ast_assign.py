@@ -24,7 +24,29 @@ def test_is_assignment(mod5, mod6):
 
 
 def test_assigned_typs():
-    pass
+    mod = ast.parse('a = b = c = 7')
+
+    assignment = mod.body[0]
+
+    result = assigned_typs(assignment)
+
+    assert result.annotation is None
+
+    typ_store = result.assigned_typs
+
+    assert len(typ_store) == 3
+
+    a_typ = typ_store.get_typ('a')
+    assert a_typ is not None
+    assert a_typ.is_int()
+
+    b_typ = typ_store.get_typ('b')
+    assert b_typ is not None
+    assert b_typ.is_int()
+
+    c_typ = typ_store.get_typ('c')
+    assert c_typ is not None
+    assert c_typ.is_int()
 
 
 def test_add_target_to_typ_store():
