@@ -11,9 +11,12 @@ import ast
 
 from dataclasses import dataclass
 
-from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ
+from markarth.convert.collect.ast_to_typ.ast_to_typ import (
+    ast_val_to_typ,
+    eval_op_typ
+)
 from markarth.convert.typs import typs
-from markarth.convert.typs.merge_typs import merge_typs
+from markarth.convert.typs.typs_parse import parse_type_str
 from markarth.convert.typs.names_to_typs import (
     TypStore,
     DictTypStore,
@@ -57,7 +60,7 @@ def assigned_typs(
     '''
     # obtaining the annotation I'm going to return, being none in case
     # my assignment is not being annotated
-    annotation = merge_typs(ast_expr.annotation.id) if type(ast_expr) == ast.AnnAssign else None
+    annotation = parse_type_str(ast_expr.annotation.id) if type(ast_expr) == ast.AnnAssign else None
 
     val_typ = ast_val_to_typ(ast_expr.value, name_typs)
 
@@ -78,9 +81,22 @@ def assigned_typs(
                 val_typ = val_typ
             )
     elif type(ast_expr) == ast.AugAssign:
-        target = ast_expr.target
         # in such case it seems it is illegal for the target to be of
         # tuple type, it will be of type name
+        target = ast_expr.target
+
+        target_var_name = target.id
+
+        left_typ = ast_val_to_typ(target, name_typs)
+        right_typ = ast_val_to_typ(ast_expr.value, name_typs)
+
+        val_typ = eval_op_typ(
+            op = ast_expr.op,
+            left_typ = left_typ,
+            right_typ = right_typ
+        )
+
+        assigned_typs.add_typ(target_var_name, val_typ)
     
     return AssignTypRes(
         assigned_typs = assigned_typs,
