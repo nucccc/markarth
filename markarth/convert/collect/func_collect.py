@@ -113,6 +113,23 @@ def _record_vartyp(
                 return CollisionEnum.GLOBAL_COLLISION
     else:
         return CollisionEnum.NO_COLLISION
+    
+
+def _record_collision(
+    varname : str,
+    collision_enum : CollisionEnum,
+    colliding_input_varnames : set[str],
+    colliding_global_varnames : set[str]
+) -> None:
+    '''
+    _record_collision evaluates the collision enum and accordingly eventually
+    add it to some sets
+    '''
+    match collision_enum:
+        case CollisionEnum.INPUT_COLLISION:
+            colliding_input_varnames.add(varname)
+        case CollisionEnum.GLOBAL_COLLISION:
+            colliding_global_varnames.add(varname)
 
 
 @dataclass
@@ -130,6 +147,7 @@ def collect_from_ast_body(
     global_varnames : set[str]
 ):
     for stat in ast_body:
+
         if is_assign(ast_expr = stat):
             assign_result = assigned_typs(ast_expr = stat, name_typs = names_to_typs)
 
@@ -137,24 +155,26 @@ def collect_from_ast_body(
 
             for varname, vartyp in assign_result.assigned_typs.iter_typs():
 
-                # TODO: multiple collisions could happen
-
                 coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
+                _record_collision(
+                    varname = varname,
+                    collision_enum = coll,
+                    colliding_input_varnames = colliding_input_varnames,
+                    colliding_global_varnames = colliding_global_varnames
+                )
+                
         elif type(stat) == ast.For:
             # TODO: here some code should be place to verify that this thing actually has a name
             varname = stat.target.id
             vartyp = typ_from_iter(stat.iter)
             # here i collect the vartype found
             coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
-        else:
-            varname = ''
-            coll = CollisionEnum.NO_COLLISION
-        
-        match coll:
-            case CollisionEnum.INPUT_COLLISION:
-                colliding_input_varnames.add(varname)
-            case CollisionEnum.GLOBAL_COLLISION:
-                colliding_global_varnames.add(varname)
+            _record_collision(
+                varname = varname,
+                collision_enum = coll,
+                colliding_input_varnames = colliding_input_varnames,
+                colliding_global_varnames = colliding_global_varnames
+            )
 
         if hasattr(stat, 'body'):
             collect_from_ast_body(
