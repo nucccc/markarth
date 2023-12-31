@@ -16,6 +16,7 @@ from markarth.convert.collect.func_collect import (
 )
 from markarth.convert.typs.names_to_typs import DictTypStore, TypStore
 from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_constant
+from markarth.convert.cythonize.cy_options import ModOpts, FuncOpts, gen_default_mod_opts
 
 # TODO: tests should be written for all of this
 
@@ -103,7 +104,8 @@ class ModCollectionResult:
 
 
 def mod_collect(
-    mod_ast : ast.Module
+    mod_ast : ast.Module,
+    mod_opts : ModOpts = gen_default_mod_opts()
 ) -> ModCollectionResult:
     '''
     
@@ -129,11 +131,15 @@ def mod_collect(
     for func_name, func_ast in func_asts.items():
         # TODO: when i remove a const candidate, then this can be taken into
         # account by the 
+        
+        func_opts : FuncOpts = mod_opts.get_f_opt_or_default(func_name)
+        
         local_coll_res = collect_local_typs(
             func_ast = func_ast,
             global_typs = const_candidates,
             call_typs = call_typs,
-            global_varnames = global_val_names
+            global_varnames = global_val_names,
+            ignore_assignment_annotations = func_opts.actual_ignore_assignment_annotations
         )
         func_colls[func_name] = local_coll_res
 

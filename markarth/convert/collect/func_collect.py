@@ -211,7 +211,8 @@ def collect_local_typs(
     func_ast : ast.FunctionDef,
     global_typs : TypStore = DictTypStore(),
     call_typs : TypStore = DictTypStore(),
-    global_varnames : set[str] = set()
+    global_varnames : set[str] = set(),
+    ignore_assignment_annotations : bool = False
 ) -> LocalCollectionResult:
     '''
     collect_local_typs
@@ -236,7 +237,8 @@ def collect_local_typs(
         names_to_typs = names_to_typs,
         colliding_input_varnames = colliding_input_varnames,
         colliding_global_varnames = colliding_global_varnames,
-        global_varnames = global_varnames
+        global_varnames = global_varnames,
+        ignore_assignment_annotations = ignore_assignment_annotations
     )
 
     return LocalCollectionResult(

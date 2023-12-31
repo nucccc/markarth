@@ -13,11 +13,11 @@ def convert_code(
     m_opts : ModOpts | None = None
 ) -> str:
     ast_mod, codelines = code_process.process_code(code)
-    
-    mod_collect_res = mod_collect(ast_mod)
 
     if m_opts is None:
         m_opts : ModOpts = gen_default_mod_opts()
+
+    mod_collect_res = mod_collect(ast_mod, m_opts)
 
     new_code = pure_cythonize(
         mod_ast = ast_mod,
