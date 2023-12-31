@@ -144,16 +144,37 @@ def collect_from_ast_body(
     names_to_typs : NamesToTyps,
     colliding_input_varnames : set[str],
     colliding_global_varnames : set[str],
-    global_varnames : set[str]
+    global_varnames : set[str],
+    ignore_assignment_annotations : bool = False
 ):
     for stat in ast_body:
 
         if is_assign(ast_expr = stat):
             assign_result = assigned_typs(ast_expr = stat, name_typs = names_to_typs)
 
-            # TODO: handle in some way the annotation
+            # handling the annotation by selectively setting the var_name var_typ
+            # generator according to ignoring the annotations
+            if ignore_assignment_annotations or assign_result.annotation is None:
+                # in case i'm set to ignore the annotation or no annotation
+                # was retrieved in the assignemnt, the generator corresponding
+                # is just going to be the varnames and the vartyps in the
+                # returned typstore
+                varname_vartyp_gen = (
+                    (varname, vartyp)
+                    for varname, vartyp
+                    in assign_result.assigned_typs.iter_typs()
+                )
+            else:
+                # in case i can use annotations and i have an annotation
+                # i just scroll through the variables (there should be only one
+                # actually) and relate them to the annotated typ
+                varname_vartyp_gen = (
+                    (varname, assign_result.annotation)
+                    for varname, _
+                    in assign_result.assigned_typs.iter_typs()
+                )
 
-            for varname, vartyp in assign_result.assigned_typs.iter_typs():
+            for varname, vartyp in varname_vartyp_gen:
 
                 coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
                 _record_collision(

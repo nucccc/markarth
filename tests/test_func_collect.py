@@ -150,6 +150,88 @@ b = 7
     assert colliding_global_varnames == {'b'}
 
 
+def test_collect_from_ast_body_with_annotations():
+    '''
+    test_collect_from_ast_body_with_annotations shall be a dedicated test
+    to when code has annotations and i want to see how the typ is taken
+    '''
+    code = 'a : int = 0.76'
+    ast_mod = ast.parse(code)
+    ast_body = ast_mod.body
+
+    # first the test is run with ignore assignment annotations
+
+    # empty names_to_typs
+    names_to_typs = NamesToTyps(
+        local_typs = DictTypStore(),
+        input_typs= DictTypStore(),
+        global_typs = DictTypStore(),
+        call_typs = DictTypStore()
+    )
+
+    colliding_input_varnames : set[str] = set()
+    colliding_global_varnames : set[str] = set()
+
+    print(names_to_typs)
+    print(names_to_typs._local_typs)
+    print(names_to_typs._input_typs)
+    print(names_to_typs._global_typs)
+    collect_from_ast_body(
+        ast_body = ast_body,
+        names_to_typs = names_to_typs,
+        colliding_input_varnames = colliding_input_varnames,
+        colliding_global_varnames = colliding_global_varnames,
+        global_varnames = set(),
+        ignore_assignment_annotations = False
+    )
+
+    assert len(colliding_input_varnames) == 0
+    assert len(colliding_global_varnames) == 0
+
+    a_typ = names_to_typs.get_local_varname_typ('a')
+    assert a_typ is not None
+    assert a_typ.is_int()
+
+    # second it is executed ignoring the assignment annotations
+
+    code = 'a : int = 0.76'
+    ast_mod = ast.parse(code)
+    ast_body = ast_mod.body
+
+    # empty names_to_typs
+    names_to_typs = NamesToTyps(
+        local_typs = DictTypStore(),
+        input_typs= DictTypStore(),
+        global_typs = DictTypStore(),
+        call_typs = DictTypStore()
+    )
+
+    colliding_input_varnames : set[str] = set()
+    colliding_global_varnames : set[str] = set()
+
+    print(len(names_to_typs._local_typs))
+    print(names_to_typs)
+    print(names_to_typs._local_typs)
+    print(names_to_typs._input_typs)
+    print(names_to_typs._global_typs)
+    collect_from_ast_body(
+        ast_body = ast_body,
+        names_to_typs = names_to_typs,
+        colliding_input_varnames = colliding_input_varnames,
+        colliding_global_varnames = colliding_global_varnames,
+        global_varnames = set(),
+        ignore_assignment_annotations = True
+    )
+
+    assert len(colliding_input_varnames) == 0
+    assert len(colliding_global_varnames) == 0
+
+    a_typ = names_to_typs.get_local_varname_typ('a')
+    print(a_typ.as_string())
+    assert a_typ is not None
+    assert a_typ.is_float()
+
+
 def test_func_collect1(func1):
     func_ast1, _ = func1
 
