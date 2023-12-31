@@ -15,6 +15,7 @@ class FuncOpts(BaseModel):
     internal_default_float_cytyp : CyFloat | None = Field(default = None, description='default c type to be used for integers')
     parent_mod : "ModOpts"
     imposed_vars : dict[str, CyInt | CyFloat] = Field(default=dict())
+    ignore_assignment_annotations : bool | None = Field(default = None, description='used to indicate if annotations in assignment need to be ignored')
 
 
     @property
@@ -29,6 +30,17 @@ class FuncOpts(BaseModel):
         if self.internal_default_float_cytyp is None:
             return self.parent_mod.default_float_cytyp
         return self.internal_default_float_cytyp
+    
+
+    @property
+    def actual_ignore_assignment_annotations(self) -> bool:
+        '''
+        since the field ignore_assignment_annotations could be none, this
+        property method shall be used to obtain an actual value
+        '''
+        if self.ignore_assignment_annotations is None:
+            return self.parent_mod.ignore_assignment_annotations
+        return self.ignore_assignment_annotations
 
 
 class ModOpts(BaseModel):
@@ -36,6 +48,7 @@ class ModOpts(BaseModel):
     default_float_cytyp : CyFloat = Field(default = CyFloat.FLOAT, description='default c type to be used for integers')
     imposed_consts : dict[str, CyInt | CyFloat] = Field(default=dict())
     funcs_opts : dict[str, FuncOpts] = Field(default=dict())
+    ignore_assignment_annotations : bool = Field(default = False, description='used to indicate if annotations in assignment need to be ignored')
 
 
     def gen_default_func_opt(self) -> FuncOpts:
