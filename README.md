@@ -8,12 +8,13 @@
 | markarth/convert/\_\_init\_\_.py                      |        0 |        0 |    100% |           |
 | markarth/convert/collect/\_\_init\_\_.py              |        0 |        0 |    100% |           |
 | markarth/convert/collect/ast\_to\_typ/\_\_init\_\_.py |        0 |        0 |    100% |           |
-| markarth/convert/collect/ast\_to\_typ/ast\_to\_typ.py |       54 |        0 |    100% |           |
-| markarth/convert/collect/func\_collect.py             |       81 |        0 |    100% |           |
-| markarth/convert/collect/mod\_collect.py              |       62 |        8 |     87% |47-51, 53, 62-63 |
+| markarth/convert/collect/ast\_to\_typ/ast\_assign.py  |       40 |        4 |     90% |   118-124 |
+| markarth/convert/collect/ast\_to\_typ/ast\_to\_typ.py |       57 |        2 |     96% |    81, 83 |
+| markarth/convert/collect/func\_collect.py             |       85 |        0 |    100% |           |
+| markarth/convert/collect/mod\_collect.py              |       54 |        2 |     96% |     53-54 |
 | markarth/convert/convert\_pure.py                     |       11 |        0 |    100% |           |
 | markarth/convert/cythonize/\_\_init\_\_.py            |        0 |        0 |    100% |           |
-| markarth/convert/cythonize/cy\_options.py             |       29 |        0 |    100% |           |
+| markarth/convert/cythonize/cy\_options.py             |       36 |        1 |     97% |        43 |
 | markarth/convert/cythonize/cy\_typs.py                |       28 |        0 |    100% |           |
 | markarth/convert/cythonize/pure.py                    |       86 |        0 |    100% |           |
 | markarth/convert/preprocess/\_\_init\_\_.py           |        0 |        0 |    100% |           |
@@ -23,20 +24,21 @@
 | markarth/convert/typs/names\_to\_typs.py              |      102 |        1 |     99% |       197 |
 | markarth/convert/typs/typs.py                         |       98 |        5 |     95% |41, 60, 98, 185-186 |
 | markarth/convert/typs/typs\_parse.py                  |        6 |        0 |    100% |           |
-| tests/conftest.py                                     |       43 |        5 |     88% |86, 98-99, 128-129 |
-| tests/test\_ast\_to\_typ.py                           |      100 |        0 |    100% |           |
+| tests/conftest.py                                     |       64 |        8 |     88% |86, 102, 129, 152, 165-166, 195-196 |
+| tests/test\_ast\_assign.py                            |       79 |        0 |    100% |           |
+| tests/test\_ast\_to\_typ.py                           |      111 |        0 |    100% |           |
 | tests/test\_code\_process.py                          |       27 |        0 |    100% |           |
-| tests/test\_convert\_pure.py                          |       24 |        0 |    100% |           |
+| tests/test\_convert\_pure.py                          |       32 |        0 |    100% |           |
 | tests/test\_cy\_opts.py                               |       22 |        0 |    100% |           |
 | tests/test\_cy\_typs.py                               |       10 |        0 |    100% |           |
 | tests/test\_cythonize\_pure.py                        |       54 |        0 |    100% |           |
-| tests/test\_func\_collect.py                          |       72 |        0 |    100% |           |
+| tests/test\_func\_collect.py                          |       97 |        0 |    100% |           |
 | tests/test\_merge\_typs.py                            |      100 |        0 |    100% |           |
 | tests/test\_mod\_collect.py                           |       69 |        0 |    100% |           |
 | tests/test\_names\_to\_typs.py                        |      113 |        0 |    100% |           |
 | tests/test\_typs.py                                   |       96 |        0 |    100% |           |
 | tests/test\_typs\_parse.py                            |       18 |        0 |    100% |           |
-|                                             **TOTAL** | **1365** |   **21** | **98%** |           |
+|                                             **TOTAL** | **1555** |   **25** | **98%** |           |
 
 
 ## Setup coverage badge
