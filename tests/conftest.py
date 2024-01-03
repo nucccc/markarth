@@ -126,11 +126,31 @@ class a_class():
 
 @pytest.fixture
 def code_mod6() -> str:
-    return source_mod5
+    return source_mod6
 
 @pytest.fixture
 def mod6() -> tuple[ast.Module, list[str]]:
     return code_process.process_code(source_mod6)
+
+
+source_mod7 = '''
+g_a = 7
+
+def f1() -> float:
+    a : float = 4
+    b = c = d = 1
+    b *= 4.7
+    return a
+'''
+
+@pytest.fixture
+def code_mod7() -> str:
+    return source_mod7
+
+@pytest.fixture
+def mod7() -> tuple[ast.Module, list[str]]:
+    return code_process.process_code(source_mod7)
+
 
 source_statements1 = '''a = 7
 b = 5

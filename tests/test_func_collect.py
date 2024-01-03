@@ -172,10 +172,6 @@ def test_collect_from_ast_body_with_annotations():
     colliding_input_varnames : set[str] = set()
     colliding_global_varnames : set[str] = set()
 
-    print(names_to_typs)
-    print(names_to_typs._local_typs)
-    print(names_to_typs._input_typs)
-    print(names_to_typs._global_typs)
     collect_from_ast_body(
         ast_body = ast_body,
         names_to_typs = names_to_typs,
@@ -209,11 +205,6 @@ def test_collect_from_ast_body_with_annotations():
     colliding_input_varnames : set[str] = set()
     colliding_global_varnames : set[str] = set()
 
-    print(len(names_to_typs._local_typs))
-    print(names_to_typs)
-    print(names_to_typs._local_typs)
-    print(names_to_typs._input_typs)
-    print(names_to_typs._global_typs)
     collect_from_ast_body(
         ast_body = ast_body,
         names_to_typs = names_to_typs,
@@ -227,7 +218,6 @@ def test_collect_from_ast_body_with_annotations():
     assert len(colliding_global_varnames) == 0
 
     a_typ = names_to_typs.get_local_varname_typ('a')
-    print(a_typ.as_string())
     assert a_typ is not None
     assert a_typ.is_float()
 

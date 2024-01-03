@@ -49,3 +49,20 @@ def test_convert_pure4(code_mod4):
     assert '    onono = cython.declare(cython.float)' in stuff_codelines
     assert '    m = cython.declare(cython.int)' in stuff_codelines
     assert '    sum = cython.declare(cython.int)' in stuff_codelines
+
+
+def test_convert_pure7(code_mod7):
+    converted_code = convert_code(code_mod7)
+
+    converted_ast , converted_codelines = process_code(converted_code)
+
+    func_asts = collect_func_defs(converted_ast)
+
+    stuff_codelines = func_codelines(
+        func_ast = func_asts['f1'],
+        codelines = converted_codelines
+    )
+
+    assert '    a = cython.declare(cython.float)' in stuff_codelines
+    assert '    c = cython.declare(cython.int)' in stuff_codelines
+    assert '    d = cython.declare(cython.int)' in stuff_codelines
