@@ -70,10 +70,11 @@ def filter_const_candidates_at_func(
     # walrus operators or something, also aug assign shall be kept into
     # account
     for stat in func_ast.body:
-        if type(stat) == ast.Assign:
-            for target in stat.targets:
-                varname = target.id
-                assert type(varname) == str
+        if is_assign(stat):
+
+            assign_result = assigned_typs(ast_expr = stat)
+
+            for varname, _ in assign_result.assigned_typs.iter_typs():
                 const_candidate_names.delete_name(varname)
     return const_candidate_names
 
@@ -175,7 +176,6 @@ def collect_from_ast_body(
                 )
 
             for varname, vartyp in varname_vartyp_gen:
-
                 coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
                 _record_collision(
                     varname = varname,

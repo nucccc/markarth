@@ -17,6 +17,10 @@ from markarth.convert.collect.func_collect import (
 from markarth.convert.typs.names_to_typs import DictTypStore, TypStore
 from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_constant
 from markarth.convert.cythonize.cy_options import ModOpts, FuncOpts, gen_default_mod_opts
+from markarth.convert.collect.ast_to_typ.ast_assign import (
+    assigned_typs,
+    is_assign
+)
 
 # TODO: tests should be written for all of this
 
@@ -38,30 +42,16 @@ def collect_const_candidates(mod_ast : ast.Module) -> DictTypStore:
 
     for stat in mod_ast.body:
 
-        match type(stat):
-            case ast.Assign:
-                target = stat.targets[0]
-                if type(target) == ast.Tuple:
-                    # in case i find any targets list which is bigger than one
-                    # for now i just ignore them, and consider them as
-                    # modified variables
-                    for t in target.elts:
-                        varname = t.id
-                        result.delete_name(varname)
-                        modified_vars.add(varname)
-                    continue
-            case ast.AnnAssign:
-                target = stat.target
-            case _:
-                continue
+        if is_assign(ast_expr = stat):
 
-        #val_typ = ast_val_to_typ(stat.value)
-        varname = target.id
-        if type(stat.value) == ast.Constant and result.get_typ(varname) is None and varname not in modified_vars:
-            result.add_typ(varname, typ_from_constant(stat.value))
-        else:
-            result.delete_name(varname)
-            modified_vars.add(varname)
+            assign_result = assigned_typs(ast_expr = stat)
+
+            for varname, vartyp in assign_result.assigned_typs.iter_typs():
+                if vartyp.is_primitive() and result.get_typ(varname) is None and varname not in modified_vars:
+                    result.add_typ(varname, vartyp)
+                else:
+                    result.delete_name(varname)
+                    modified_vars.add(varname)
 
     return result
 
