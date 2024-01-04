@@ -15,7 +15,6 @@ from markarth.convert.collect.func_collect import (
     LocalCollectionResult
 )
 from markarth.convert.typs.names_to_typs import DictTypStore, TypStore
-from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_constant
 from markarth.convert.cythonize.cy_options import ModOpts, FuncOpts, gen_default_mod_opts
 from markarth.convert.collect.ast_to_typ.ast_assign import (
     assigned_typs,
@@ -27,6 +26,10 @@ from markarth.convert.collect.ast_to_typ.ast_assign import (
 def collect_func_defs(
     mod_ast : ast.Module
 ) -> dict[str : ast.FunctionDef]:
+    '''
+    collect_func_defs returns a dictionary with the function definitions
+    contained in an ast module
+    '''
     f_colls : dict[str : ast.FunctionDef] = dict()
     for stat in mod_ast.body:
         if type(stat) == ast.FunctionDef:
@@ -88,6 +91,15 @@ def collect_call_typs(func_asts : Iterable[ast.FunctionDef]) -> DictTypStore:
 
 @dataclass
 class ModCollectionResult:
+    '''
+    ModCollectionResult stores the results of a type collection inside a module
+
+    global_typs: the typ store containing the typs of gloabal variables
+    func_colls: relates to every function name its collection result
+    func_asts: relates to every function name its ast function def
+
+    func_colls and func_asts are expected to have the same keys
+    '''
     global_typs : TypStore # these are supposed to be the typs collected from the module, the consts let's say, the global variables
     func_colls : dict[str, LocalCollectionResult]
     func_asts : dict[str, ast.FunctionDef]
@@ -98,7 +110,8 @@ def mod_collect(
     mod_opts : ModOpts = gen_default_mod_opts()
 ) -> ModCollectionResult:
     '''
-    
+    mod_collect returns the collection from and ast module ast_mod, given some
+    optional options mod_opts
     '''
     # okay so now what if i was to rewrite everything in straight procedural way?
     func_asts : dict[str, ast.FunctionDef] = collect_func_defs(mod_ast)

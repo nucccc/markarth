@@ -133,13 +133,6 @@ def _record_collision(
             colliding_global_varnames.add(varname)
 
 
-@dataclass
-class LocalCollectionResult:
-    local_typs : TypStore
-    colliding_input_varnames : set[str]
-    colliding_global_varnames : set[str]
-
-
 def collect_from_ast_body(
     ast_body : list[ast.AST],
     names_to_typs : NamesToTyps,
@@ -148,6 +141,16 @@ def collect_from_ast_body(
     global_varnames : set[str],
     ignore_assignment_annotations : bool = False
 ):
+    '''
+    collect_from_ast_body recursively checks inside a function body (which is
+    a list o ast nodes) to check its types
+
+    it is recursive in the sense that every element in a function that has
+    another body inside of it "like for example" a for loop
+
+    the function does not return anything specifically, but modifies inplace
+    the names_to_typs provided in input
+    '''
     for stat in ast_body:
 
         if is_assign(ast_expr = stat):
@@ -207,6 +210,23 @@ def collect_from_ast_body(
             )
 
 
+@dataclass
+class LocalCollectionResult:
+    '''
+    LocalCollectionResult is the aggregation of results to be returned
+    from the collection of typs in a function
+
+    local_typs : the typstore of typs of local variables
+    colliding_input_varnames : set of function input varnames which "collided"
+    colliding_global_varnames : set of global variables which "collided" (it is
+        expected to be empty as such collisions should have been already handled
+        before when global constants were checked)
+    '''
+    local_typs : TypStore
+    colliding_input_varnames : set[str]
+    colliding_global_varnames : set[str]
+
+
 def collect_local_typs(
     func_ast : ast.FunctionDef,
     global_typs : TypStore = DictTypStore(),
@@ -215,7 +235,7 @@ def collect_local_typs(
     ignore_assignment_annotations : bool = False
 ) -> LocalCollectionResult:
     '''
-    collect_local_typs
+    collect_local_typs collects the typs from a function
     '''
     local_typs = DictTypStore()
 
