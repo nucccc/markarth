@@ -35,10 +35,10 @@
 | tests/test\_func\_collect.py                          |       97 |        0 |    100% |           |
 | tests/test\_merge\_typs.py                            |      100 |        0 |    100% |           |
 | tests/test\_mod\_collect.py                           |       69 |        0 |    100% |           |
-| tests/test\_names\_to\_typs.py                        |      113 |        0 |    100% |           |
+| tests/test\_names\_to\_typs.py                        |      142 |        0 |    100% |           |
 | tests/test\_typs.py                                   |       96 |        0 |    100% |           |
 | tests/test\_typs\_parse.py                            |       18 |        0 |    100% |           |
-|                                             **TOTAL** | **1554** |   **25** | **98%** |           |
+|                                             **TOTAL** | **1583** |   **25** | **98%** |           |
 
 
 ## Setup coverage badge
