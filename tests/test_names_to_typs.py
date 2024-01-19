@@ -63,6 +63,53 @@ def test_dict_type_store():
     assert tp.size() == 2
 
 
+def test_repeated_dict_typ_store():
+    types_dict = {
+        'a' : TypAny(),
+        'b' : TypPrimitive(PrimitiveCod.INT),
+        'c' : TypPrimitive(PrimitiveCod.FLOAT)
+    }
+
+    tp1 = names_to_typs.DictTypStore(types_dict)
+
+    assert tp1.has('a')
+    assert tp1.has('b')
+    assert tp1.has('c')
+    assert not tp1.has('d')
+
+    '''types_dict = {
+        'e' : TypAny(),
+        'f' : TypPrimitive(PrimitiveCod.INT),
+        'g' : TypPrimitive(PrimitiveCod.FLOAT)
+    }'''
+
+    types_dict.pop('a')
+    types_dict.pop('b')
+    types_dict.pop('c')
+
+    types_dict['e'] = TypAny()
+    types_dict['f'] = TypPrimitive(PrimitiveCod.INT)
+    types_dict['g'] = TypPrimitive(PrimitiveCod.FLOAT)
+
+    tp2 = names_to_typs.DictTypStore(types_dict)
+
+    assert tp2.has('e')
+    assert tp2.has('f')
+    assert tp2.has('g')
+    assert not tp2.has('a')
+    assert not tp2.has('b')
+    assert not tp2.has('c')
+    assert not tp2.has('d')
+
+    assert tp1.has('a')
+    assert tp1.has('b')
+    assert tp1.has('c')
+    assert not tp1.has('d')
+    assert not tp1.has('e')
+    assert not tp1.has('f')
+    assert not tp1.has('g')
+
+
 def test_names_to_typs():
 
     v1_types_dict = {
