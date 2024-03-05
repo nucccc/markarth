@@ -32,6 +32,7 @@ def ast_val_to_typ(
             return supposed_typ
         if type(val) == ast.Call:
             return typ_from_call(val, name_typs)#name_typs.get_callname_type( val.func.id )
+    # by default this function returns any
     return typs.TypAny()
 
 
@@ -116,7 +117,7 @@ def typ_from_call(
 
 def typ_from_iter(iter_stat : ast.AST) -> typs.Typ:
     '''
-    type_from_iter shall get the type of a variable "extracted"
+    typ_from_iter shall get the type of a variable "extracted"
     out of an iterable statement
     '''
     if type(iter_stat) == ast.Call:
