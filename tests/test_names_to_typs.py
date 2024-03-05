@@ -77,12 +77,6 @@ def test_repeated_dict_typ_store():
     assert tp1.has('c')
     assert not tp1.has('d')
 
-    '''types_dict = {
-        'e' : TypAny(),
-        'f' : TypPrimitive(PrimitiveCod.INT),
-        'g' : TypPrimitive(PrimitiveCod.FLOAT)
-    }'''
-
     types_dict.pop('a')
     types_dict.pop('b')
     types_dict.pop('c')
