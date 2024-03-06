@@ -206,7 +206,8 @@ def collect_from_ast_body(
                 names_to_typs = names_to_typs,
                 colliding_input_varnames = colliding_input_varnames,
                 colliding_global_varnames = colliding_global_varnames,
-                global_varnames = global_varnames
+                global_varnames = global_varnames,
+                ignore_assignment_annotations = ignore_assignment_annotations
             )
 
 
