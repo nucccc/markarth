@@ -2,6 +2,8 @@ import pytest
 
 from markarth.convert.typs import typs
 
+# TODO: wouldn't it be good to test also quelity comparisons
+
 def test_str_to_prim_cod():
     assert typs.str_to_prim_cod('bool') == typs.PrimitiveCod.BOOL
     assert typs.str_to_prim_cod('float') == typs.PrimitiveCod.FLOAT
