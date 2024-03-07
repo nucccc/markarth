@@ -90,4 +90,32 @@ class VarTypTracker:
     
 
     def add_local_typ(self, varname : str, vartyp : Typ):
+        '''
+        add_local_typ adds a typ to the local typstore
+        '''
         self.local_typs.add_typ(name = varname, typ = vartyp)
+
+    
+    def _typ_store_from_origin(self, origin : VarOrigin) -> TypStore:
+        '''
+        _typ_store_from_origin returns a reference to an internal typstore given an
+        origin
+        '''
+        match origin:
+            case VarOrigin.LOCAL:
+                return self.local_typs
+            case VarOrigin.INPUT:
+                return self.input_typs
+            case VarOrigin.OUTER:
+                return self.outer_typs
+
+
+    def update_vartyp(self, varname : str, vartyp : Typ, origin : VarOrigin):
+        '''
+        update_vartyp adds a vartyp given its origin, in the sense that the origin
+        enum specifies the typstore to be updated, either local, input, or global
+        '''
+        typstore_to_update = self._typ_store_from_origin(origin = origin)
+        typstore_to_update.add_typ(name = varname, typ = vartyp)
+        # TODO: maybe noticing a collision would be good? or is it an upper level
+        # responsibility
