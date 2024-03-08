@@ -195,6 +195,15 @@ def test_get_call_typ():
     assert f_typ is None
 
 
+def test_typ_store_from_origin():
+
+    vtt = VarTypTracker()
+
+    assert vtt._typ_store_from_origin(VarOrigin.LOCAL) is vtt.local_typs
+    assert vtt._typ_store_from_origin(VarOrigin.INPUT) is vtt.input_typs
+    assert vtt._typ_store_from_origin(VarOrigin.OUTER) is vtt.outer_typs
+
+
 def test_update_vartyp():
     '''
     test_update_vartyp tests the update method
