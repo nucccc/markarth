@@ -52,6 +52,7 @@ class VarTypTracker:
         self.call_typs : TypStore = call_typs if call_typs is not None else DEFAULT_TYP_STORE_TYPE()
         self.global_narnames : set[str] = global_narnames if global_narnames is not None else set()
 
+        self.input_collisions : set[str] = set()
 
     def get_vartyp_and_origin(self, varname : str) -> VarTypEOrigin | None:
         '''
@@ -119,3 +120,5 @@ class VarTypTracker:
         typstore_to_update.add_typ(name = varname, typ = vartyp)
         # TODO: maybe noticing a collision would be good? or is it an upper level
         # responsibility
+        if origin == VarOrigin.INPUT:
+            self.input_collisions.add(varname)
