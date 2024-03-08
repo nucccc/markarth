@@ -113,6 +113,17 @@ def test_typ_none():
     assert typ.as_string() == 'None'
 
 
+def test_typ_any():
+    typ = typs.TypAny()
+
+    assert not typ.is_none()
+    assert not typ.is_container()
+    assert not typ.is_primitive()
+    assert typ.is_any()
+
+    assert typ.as_string() == 'any'
+
+
 def test_typ_union():
     typ = typs.TypUnion()
 
