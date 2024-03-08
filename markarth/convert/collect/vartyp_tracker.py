@@ -114,8 +114,9 @@ class VarTypTracker:
     def update_vartyp(self, varname : str, vartyp : Typ, origin : VarOrigin):
         '''
         update_vartyp adds a vartyp given its origin, in the sense that the origin
-        enum specifies the typstore to be updated, either local, input, or global
+        enum specifies the typstore to be updated, either local, input, or outer
         '''
+        # NOTE: should this method ever be invoked with outer as an origin???
         typstore_to_update = self._typ_store_from_origin(origin = origin)
         typstore_to_update.add_typ(name = varname, typ = vartyp)
         # TODO: maybe noticing a collision would be good? or is it an upper level
