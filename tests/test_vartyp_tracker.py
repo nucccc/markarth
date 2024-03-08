@@ -167,6 +167,9 @@ def test_get_vartyp_and_origin_precedence():
 
 
 def test_get_call_typ():
+    '''
+    test_get_call_typ tests the calltyp out of the vartyptracker
+    '''
     
     vtt = VarTypTracker(
         call_typs=DictTypStore({
@@ -190,3 +193,43 @@ def test_get_call_typ():
 
     f_typ = vtt.get_call_typ('f4')
     assert f_typ is None
+
+
+def test_update_vartyp():
+    '''
+    test_update_vartyp tests the update method
+    '''
+
+    vtt = VarTypTracker(
+        input_typs=DictTypStore({
+            'i1' : TypPrimitive(PrimitiveCod.INT),
+        }),
+        outer_typs=DictTypStore({
+            'o1' : TypPrimitive(PrimitiveCod.INT),
+        })
+    )
+
+    vtt.add_local_typ(varname = 'l1', vartyp = TypPrimitive(PrimitiveCod.INT))
+
+
+    vtt.update_vartyp('l1', TypAny(), VarOrigin.LOCAL)
+
+    v_typ_e_origin = vtt.get_vartyp_and_origin('l1')
+    assert v_typ_e_origin is not None
+    assert v_typ_e_origin.typ.is_any()
+    assert v_typ_e_origin.origin == VarOrigin.LOCAL
+
+    
+    vtt.update_vartyp('i1', TypPrimitive(PrimitiveCod.FLOAT), VarOrigin.INPUT)
+
+    v_typ_e_origin = vtt.get_vartyp_and_origin('i1')
+    assert v_typ_e_origin is not None
+    assert v_typ_e_origin.typ.is_float()
+    assert v_typ_e_origin.origin == VarOrigin.INPUT
+
+    vtt.update_vartyp('o1', TypPrimitive(PrimitiveCod.FLOAT), VarOrigin.OUTER)
+
+    v_typ_e_origin = vtt.get_vartyp_and_origin('o1')
+    assert v_typ_e_origin is not None
+    assert v_typ_e_origin.typ.is_float()
+    assert v_typ_e_origin.origin == VarOrigin.OUTER
