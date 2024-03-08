@@ -164,3 +164,29 @@ def test_get_vartyp_and_origin_precedence():
     assert v_typ_e_origin is not None
     assert v_typ_e_origin.typ.is_float()
     assert v_typ_e_origin.origin == VarOrigin.INPUT
+
+
+def test_get_call_typ():
+    
+    vtt = VarTypTracker(
+        call_typs=DictTypStore({
+            'f1' : TypPrimitive(PrimitiveCod.INT),
+            'f2' : TypPrimitive(PrimitiveCod.FLOAT),
+            'f3' : TypPrimitive(PrimitiveCod.BOOL)
+        })
+    )
+
+    f_typ = vtt.get_call_typ('f1')
+    assert f_typ is not None
+    assert f_typ.is_int()
+
+    f_typ = vtt.get_call_typ('f2')
+    assert f_typ is not None
+    assert f_typ.is_float()
+
+    f_typ = vtt.get_call_typ('f3')
+    assert f_typ is not None
+    assert f_typ.is_bool()
+
+    f_typ = vtt.get_call_typ('f4')
+    assert f_typ is None

@@ -123,3 +123,10 @@ class VarTypTracker:
         # responsibility
         if origin == VarOrigin.INPUT:
             self.input_collisions.add(varname)
+
+    
+    def get_call_typ(self, callname : str) -> Typ | None:
+        '''
+        get_call_typ returns the typ for a given call
+        '''
+        return self.call_typs.get_typ(callname)
