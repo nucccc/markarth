@@ -59,7 +59,10 @@ def test_collect_func_def_data(mod3):
 def test_collect_const_candidates(mod3):
     mod_ast, _ = mod3
 
-    const_candidates = collect_const_candidates(mod_ast = mod_ast)
+    const_candidates = collect_const_candidates(
+        mod_ast = mod_ast,
+        all_global_varnames = set()
+    )
 
     assert len(const_candidates) == 2
 
@@ -77,7 +80,10 @@ def test_filter_const_candidates(mod3):
 
     func_asts = collect_func_defs(mod_ast = mod_ast)
 
-    const_candidates = collect_const_candidates(mod_ast = mod_ast)
+    const_candidates = collect_const_candidates(
+        mod_ast = mod_ast,
+        all_global_varnames = set()
+    )
     const_candidates = filter_const_candidates(
         const_candidate_names = const_candidates,
         f_colls = func_asts

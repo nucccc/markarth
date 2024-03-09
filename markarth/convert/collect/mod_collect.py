@@ -65,7 +65,8 @@ def collect_func_defs(
             f_colls[ func_name_from_ast(stat) ] = stat
     return f_colls
 
-def collect_const_candidates(mod_ast : ast.Module) -> DictTypStore:
+
+def collect_const_candidates(mod_ast : ast.Module, all_global_varnames : set[str]) -> DictTypStore:
     '''
     collect_const_candidates shall collect a dicitonary of const candidates
     '''
@@ -79,11 +80,15 @@ def collect_const_candidates(mod_ast : ast.Module) -> DictTypStore:
             assign_result = assigned_typs(ast_expr = stat)
 
             for varname, vartyp in assign_result.assigned_typs.iter_typs():
-                if vartyp.is_primitive() and result.get_typ(varname) is None and varname not in modified_vars:
-                    result.add_typ(varname, vartyp)
-                else:
-                    result.delete_name(varname)
-                    modified_vars.add(varname)
+                # checking if varname already is not il all global varnames,
+                # which would avoid any assignment from other functions possibly
+                # modifying the type of the variable
+                if varname not in all_global_varnames:
+                    if vartyp.is_primitive() and result.get_typ(varname) is None and varname not in modified_vars:
+                        result.add_typ(varname, vartyp)
+                    else:
+                        result.delete_name(varname)
+                        modified_vars.add(varname)
 
     return result
 
@@ -147,7 +152,12 @@ def mod_collect(
 
     funcs_data : dict[str, FuncDefData] = collect_func_def_data(mod_ast)
 
-    const_candidates = collect_const_candidates(mod_ast)
+    # all_global_varnames is going to be the overall set of global variable names
+    all_global_varnames : set[str] = set()
+    for func_data in funcs_data.values():
+        all_global_varnames = all_global_varnames.union(func_data.global_varnames)
+
+    const_candidates = collect_const_candidates(mod_ast, all_global_varnames)
 
     # before filtering stuff from const candidates, i shall save all the
     # keys in order to recall which ones were global variables, and thus
