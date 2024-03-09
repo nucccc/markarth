@@ -6,6 +6,7 @@ import ast
 
 from typing import Iterable
 
+
 def unnest_ast_statements(ast_node : ast.AST) -> Iterable[ast.AST]:
     '''
     unnest_ast_statements shall yield all statements within an
@@ -22,3 +23,12 @@ def unnest_ast_statements(ast_node : ast.AST) -> Iterable[ast.AST]:
             if hasattr(child, 'body'):
                 for gran_child in unnest_ast_statements(child):
                     yield gran_child
+
+
+def iter_func_defs(mod_ast : ast.Module) -> Iterable[ast.FunctionDef]:
+    '''
+    iter_func_defs iterates through all function defs in an ast module
+    '''
+    for stat in mod_ast.body:
+        if type(stat) == ast.FunctionDef:
+            yield stat
