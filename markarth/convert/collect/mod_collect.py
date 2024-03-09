@@ -16,7 +16,7 @@ from markarth.convert.collect.func_collect import (
     return_typ_from_ast,
     LocalCollectionResult
 )
-from markarth.convert.typs.typs import Typ
+from markarth.convert.typs.typs import Typ, TypAny
 from markarth.convert.typs.names_to_typs import DictTypStore, TypStore
 from markarth.convert.cythonize.cy_options import ModOpts, FuncOpts, gen_default_mod_opts
 from markarth.convert.collect.ast_to_typ.ast_assign import (
@@ -87,8 +87,16 @@ def collect_const_candidates(mod_ast : ast.Module, all_global_varnames : set[str
                     if vartyp.is_primitive() and result.get_typ(varname) is None and varname not in modified_vars:
                         result.add_typ(varname, vartyp)
                     else:
+                        # TODO: optionally maybe also here there could be the
+                        # need to have a variable considered as any in case of
+                        # modification
                         result.delete_name(varname)
                         modified_vars.add(varname)
+                # by default global variable names are treated as any, as there
+                # is no check regarding possible type modifications inside
+                # function bodies
+                else:
+                    result.add_typ(varname, TypAny())
 
     return result
 
