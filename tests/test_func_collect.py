@@ -7,6 +7,7 @@ from markarth.convert.collect.func_collect import (
     input_typs_from_ast,
     filter_const_candidates_at_func,
     return_typ_from_ast,
+    collect_func_globals,
     collect_local_typs,
     collect_from_ast_body,
     _record_vartyp,
@@ -64,6 +65,22 @@ def test_filter_const_candidates_at_func(func2):
     assert len(global_typs) == 1
     assert 'c' not in global_typs
     assert 'd' in global_typs
+
+
+def test_collect_func_globals(mod8):
+    '''
+    test_collect_func_globals tests the capability to collect global varnames
+    from a function
+    '''
+    mod_ast, _ = mod8
+    func_ast = mod_ast.body[4]
+
+    # this assert does not serve any testing purpose, just asserts that the
+    # correct ast node is taken into account
+    assert type(func_ast) is ast.FunctionDef
+
+    global_varnames : set[str] = collect_func_globals(func_ast)
+    assert global_varnames == {'o1', 'o2', 'o3'}
 
 
 def test_record_vartyp():

@@ -7,6 +7,7 @@ import ast
 from dataclasses import dataclass
 from enum import Enum
 
+from markarth.ast_utils.ast_utils import unnest_ast_statements
 from markarth.convert.collect.ast_to_typ.ast_assign import (
     assigned_typs,
     is_assign
@@ -77,6 +78,18 @@ def filter_const_candidates_at_func(
             for varname, _ in assign_result.assigned_typs.iter_typs():
                 const_candidate_names.delete_name(varname)
     return const_candidate_names
+
+
+def collect_func_globals(func_ast : ast.FunctionDef) -> set[str]:
+    '''
+    collect_func_globals collects global variables in a function
+    '''
+    result : set[str] = set()
+    for stat in unnest_ast_statements(ast_node=func_ast):
+        if type(stat) == ast.Global:
+            for varname in stat.names:
+                result.add(varname)
+    return result
 
 
 class CollisionEnum(Enum):

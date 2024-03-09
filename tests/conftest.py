@@ -152,6 +152,32 @@ def mod7() -> tuple[ast.Module, list[str]]:
     return code_process.process_code(source_mod7)
 
 
+source_mod8 = '''
+o1 = 1
+o2 = 2
+o3 = 3
+o4 = 4
+
+def f1() -> float:
+    global o1, o2
+    a : float = 4
+    if a >= 2:
+        global o3
+        o3 += a
+    b = c = d = 1
+    b *=o4
+    return a
+'''
+
+@pytest.fixture
+def code_mod8() -> str:
+    return source_mod8
+
+@pytest.fixture
+def mod8() -> tuple[ast.Module, list[str]]:
+    return code_process.process_code(source_mod8)
+
+
 source_statements1 = '''a = 7
 b = 5
 c = 3
