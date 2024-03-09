@@ -7,13 +7,16 @@ import ast
 from dataclasses import dataclass
 from typing import Iterable
 
+from markarth.ast_utils import iter_func_defs
 from markarth.convert.collect.func_collect import (
     func_name_from_ast,
     filter_const_candidates_at_func,
+    collect_func_globals,
     collect_local_typs,
     return_typ_from_ast,
     LocalCollectionResult
 )
+from markarth.convert.typs.typs import Typ
 from markarth.convert.typs.names_to_typs import DictTypStore, TypStore
 from markarth.convert.cythonize.cy_options import ModOpts, FuncOpts, gen_default_mod_opts
 from markarth.convert.collect.ast_to_typ.ast_assign import (
@@ -21,7 +24,33 @@ from markarth.convert.collect.ast_to_typ.ast_assign import (
     is_assign
 )
 
-# TODO: tests should be written for all of this
+@dataclass
+class FuncDefData:
+    func_ast: ast.FunctionDef
+    name : str
+    global_varnames : set[str]
+    return_typ : Typ
+
+
+def collect_func_def_data(mod_ast : ast.Module) -> dict[str, FuncDefData]:
+    '''
+    collect_func_def_data collects various data for functions definitions, it
+    returns them 
+    '''
+    result : dict[str, FuncDefData] = dict()
+    for func_ast in iter_func_defs(mod_ast):
+        func_name = func_name_from_ast(func_ast)
+        global_varnames = collect_func_globals(func_ast)
+        return_typ = return_typ_from_ast(func_ast)
+        result[func_name] = FuncDefData(
+            func_ast=func_ast,
+            name=func_name,
+            global_varnames=global_varnames,
+            return_typ=return_typ
+        )
+    return result
+
+
 
 def collect_func_defs(
     mod_ast : ast.Module
@@ -115,6 +144,8 @@ def mod_collect(
     '''
     # okay so now what if i was to rewrite everything in straight procedural way?
     func_asts : dict[str, ast.FunctionDef] = collect_func_defs(mod_ast)
+
+    funcs_data : dict[str, FuncDefData] = collect_func_def_data(mod_ast)
 
     const_candidates = collect_const_candidates(mod_ast)
 

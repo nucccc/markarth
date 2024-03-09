@@ -6,6 +6,8 @@ import pytest
 
 from markarth.convert.collect.mod_collect import (
     collect_func_defs,
+    FuncDefData,
+    collect_func_def_data,
     collect_const_candidates,
     filter_const_candidates,
     collect_call_typs,
@@ -22,6 +24,36 @@ def test_collect_func_defs(mod3):
     assert 'f1' in func_asts.keys()
     assert 'f2' in func_asts.keys()
     assert 'f3' in func_asts.keys()
+
+
+def test_collect_func_def_data(mod3):
+    mod_ast, _ = mod3
+
+    func_def_data : dict[str, FuncDefData] = collect_func_def_data(mod_ast)
+
+    assert len(func_def_data) == 3
+
+    f_data = func_def_data.get('f1', None)
+    assert f_data is not None
+    assert f_data.name == 'f1'
+    assert f_data.func_ast is mod_ast.body[2]
+    assert f_data.global_varnames == set()
+    assert f_data.return_typ.is_float()
+
+
+    f_data = func_def_data.get('f2', None)
+    assert f_data is not None
+    assert f_data.name == 'f2'
+    assert f_data.func_ast is mod_ast.body[3]
+    assert f_data.global_varnames == set()
+    assert f_data.return_typ.is_int()
+
+    f_data = func_def_data.get('f3', None)
+    assert f_data is not None
+    assert f_data.name == 'f3'
+    assert f_data.func_ast is mod_ast.body[4]
+    assert f_data.global_varnames == set()
+    assert f_data.return_typ.is_int()
 
 
 def test_collect_const_candidates(mod3):
