@@ -7,7 +7,7 @@ import ast
 from dataclasses import dataclass
 from enum import Enum
 
-from markarth.ast_utils.ast_utils import unnest_ast_statements
+from markarth.ast_utils.ast_utils import unnest_ast_statements, unnest_ast_body
 from markarth.convert.collect.ast_to_typ.ast_assign import (
     assigned_typs,
     is_assign
@@ -18,6 +18,11 @@ from markarth.convert.typs.names_to_typs import (
     TypStore,
     NamesToTyps,
     VarNameSource
+)
+from markarth.convert.collect.vartyp_tracker import (
+    VarOrigin,
+    VarTypEOrigin,
+    VarTypTracker,
 )
 from markarth.convert.typs.typs import Typ, TypAny
 from markarth.convert.typs.typs_parse import parse_type_str
@@ -83,26 +88,38 @@ class CollisionEnum(Enum):
 def _record_vartyp(
     varname : str,
     vartyp : Typ,
-    names_to_typs : NamesToTyps,
+    var_tracker : VarTypTracker,
     global_varnames : set[str] = set()
 ) -> CollisionEnum:
     '''
     _record_vartyp shall handle a new vartyp to the existing names_to_typs
     '''
-    already_typ, source = names_to_typs.get_varname_typ_and_source(varname)
-    if already_typ is None:
+    typ_e_origin : VarTypEOrigin = var_tracker.get_vartyp_and_origin(varname) #names_to_typs.get_varname_typ_and_source(varname)
+    if typ_e_origin is None:
         if varname not in global_varnames:
-            names_to_typs.put_local_typ(varname, vartyp)
+            var_tracker.add_local_typ(varname, vartyp)
+        # TODO: else there could be an error when running the python code
         return CollisionEnum.NO_COLLISION
+    already_typ = typ_e_origin.typ
+    var_origin = typ_e_origin.origin
+
+    # TODO: here there should be something to actually check if it's not global
+
+    if varname not in global_varnames and var_origin == VarOrigin.OUTER:
+        # here i should still handle this as if it was a local variable, as this
+        # is a local variable
+        var_tracker.add_local_typ(varname, vartyp)
+        return CollisionEnum.NO_COLLISION
+
     elif already_typ != vartyp:
         new_typ = merge_typs(already_typ, vartyp)
-        names_to_typs.update_varname(varname, new_typ, source)
-        match source:
-            case VarNameSource.LOCAL:
+        var_tracker.update_vartyp(varname, new_typ, var_origin)
+        match var_origin:
+            case VarOrigin.LOCAL:
                 return CollisionEnum.NO_COLLISION
-            case VarNameSource.INPUT:
+            case VarOrigin.INPUT:
                 return CollisionEnum.INPUT_COLLISION
-            case VarNameSource.GLOBAL:
+            case VarOrigin.OUTER:
                 return CollisionEnum.GLOBAL_COLLISION
     else:
         return CollisionEnum.NO_COLLISION
@@ -203,6 +220,49 @@ def collect_from_ast_body(
             )
 
 
+def collect_from_func_ast(
+    ast_body : list[ast.AST],
+    var_tracker : VarTypTracker,
+    global_varnames : set[str],
+    ignore_assignment_annotations : bool = False
+):
+    for stat in unnest_ast_body(ast_body):
+
+        if is_assign(ast_expr = stat):
+            assign_result = assigned_typs(ast_expr = stat, var_tracker = var_tracker)
+
+            # handling the annotation by selectively setting the var_name var_typ
+            # generator according to ignoring the annotations
+            if ignore_assignment_annotations or assign_result.annotation is None:
+                # in case i'm set to ignore the annotation or no annotation
+                # was retrieved in the assignemnt, the generator corresponding
+                # is just going to be the varnames and the vartyps in the
+                # returned typstore
+                varname_vartyp_gen = (
+                    (varname, vartyp)
+                    for varname, vartyp
+                    in assign_result.assigned_typs.iter_typs()
+                )
+            else:
+                # in case i can use annotations and i have an annotation
+                # i just scroll through the variables (there should be only one
+                # actually) and relate them to the annotated typ
+                varname_vartyp_gen = (
+                    (varname, assign_result.annotation)
+                    for varname, _
+                    in assign_result.assigned_typs.iter_typs()
+                )
+
+            for varname, vartyp in varname_vartyp_gen:
+                coll = _record_vartyp(varname, vartyp, var_tracker, global_varnames)
+
+        elif type(stat) == ast.For:
+            # TODO: here some code should be place to verify that this thing actually has a name
+            varname = stat.target.id
+            vartyp = typ_from_iter(stat.iter)
+            # here i collect the vartype found
+            coll = _record_vartyp(varname, vartyp, var_tracker, global_varnames)
+
 @dataclass
 class LocalCollectionResult:
     '''
@@ -230,32 +290,27 @@ def collect_local_typs(
     '''
     collect_local_typs collects the typs from a function
     '''
-    local_typs = DictTypStore()
 
     input_typs = input_typs_from_ast(func_ast)
 
     colliding_input_varnames : set[str] = set()
     colliding_global_varnames : set[str] = set()
 
-    # TODO: maybe a copy of
-    names_to_typs = NamesToTyps(
-        local_typs=local_typs,
+    var_tracker = VarTypTracker(
         input_typs=input_typs,
-        global_typs=global_typs,
+        outer_typs=global_typs,
         call_typs=call_typs
     )
 
-    collect_from_ast_body(
+    collect_from_func_ast(
         ast_body = func_ast.body,
-        names_to_typs = names_to_typs,
-        colliding_input_varnames = colliding_input_varnames,
-        colliding_global_varnames = colliding_global_varnames,
+        var_tracker = var_tracker,
         global_varnames = global_varnames,
         ignore_assignment_annotations = ignore_assignment_annotations
     )
 
     return LocalCollectionResult(
-        local_typs = local_typs,
+        local_typs = var_tracker.local_typs,
         colliding_input_varnames = colliding_input_varnames,
         colliding_global_varnames = colliding_global_varnames
     )

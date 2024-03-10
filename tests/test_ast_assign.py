@@ -7,7 +7,8 @@ from markarth.convert.collect.ast_to_typ.ast_assign import (
     assigned_typs,
     _add_target_to_typ_store
 )
-from markarth.convert.typs.names_to_typs import DictTypStore, NamesToTyps
+from markarth.convert.collect.vartyp_tracker import VarTypTracker
+from markarth.convert.typs.names_to_typs import DictTypStore
 from markarth.convert.typs import typs
 
 
@@ -86,11 +87,11 @@ def test_assigned_typs():
     assert a_typ.is_any()
 
     # testing an augmentation assign with names to typs with the variable
-    names_typs = NamesToTyps(
-        local_typs = DictTypStore(types_dict = {'a' : typs.TypPrimitive(typs.PrimitiveCod.FLOAT)})
-    )
+    var_tracker = VarTypTracker()
 
-    result = assigned_typs(assignment, names_typs)
+    var_tracker.add_local_typ('a', typs.TypPrimitive(typs.PrimitiveCod.FLOAT))
+
+    result = assigned_typs(assignment, var_tracker)
 
     assert result.annotation is None
     
@@ -103,11 +104,11 @@ def test_assigned_typs():
     assert a_typ.is_float()
 
     # testing an augmentation assign with names to typs without the variable
-    names_typs = NamesToTyps(
-        local_typs = DictTypStore(types_dict = {'b' : typs.TypPrimitive(typs.PrimitiveCod.FLOAT)})
-    )
+    var_tracker = VarTypTracker()
 
-    result = assigned_typs(assignment, names_typs)
+    var_tracker.add_local_typ('b', typs.TypPrimitive(typs.PrimitiveCod.FLOAT))
+
+    result = assigned_typs(assignment, var_tracker)
 
     assert result.annotation is None
     

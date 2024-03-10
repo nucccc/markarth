@@ -15,12 +15,12 @@ from markarth.convert.collect.ast_to_typ.ast_to_typ import (
     ast_val_to_typ,
     eval_op_typ
 )
+from markarth.convert.collect.vartyp_tracker import VarTypTracker
 from markarth.convert.typs import typs
 from markarth.convert.typs.typs_parse import parse_type_str
 from markarth.convert.typs.names_to_typs import (
     TypStore,
     DictTypStore,
-    NamesToTyps
 )
 
 ASSIGN_TYPES = frozenset({
@@ -53,7 +53,7 @@ class AssignTypRes:
 
 def assigned_typs(
     ast_expr : ast.Assign | ast.AnnAssign | ast.AugAssign,
-    name_typs : NamesToTyps | None = None
+    var_tracker : VarTypTracker | None = None
 ) -> AssignTypRes:
     '''
     assigned_typs return an AssignTypRes from an assignment expression
@@ -62,7 +62,7 @@ def assigned_typs(
     # my assignment is not being annotated
     annotation = parse_type_str(ast_expr.annotation.id) if type(ast_expr) == ast.AnnAssign else None
 
-    val_typ = ast_val_to_typ(ast_expr.value, name_typs)
+    val_typ = ast_val_to_typ(ast_expr.value, var_tracker)
 
     assigned_typs : TypStore = DictTypStore()
 
@@ -87,8 +87,8 @@ def assigned_typs(
 
         target_var_name = target.id
 
-        left_typ = ast_val_to_typ(target, name_typs)
-        right_typ = ast_val_to_typ(ast_expr.value, name_typs)
+        left_typ = ast_val_to_typ(target, var_tracker)
+        right_typ = ast_val_to_typ(ast_expr.value, var_tracker)
 
         val_typ = eval_op_typ(
             op = ast_expr.op,

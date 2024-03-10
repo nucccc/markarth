@@ -5,14 +5,15 @@ and obtain strings representing types out of them
 
 import ast
 
+from markarth.convert.collect.vartyp_tracker import VarTypTracker
 from markarth.convert.typs import typs
-from markarth.convert.typs.names_to_typs import NamesToTyps
 
 # TODO: just decide if these things can return a None or typ unknown
 
+
 def ast_val_to_typ(
         val : ast.AST,
-        name_typs : NamesToTyps | None = None
+        var_tracker : VarTypTracker | None = None
     ) -> typs.Typ:
     '''
     get_value_type shall take in input the value
@@ -20,10 +21,10 @@ def ast_val_to_typ(
     if type(val) == ast.Constant:
         return typ_from_constant(val)
     if type(val) == ast.BinOp:
-        return typ_from_bin_op(val, name_typs)
-    if name_typs is not None:
+        return typ_from_bin_op(val, var_tracker)
+    if var_tracker is not None:
         if type(val) == ast.Name:
-            supposed_typ = name_typs.get_varname_typ( val.id )
+            supposed_typ = var_tracker.get_vartyp( val.id )
             # i check if a value was actually present by checking for none
             # to be returned by the typstore, in such case i just return
             # any
@@ -31,7 +32,7 @@ def ast_val_to_typ(
                 return typs.TypAny() 
             return supposed_typ
         if type(val) == ast.Call:
-            return typ_from_call(val, name_typs)#name_typs.get_callname_type( val.func.id )
+            return typ_from_call(val, var_tracker)#var_tracker.get_callname_type( val.func.id )
     return typs.TypAny()
 
 
@@ -48,14 +49,14 @@ def typ_from_constant(const : ast.Constant) -> typs.TypPrimitive | typs.TypAny:
 
 def typ_from_bin_op(
         binop : ast.BinOp,
-        name_typs : NamesToTyps | None = None
+        var_tracker : VarTypTracker | None = None
     ) -> typs.Typ:
     '''
     typ_from_bin_op shall return a string out of some binary operation
     '''
 
-    left_typ = ast_val_to_typ(binop.left, name_typs)
-    right_typ = ast_val_to_typ(binop.right, name_typs)
+    left_typ = ast_val_to_typ(binop.left, var_tracker)
+    right_typ = ast_val_to_typ(binop.right, var_tracker)
 
     op = binop.op
 
@@ -89,7 +90,7 @@ def eval_op_typ(
 
 def typ_from_call(
         call : ast.Call,
-        name_typs : NamesToTyps | None = None
+        var_tracker : VarTypTracker | None = None
     ) -> typs.Typ:
     '''
     typ_from_call shall return the type from a function call - basically
@@ -108,8 +109,8 @@ def typ_from_call(
             return typs.TypPrimitive(typs.PrimitiveCod.FLOAT)
         case 'bool':
             return typs.TypPrimitive(typs.PrimitiveCod.BOOL)
-    if name_typs is not None:
-        call_type = name_typs.get_callname_typ(call_id)
+    if var_tracker is not None:
+        call_type = var_tracker.get_call_typ(call_id)
         if call_type is not None:
             return call_type
     return typs.TypAny()

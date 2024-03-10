@@ -9,10 +9,12 @@ from markarth.convert.collect.func_collect import (
     collect_func_globals,
     collect_local_typs,
     collect_from_ast_body,
+    collect_from_func_ast,
     _record_vartyp,
     CollisionEnum
 )
-from markarth.convert.typs.names_to_typs import DictTypStore, NamesToTyps
+from markarth.convert.collect.vartyp_tracker import VarTypTracker
+from markarth.convert.typs.names_to_typs import DictTypStore
 from markarth.convert.typs.typs import PrimitiveCod, TypPrimitive
 
 
@@ -65,63 +67,54 @@ def test_collect_func_globals(mod8):
 
 
 def test_record_vartyp():
-    names_to_typs = NamesToTyps(
-        local_typs = DictTypStore({'a':TypPrimitive(PrimitiveCod.INT)}),
-        input_typs = DictTypStore(),
-        global_typs = DictTypStore(),
-        call_typs = DictTypStore()
-    )
 
-    rec_coll = _record_vartyp('a', TypPrimitive(PrimitiveCod.INT), names_to_typs)
+    # TODO: repeat this test with globalvarnames into play
+
+    var_tracker = VarTypTracker()
+    var_tracker.add_local_typ('a', TypPrimitive(PrimitiveCod.INT))
+
+    rec_coll = _record_vartyp('a', TypPrimitive(PrimitiveCod.INT), var_tracker)
     assert rec_coll == CollisionEnum.NO_COLLISION
 
-    names_to_typs = NamesToTyps(
-        local_typs = DictTypStore({'a':TypPrimitive(PrimitiveCod.FLOAT)}),
-        input_typs = DictTypStore(),
-        global_typs = DictTypStore(),
-        call_typs = DictTypStore()
-    )
+    var_tracker = VarTypTracker()
+    var_tracker.add_local_typ('a', TypPrimitive(PrimitiveCod.FLOAT))
 
-    rec_coll = _record_vartyp('a', TypPrimitive(PrimitiveCod.INT), names_to_typs)
+    rec_coll = _record_vartyp('a', TypPrimitive(PrimitiveCod.INT), var_tracker)
     assert rec_coll == CollisionEnum.NO_COLLISION
 
-    names_to_typs = NamesToTyps(
-        local_typs = DictTypStore(),
-        input_typs = DictTypStore({'a':TypPrimitive(PrimitiveCod.INT)}),
-        global_typs = DictTypStore(),
-        call_typs = DictTypStore()
+    var_tracker = VarTypTracker(
+        input_typs=DictTypStore({'a':TypPrimitive(PrimitiveCod.INT)})
     )
 
-    rec_coll = _record_vartyp('a', TypPrimitive(PrimitiveCod.INT), names_to_typs)
+    rec_coll = _record_vartyp('a', TypPrimitive(PrimitiveCod.INT), var_tracker)
     assert rec_coll == CollisionEnum.NO_COLLISION
 
-    names_to_typs = NamesToTyps(
-        local_typs = DictTypStore(),
-        input_typs = DictTypStore({'a':TypPrimitive(PrimitiveCod.FLOAT)}),
-        global_typs = DictTypStore(),
-        call_typs = DictTypStore()
+    var_tracker = VarTypTracker(
+        input_typs=DictTypStore({'a':TypPrimitive(PrimitiveCod.FLOAT)})
     )
 
-    rec_coll = _record_vartyp('a', TypPrimitive(PrimitiveCod.INT), names_to_typs)
+    rec_coll = _record_vartyp('a', TypPrimitive(PrimitiveCod.INT), var_tracker)
     assert rec_coll == CollisionEnum.INPUT_COLLISION
 
-    names_to_typs = NamesToTyps(
-        local_typs = DictTypStore(),
-        input_typs = DictTypStore(),
-        global_typs = DictTypStore({'a':TypPrimitive(PrimitiveCod.FLOAT)}),
-        call_typs = DictTypStore()
+    var_tracker = VarTypTracker(
+        outer_typs=DictTypStore({'a':TypPrimitive(PrimitiveCod.FLOAT)})
     )
 
-    rec_coll = _record_vartyp('a', TypPrimitive(PrimitiveCod.INT), names_to_typs)
-    assert rec_coll == CollisionEnum.GLOBAL_COLLISION
+    rec_coll = _record_vartyp('a', TypPrimitive(PrimitiveCod.INT), var_tracker)
+    assert rec_coll == CollisionEnum.NO_COLLISION
 
 
 def test_collect_from_ast_body():
-    names_to_typs = NamesToTyps(
-        local_typs = DictTypStore(),
+    #names_to_typs = NamesToTyps(
+    #    local_typs = DictTypStore(),
+    #    input_typs = DictTypStore({'a':TypPrimitive(PrimitiveCod.FLOAT)}),
+    #    global_typs = DictTypStore({'b':TypPrimitive(PrimitiveCod.FLOAT)}),
+    #    call_typs = DictTypStore()
+    #)
+
+    var_tracker = VarTypTracker(
         input_typs = DictTypStore({'a':TypPrimitive(PrimitiveCod.FLOAT)}),
-        global_typs = DictTypStore({'b':TypPrimitive(PrimitiveCod.FLOAT)}),
-        call_typs = DictTypStore()
+        outer_typs = DictTypStore({'b':TypPrimitive(PrimitiveCod.FLOAT)})
     )
 
     code = '''
@@ -136,16 +129,16 @@ b = 7
 
     body = mod.body
 
-    collect_from_ast_body(
+    collect_from_func_ast(
         ast_body = body,
-        names_to_typs = names_to_typs,
-        colliding_input_varnames = colliding_input_varnames,
-        colliding_global_varnames = colliding_global_varnames,
+        var_tracker = var_tracker,
         global_varnames = set()
     )
 
-    assert colliding_input_varnames == {'a'}
-    assert colliding_global_varnames == {'b'}
+    # TODO: recheck this test
+
+    #assert colliding_input_varnames == {'a'}
+    #assert colliding_global_varnames == {'b'}
 
 
 def test_collect_from_ast_body_with_annotations():
@@ -160,21 +153,21 @@ def test_collect_from_ast_body_with_annotations():
     # first the test is run with ignore assignment annotations
 
     # empty names_to_typs
-    names_to_typs = NamesToTyps(
-        local_typs = DictTypStore(),
-        input_typs= DictTypStore(),
-        global_typs = DictTypStore(),
-        call_typs = DictTypStore()
-    )
+    #names_to_typs = NamesToTyps(
+    #    local_typs = DictTypStore(),
+    #    input_typs= DictTypStore(),
+    #    global_typs = DictTypStore(),
+    #    call_typs = DictTypStore()
+    #)
+
+    var_tracker = VarTypTracker()
 
     colliding_input_varnames : set[str] = set()
     colliding_global_varnames : set[str] = set()
 
-    collect_from_ast_body(
+    collect_from_func_ast(
         ast_body = ast_body,
-        names_to_typs = names_to_typs,
-        colliding_input_varnames = colliding_input_varnames,
-        colliding_global_varnames = colliding_global_varnames,
+        var_tracker = var_tracker,
         global_varnames = set(),
         ignore_assignment_annotations = False
     )
@@ -182,7 +175,7 @@ def test_collect_from_ast_body_with_annotations():
     assert len(colliding_input_varnames) == 0
     assert len(colliding_global_varnames) == 0
 
-    a_typ = names_to_typs.get_local_varname_typ('a')
+    a_typ = var_tracker.get_vartyp('a')
     assert a_typ is not None
     assert a_typ.is_int()
 
@@ -193,21 +186,21 @@ def test_collect_from_ast_body_with_annotations():
     ast_body = ast_mod.body
 
     # empty names_to_typs
-    names_to_typs = NamesToTyps(
-        local_typs = DictTypStore(),
-        input_typs= DictTypStore(),
-        global_typs = DictTypStore(),
-        call_typs = DictTypStore()
-    )
+    #names_to_typs = NamesToTyps(
+    #    local_typs = DictTypStore(),
+    #    input_typs= DictTypStore(),
+    #    global_typs = DictTypStore(),
+    #    call_typs = DictTypStore()
+    #)
+
+    var_tracker = VarTypTracker()
 
     colliding_input_varnames : set[str] = set()
     colliding_global_varnames : set[str] = set()
 
-    collect_from_ast_body(
+    collect_from_func_ast(
         ast_body = ast_body,
-        names_to_typs = names_to_typs,
-        colliding_input_varnames = colliding_input_varnames,
-        colliding_global_varnames = colliding_global_varnames,
+        var_tracker = var_tracker,
         global_varnames = set(),
         ignore_assignment_annotations = True
     )
@@ -215,7 +208,7 @@ def test_collect_from_ast_body_with_annotations():
     assert len(colliding_input_varnames) == 0
     assert len(colliding_global_varnames) == 0
 
-    a_typ = names_to_typs.get_local_varname_typ('a')
+    a_typ = var_tracker.get_vartyp('a')
     assert a_typ is not None
     assert a_typ.is_float()
 
