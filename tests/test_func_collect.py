@@ -5,7 +5,6 @@ import ast
 from markarth.convert.collect.func_collect import (
     func_name_from_ast,
     input_typs_from_ast,
-    filter_const_candidates_at_func,
     return_typ_from_ast,
     collect_func_globals,
     collect_local_typs,
@@ -47,24 +46,6 @@ def test_input_typs_from_ast(func2):
     b_typ = input_typs.get_typ('b')
     assert b_typ is not None
     assert b_typ.is_int()
-
-
-def test_filter_const_candidates_at_func(func2):
-    func_ast2, _ = func2
-
-    global_typs = DictTypStore({
-        'c' : TypPrimitive(PrimitiveCod.FLOAT),
-        'd' : TypPrimitive(PrimitiveCod.FLOAT)
-    })
-
-    global_typs = filter_const_candidates_at_func(
-        func_ast = func_ast2,
-        const_candidate_names = global_typs
-    )
-
-    assert len(global_typs) == 1
-    assert 'c' not in global_typs
-    assert 'd' in global_typs
 
 
 def test_collect_func_globals(mod8):

@@ -9,7 +9,6 @@ from markarth.convert.collect.mod_collect import (
     FuncDefData,
     collect_func_def_data,
     collect_const_candidates,
-    filter_const_candidates,
     collect_call_typs,
     mod_collect
 )
@@ -73,30 +72,6 @@ def test_collect_const_candidates(mod3):
     b_typ = const_candidates.get_typ('b')
     assert b_typ is not None
     assert b_typ.is_float()
-
-
-def test_filter_const_candidates(mod3):
-    mod_ast, _ = mod3
-
-    func_asts = collect_func_defs(mod_ast = mod_ast)
-
-    const_candidates = collect_const_candidates(
-        mod_ast = mod_ast,
-        all_global_varnames = set()
-    )
-    const_candidates = filter_const_candidates(
-        const_candidate_names = const_candidates,
-        f_colls = func_asts
-    )
-
-    assert len(const_candidates) == 1
-
-    a_typ = const_candidates.get_typ('a')
-    assert a_typ is not None
-    assert a_typ.is_int()
-
-    b_typ = const_candidates.get_typ('b')
-    assert b_typ is None
 
 
 def test_collect_call_typs(mod3):

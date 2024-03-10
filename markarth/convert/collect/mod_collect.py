@@ -10,7 +10,6 @@ from typing import Iterable
 from markarth.ast_utils import iter_func_defs
 from markarth.convert.collect.func_collect import (
     func_name_from_ast,
-    filter_const_candidates_at_func,
     collect_func_globals,
     collect_local_typs,
     return_typ_from_ast,
@@ -101,22 +100,6 @@ def collect_const_candidates(mod_ast : ast.Module, all_global_varnames : set[str
     return result
 
 
-def filter_const_candidates(
-    const_candidate_names : TypStore,
-    f_colls : dict[str, ast.FunctionDef]
-) -> TypStore:
-    '''
-    filter_const_candidates takes in input a dict type store of possible
-    candidate constants
-    '''
-    for func_ast in f_colls.values():
-        const_candidate_names = filter_const_candidates_at_func(
-            const_candidate_names,
-            func_ast
-        )
-    return const_candidate_names
-
-
 def collect_call_typs(func_asts : Iterable[ast.FunctionDef]) -> DictTypStore:
     '''
     yeah this shall return me the typstore representing the return types
@@ -174,8 +157,6 @@ def mod_collect(
         varname
         for varname, _  in const_candidates.iter_typs()
     }
-
-    # const_candidates = filter_const_candidates(const_candidates, func_asts)
 
     call_typs = collect_call_typs(func_asts.values())
 

@@ -59,27 +59,6 @@ def input_typs_from_ast(func_ast : ast.FunctionDef) -> TypStore:
     return input_typs
 
 
-def filter_const_candidates_at_func(
-    const_candidate_names : TypStore,
-    func_ast : ast.FunctionDef
-) -> TypStore:
-    '''
-    filter_const_candidates modifies the TypStore provided in input by
-    removing const candidates which went through a modification
-    '''
-    # TODO: check also for variables being set in for loops, who knows
-    # walrus operators or something, also aug assign shall be kept into
-    # account
-    for stat in func_ast.body:
-        if is_assign(stat):
-
-            assign_result = assigned_typs(ast_expr = stat)
-
-            for varname, _ in assign_result.assigned_typs.iter_typs():
-                const_candidate_names.delete_name(varname)
-    return const_candidate_names
-
-
 def collect_func_globals(func_ast : ast.FunctionDef) -> set[str]:
     '''
     collect_func_globals collects global variables in a function
