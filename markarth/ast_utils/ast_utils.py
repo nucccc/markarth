@@ -25,6 +25,14 @@ def unnest_ast_statements(ast_node : ast.AST) -> Iterable[ast.AST]:
                     yield gran_child
 
 
+def unnest_ast_body(ast_body : list[ast.AST]) -> Iterable[ast.AST]:
+    for stat in ast_body:
+        yield stat
+        if hasattr(stat, 'body'):
+            for child_stat in unnest_ast_body(stat.body):
+                yield child_stat
+
+
 def iter_func_defs(mod_ast : ast.Module) -> Iterable[ast.FunctionDef]:
     '''
     iter_func_defs iterates through all function defs in an ast module

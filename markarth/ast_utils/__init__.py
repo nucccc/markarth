@@ -1,1 +1,1 @@
-from .ast_utils import unnest_ast_statements, iter_func_defs
+from .ast_utils import unnest_ast_statements, unnest_ast_body, iter_func_defs
