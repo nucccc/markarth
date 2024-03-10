@@ -146,8 +146,8 @@ def test_cdeclares_ins_point(mod3):
     func_asts = collect_func_defs(mod_ast)
 
     assert cdeclares_ins_point(func_asts['f1']) == 5
-    assert cdeclares_ins_point(func_asts['f2']) == 10
-    assert cdeclares_ins_point(func_asts['f3']) == 14
+    assert cdeclares_ins_point(func_asts['f2']) == 11
+    assert cdeclares_ins_point(func_asts['f3']) == 15
 
 
 def test_sort_funcs_by_line(mod3):

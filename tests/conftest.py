@@ -42,6 +42,7 @@ source_mod3 = '''a = 7
 b = 3.4
 
 def f1(g : int) -> float:
+    global b
     res = b * g
     b = res
     return res

@@ -37,7 +37,7 @@ def test_collect_func_def_data(mod3):
     assert f_data is not None
     assert f_data.name == 'f1'
     assert f_data.func_ast is mod_ast.body[2]
-    assert f_data.global_varnames == set()
+    assert f_data.global_varnames == {'b'}
     assert f_data.return_typ.is_float()
 
 
@@ -128,14 +128,15 @@ def test_mod_collect(mod3):
     mod_coll_result = mod_collect(mod_ast)
 
     global_typs = mod_coll_result.global_typs
-    assert len(global_typs) == 1
+    assert len(global_typs) == 2
 
     a_typ = global_typs.get_typ('a')
     assert a_typ is not None
     assert a_typ.is_int()
 
     b_typ = global_typs.get_typ('b')
-    assert b_typ is None
+    assert b_typ is not None
+    assert b_typ.is_any()
 
     func_colls = mod_coll_result.func_colls
     assert len(func_colls) == 3

@@ -24,8 +24,9 @@ def test_func_codelines(mod3):
         codelines = codelines
     )
 
-    assert len(f1_codelines) == 3
+    assert len(f1_codelines) == 4
     assert f1_codelines == [
+        '    global b',
         '    res = b * g',
         '    b = res',
         '    return res'

@@ -69,6 +69,9 @@ def collect_func_defs(
 def collect_const_candidates(mod_ast : ast.Module, all_global_varnames : set[str]) -> DictTypStore:
     '''
     collect_const_candidates shall collect a dicitonary of const candidates
+
+    for instance if a variable gets modified then it will not be considered as
+    constant, its type will be 
     '''
     modified_vars : set[str] = set()
     result : DictTypStore = DictTypStore()
@@ -87,10 +90,7 @@ def collect_const_candidates(mod_ast : ast.Module, all_global_varnames : set[str
                     if vartyp.is_primitive() and result.get_typ(varname) is None and varname not in modified_vars:
                         result.add_typ(varname, vartyp)
                     else:
-                        # TODO: optionally maybe also here there could be the
-                        # need to have a variable considered as any in case of
-                        # modification
-                        result.delete_name(varname)
+                        result.add_typ(varname, TypAny())
                         modified_vars.add(varname)
                 # by default global variable names are treated as any, as there
                 # is no check regarding possible type modifications inside
@@ -175,7 +175,7 @@ def mod_collect(
         for varname, _  in const_candidates.iter_typs()
     }
 
-    const_candidates = filter_const_candidates(const_candidates, func_asts)
+    # const_candidates = filter_const_candidates(const_candidates, func_asts)
 
     call_typs = collect_call_typs(func_asts.values())
 
