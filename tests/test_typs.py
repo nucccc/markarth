@@ -150,3 +150,14 @@ def test_typ_union():
     t_float = typs.TypPrimitive(prim=typs.PrimitiveCod.FLOAT)
     typ.add_typ(t_float)
     assert len(typ.get_union_types) == 2
+
+    # testing now a typ union with another union
+
+    typ2 = typs.TypUnion()
+
+    typ2.add_typ(typs.TypPrimitive(typs.PrimitiveCod.FLOAT))
+    typ2.add_typ(typs.TypPrimitive(typs.PrimitiveCod.BOOL))
+
+    typ.add_typ(typ2)
+
+    assert len(typ.get_union_types) == 3
