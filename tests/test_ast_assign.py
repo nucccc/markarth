@@ -148,3 +148,31 @@ def test_add_target_to_typ_store():
     c_typ = typ_store.get_typ('c')
     assert c_typ is not None
     assert c_typ.is_int()
+
+
+def test_add_target_to_typ_store_tuple():
+    typ_store = DictTypStore()
+
+    mod = ast.parse('a, b, c = 7')
+
+    assignment = mod.body[0]
+
+    _add_target_to_typ_store(
+        target = assignment.targets[0],
+        target_store = typ_store,
+        val_typ = typs.TypPrimitive(typs.PrimitiveCod.INT)
+    )
+
+    assert len(typ_store) == 3
+
+    a_typ = typ_store.get_typ('a')
+    assert a_typ is not None
+    assert a_typ.is_any()
+
+    b_typ = typ_store.get_typ('b')
+    assert b_typ is not None
+    assert b_typ.is_any()
+
+    c_typ = typ_store.get_typ('c')
+    assert c_typ is not None
+    assert c_typ.is_any()
