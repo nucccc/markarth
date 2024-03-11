@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for markarth/convert/collect/ast_to_typ/ast_assign.py: 90%</title>
+    <title>Coverage for markarth/convert/collect/ast_to_typ/ast_assign.py: 100%</title>
     <link rel="icon" sizes="32x32" href="favicon_32.png">
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="coverage_html.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>markarth/convert/collect/ast_to_typ/ast_assign.py</b>:
-            <span class="pc_cov">90%</span>
+            <span class="pc_cov">100%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -54,18 +54,18 @@
             </div>
         </aside>
         <h2>
-            <span class="text">40 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">36<span class="text"> run</span></button>
-            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">4<span class="text"> missing</span></button>
+            <span class="text">41 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">41<span class="text"> run</span></button>
+            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
         <p class="text">
-            <a id="prevFileLink" class="nav" href="d_2c8d61aa8a59e62e___init___py.html">&#xab; prev</a> &nbsp; &nbsp;
+            <a id="prevFileLink" class="nav" href="d_6655413a47585fa7_ast_utils_py.html">&#xab; prev</a> &nbsp; &nbsp;
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="d_d2a917fad78f36fb_ast_to_typ_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.4.3">coverage.py v7.4.3</a>,
-            created at 2024-03-06 21:36 +0000
+            created at 2024-03-11 21:55 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"/>
@@ -97,12 +97,12 @@
     <p class="pln"><span class="n"><a id="t15" href="#t15">15</a></span><span class="t">    <span class="nam">ast_val_to_typ</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t16" href="#t16">16</a></span><span class="t">    <span class="nam">eval_op_typ</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t17" href="#t17">17</a></span><span class="t"><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t18" href="#t18">18</a></span><span class="t"><span class="key">from</span> <span class="nam">markarth</span><span class="op">.</span><span class="nam">convert</span><span class="op">.</span><span class="nam">typs</span> <span class="key">import</span> <span class="nam">typs</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t19" href="#t19">19</a></span><span class="t"><span class="key">from</span> <span class="nam">markarth</span><span class="op">.</span><span class="nam">convert</span><span class="op">.</span><span class="nam">typs</span><span class="op">.</span><span class="nam">typs_parse</span> <span class="key">import</span> <span class="nam">parse_type_str</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t20" href="#t20">20</a></span><span class="t"><span class="key">from</span> <span class="nam">markarth</span><span class="op">.</span><span class="nam">convert</span><span class="op">.</span><span class="nam">typs</span><span class="op">.</span><span class="nam">names_to_typs</span> <span class="key">import</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t21" href="#t21">21</a></span><span class="t">    <span class="nam">TypStore</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t">    <span class="nam">DictTypStore</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t23" href="#t23">23</a></span><span class="t">    <span class="nam">NamesToTyps</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t18" href="#t18">18</a></span><span class="t"><span class="key">from</span> <span class="nam">markarth</span><span class="op">.</span><span class="nam">convert</span><span class="op">.</span><span class="nam">collect</span><span class="op">.</span><span class="nam">vartyp_tracker</span> <span class="key">import</span> <span class="nam">VarTypTracker</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t19" href="#t19">19</a></span><span class="t"><span class="key">from</span> <span class="nam">markarth</span><span class="op">.</span><span class="nam">convert</span><span class="op">.</span><span class="nam">typs</span> <span class="key">import</span> <span class="nam">typs</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t20" href="#t20">20</a></span><span class="t"><span class="key">from</span> <span class="nam">markarth</span><span class="op">.</span><span class="nam">convert</span><span class="op">.</span><span class="nam">typs</span><span class="op">.</span><span class="nam">typs_parse</span> <span class="key">import</span> <span class="nam">parse_type_str</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t21" href="#t21">21</a></span><span class="t"><span class="key">from</span> <span class="nam">markarth</span><span class="op">.</span><span class="nam">convert</span><span class="op">.</span><span class="nam">typs</span><span class="op">.</span><span class="nam">typ_store</span> <span class="key">import</span> <span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t">    <span class="nam">TypStore</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t23" href="#t23">23</a></span><span class="t">    <span class="nam">DictTypStore</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t24" href="#t24">24</a></span><span class="t"><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t25" href="#t25">25</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t26" href="#t26">26</a></span><span class="t"><span class="nam">ASSIGN_TYPES</span> <span class="op">=</span> <span class="nam">frozenset</span><span class="op">(</span><span class="op">{</span>&nbsp;</span><span class="r"></span></p>
@@ -135,7 +135,7 @@
     <p class="pln"><span class="n"><a id="t53" href="#t53">53</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t54" href="#t54">54</a></span><span class="t"><span class="key">def</span> <span class="nam">assigned_typs</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t55" href="#t55">55</a></span><span class="t">    <span class="nam">ast_expr</span> <span class="op">:</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">Assign</span> <span class="op">|</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">AnnAssign</span> <span class="op">|</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">AugAssign</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t56" href="#t56">56</a></span><span class="t">    <span class="nam">name_typs</span> <span class="op">:</span> <span class="nam">NamesToTyps</span> <span class="op">|</span> <span class="key">None</span> <span class="op">=</span> <span class="key">None</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t56" href="#t56">56</a></span><span class="t">    <span class="nam">var_tracker</span> <span class="op">:</span> <span class="nam">VarTypTracker</span> <span class="op">|</span> <span class="key">None</span> <span class="op">=</span> <span class="key">None</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t57" href="#t57">57</a></span><span class="t"><span class="op">)</span> <span class="op">-></span> <span class="nam">AssignTypRes</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t58" href="#t58">58</a></span><span class="t">    <span class="str">'''</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t59" href="#t59">59</a></span><span class="t"><span class="str">    assigned_typs return an AssignTypRes from an assignment expression</span>&nbsp;</span><span class="r"></span></p>
@@ -144,7 +144,7 @@
     <p class="pln"><span class="n"><a id="t62" href="#t62">62</a></span><span class="t">    <span class="com"># my assignment is not being annotated</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t63" href="#t63">63</a></span><span class="t">    <span class="nam">annotation</span> <span class="op">=</span> <span class="nam">parse_type_str</span><span class="op">(</span><span class="nam">ast_expr</span><span class="op">.</span><span class="nam">annotation</span><span class="op">.</span><span class="nam">id</span><span class="op">)</span> <span class="key">if</span> <span class="nam">type</span><span class="op">(</span><span class="nam">ast_expr</span><span class="op">)</span> <span class="op">==</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">AnnAssign</span> <span class="key">else</span> <span class="key">None</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t64" href="#t64">64</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t65" href="#t65">65</a></span><span class="t">    <span class="nam">val_typ</span> <span class="op">=</span> <span class="nam">ast_val_to_typ</span><span class="op">(</span><span class="nam">ast_expr</span><span class="op">.</span><span class="nam">value</span><span class="op">,</span> <span class="nam">name_typs</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t65" href="#t65">65</a></span><span class="t">    <span class="nam">val_typ</span> <span class="op">=</span> <span class="nam">ast_val_to_typ</span><span class="op">(</span><span class="nam">ast_expr</span><span class="op">.</span><span class="nam">value</span><span class="op">,</span> <span class="nam">var_tracker</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t66" href="#t66">66</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t67" href="#t67">67</a></span><span class="t">    <span class="nam">assigned_typs</span> <span class="op">:</span> <span class="nam">TypStore</span> <span class="op">=</span> <span class="nam">DictTypStore</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t68" href="#t68">68</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -169,8 +169,8 @@
     <p class="pln"><span class="n"><a id="t87" href="#t87">87</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t88" href="#t88">88</a></span><span class="t">        <span class="nam">target_var_name</span> <span class="op">=</span> <span class="nam">target</span><span class="op">.</span><span class="nam">id</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t89" href="#t89">89</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t90" href="#t90">90</a></span><span class="t">        <span class="nam">left_typ</span> <span class="op">=</span> <span class="nam">ast_val_to_typ</span><span class="op">(</span><span class="nam">target</span><span class="op">,</span> <span class="nam">name_typs</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t91" href="#t91">91</a></span><span class="t">        <span class="nam">right_typ</span> <span class="op">=</span> <span class="nam">ast_val_to_typ</span><span class="op">(</span><span class="nam">ast_expr</span><span class="op">.</span><span class="nam">value</span><span class="op">,</span> <span class="nam">name_typs</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t90" href="#t90">90</a></span><span class="t">        <span class="nam">left_typ</span> <span class="op">=</span> <span class="nam">ast_val_to_typ</span><span class="op">(</span><span class="nam">target</span><span class="op">,</span> <span class="nam">var_tracker</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t91" href="#t91">91</a></span><span class="t">        <span class="nam">right_typ</span> <span class="op">=</span> <span class="nam">ast_val_to_typ</span><span class="op">(</span><span class="nam">ast_expr</span><span class="op">.</span><span class="nam">value</span><span class="op">,</span> <span class="nam">var_tracker</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t92" href="#t92">92</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t93" href="#t93">93</a></span><span class="t">        <span class="nam">val_typ</span> <span class="op">=</span> <span class="nam">eval_op_typ</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t94" href="#t94">94</a></span><span class="t">            <span class="nam">op</span> <span class="op">=</span> <span class="nam">ast_expr</span><span class="op">.</span><span class="nam">op</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
@@ -197,24 +197,24 @@
     <p class="run"><span class="n"><a id="t115" href="#t115">115</a></span><span class="t">    <span class="key">if</span> <span class="nam">type</span><span class="op">(</span><span class="nam">target</span><span class="op">)</span> <span class="op">==</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">Name</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t116" href="#t116">116</a></span><span class="t">        <span class="nam">var_name</span> <span class="op">=</span> <span class="nam">target</span><span class="op">.</span><span class="nam">id</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t117" href="#t117">117</a></span><span class="t">        <span class="nam">target_store</span><span class="op">.</span><span class="nam">add_typ</span><span class="op">(</span><span class="nam">var_name</span><span class="op">,</span> <span class="nam">val_typ</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t118" href="#t118">118</a></span><span class="t">    <span class="key">elif</span> <span class="nam">type</span><span class="op">(</span><span class="nam">target</span><span class="op">)</span> <span class="op">==</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">Tuple</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t119" href="#t119">119</a></span><span class="t">        <span class="key">for</span> <span class="nam">elt</span> <span class="key">in</span> <span class="nam">target</span><span class="op">.</span><span class="nam">elts</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t120" href="#t120">120</a></span><span class="t">            <span class="nam">var_name</span> <span class="op">=</span> <span class="nam">elt</span><span class="op">.</span><span class="nam">id</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t118" href="#t118">118</a></span><span class="t">    <span class="key">elif</span> <span class="nam">type</span><span class="op">(</span><span class="nam">target</span><span class="op">)</span> <span class="op">==</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">Tuple</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t119" href="#t119">119</a></span><span class="t">        <span class="key">for</span> <span class="nam">elt</span> <span class="key">in</span> <span class="nam">target</span><span class="op">.</span><span class="nam">elts</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t120" href="#t120">120</a></span><span class="t">            <span class="nam">var_name</span> <span class="op">=</span> <span class="nam">elt</span><span class="op">.</span><span class="nam">id</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t121" href="#t121">121</a></span><span class="t">            <span class="com"># TODO: in case of a tuple at the moment i just put an any as the</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t122" href="#t122">122</a></span><span class="t">            <span class="com"># typ, in the future a check on eventual container typs maybe shall</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t123" href="#t123">123</a></span><span class="t">            <span class="com"># be done</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t124" href="#t124">124</a></span><span class="t">            <span class="nam">target_store</span><span class="op">.</span><span class="nam">add_typ</span><span class="op">(</span><span class="nam">var_name</span><span class="op">,</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypAny</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t124" href="#t124">124</a></span><span class="t">            <span class="nam">target_store</span><span class="op">.</span><span class="nam">add_typ</span><span class="op">(</span><span class="nam">var_name</span><span class="op">,</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypAny</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t125" href="#t125">125</a></span><span class="t">    <span class="key">return</span> <span class="nam">target_store</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
         <p>
-            <a id="prevFileLink" class="nav" href="d_2c8d61aa8a59e62e___init___py.html">&#xab; prev</a> &nbsp; &nbsp;
+            <a id="prevFileLink" class="nav" href="d_6655413a47585fa7_ast_utils_py.html">&#xab; prev</a> &nbsp; &nbsp;
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="d_d2a917fad78f36fb_ast_to_typ_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.4.3">coverage.py v7.4.3</a>,
-            created at 2024-03-06 21:36 +0000
+            created at 2024-03-11 21:55 +0000
         </p>
     </div>
 </footer>

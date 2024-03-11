@@ -5,13 +5,16 @@
 | Name                                                  |    Stmts |     Miss |   Cover |   Missing |
 |------------------------------------------------------ | -------: | -------: | ------: | --------: |
 | markarth/\_\_init\_\_.py                              |        1 |        0 |    100% |           |
+| markarth/ast\_utils/\_\_init\_\_.py                   |        1 |        0 |    100% |           |
+| markarth/ast\_utils/ast\_utils.py                     |       19 |        0 |    100% |           |
 | markarth/convert/\_\_init\_\_.py                      |        0 |        0 |    100% |           |
 | markarth/convert/collect/\_\_init\_\_.py              |        0 |        0 |    100% |           |
 | markarth/convert/collect/ast\_to\_typ/\_\_init\_\_.py |        0 |        0 |    100% |           |
-| markarth/convert/collect/ast\_to\_typ/ast\_assign.py  |       40 |        4 |     90% |   118-124 |
-| markarth/convert/collect/ast\_to\_typ/ast\_to\_typ.py |       57 |        2 |     96% |    81, 83 |
-| markarth/convert/collect/func\_collect.py             |       85 |        0 |    100% |           |
-| markarth/convert/collect/mod\_collect.py              |       53 |        2 |     96% |     56-57 |
+| markarth/convert/collect/ast\_to\_typ/ast\_assign.py  |       41 |        0 |    100% |           |
+| markarth/convert/collect/ast\_to\_typ/ast\_to\_typ.py |       57 |        2 |     96% |    82, 84 |
+| markarth/convert/collect/func\_collect.py             |       81 |        2 |     98% |   120-121 |
+| markarth/convert/collect/mod\_collect.py              |       69 |        2 |     97% |     92-93 |
+| markarth/convert/collect/vartyp\_tracker.py           |       52 |        0 |    100% |           |
 | markarth/convert/convert\_pure.py                     |       11 |        0 |    100% |           |
 | markarth/convert/cythonize/\_\_init\_\_.py            |        0 |        0 |    100% |           |
 | markarth/convert/cythonize/cy\_options.py             |       36 |        1 |     97% |        43 |
@@ -21,12 +24,13 @@
 | markarth/convert/preprocess/code\_process.py          |       32 |        2 |     94% |     49-50 |
 | markarth/convert/typs/\_\_init\_\_.py                 |        0 |        0 |    100% |           |
 | markarth/convert/typs/merge\_typs.py                  |       27 |        0 |    100% |           |
-| markarth/convert/typs/names\_to\_typs.py              |      102 |        1 |     99% |       197 |
+| markarth/convert/typs/typ\_store.py                   |       34 |        5 |     85% |52-53, 63, 66, 69 |
 | markarth/convert/typs/typs.py                         |       98 |        5 |     95% |41, 60, 98, 185-186 |
 | markarth/convert/typs/typs\_parse.py                  |        6 |        0 |    100% |           |
-| tests/conftest.py                                     |       64 |        8 |     88% |86, 102, 129, 152, 165-166, 195-196 |
-| tests/test\_ast\_assign.py                            |       79 |        0 |    100% |           |
+| tests/conftest.py                                     |       71 |        8 |     89% |103, 130, 153, 175, 192-193, 222-223 |
+| tests/test\_ast\_assign.py                            |       97 |        0 |    100% |           |
 | tests/test\_ast\_to\_typ.py                           |      111 |        0 |    100% |           |
+| tests/test\_ast\_utils.py                             |       39 |        0 |    100% |           |
 | tests/test\_code\_process.py                          |       27 |        0 |    100% |           |
 | tests/test\_convert\_pure.py                          |       32 |        0 |    100% |           |
 | tests/test\_cy\_opts.py                               |       22 |        0 |    100% |           |
@@ -34,11 +38,11 @@
 | tests/test\_cythonize\_pure.py                        |       54 |        0 |    100% |           |
 | tests/test\_func\_collect.py                          |       97 |        0 |    100% |           |
 | tests/test\_merge\_typs.py                            |      100 |        0 |    100% |           |
-| tests/test\_mod\_collect.py                           |       69 |        0 |    100% |           |
-| tests/test\_names\_to\_typs.py                        |      142 |        0 |    100% |           |
-| tests/test\_typs.py                                   |       96 |        0 |    100% |           |
+| tests/test\_mod\_collect.py                           |       81 |        0 |    100% |           |
+| tests/test\_typs.py                                   |      103 |        0 |    100% |           |
 | tests/test\_typs\_parse.py                            |       18 |        0 |    100% |           |
-|                                             **TOTAL** | **1583** |   **25** | **98%** |           |
+| tests/test\_vartyp\_tracker.py                        |      138 |        0 |    100% |           |
+|                                             **TOTAL** | **1679** |   **27** | **98%** |           |
 
 
 ## Setup coverage badge
