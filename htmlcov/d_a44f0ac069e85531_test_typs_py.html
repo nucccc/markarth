@@ -54,8 +54,8 @@
             </div>
         </aside>
         <h2>
-            <span class="text">103 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">103<span class="text"> run</span></button>
+            <span class="text">108 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">108<span class="text"> run</span></button>
             <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="d_a44f0ac069e85531_test_typs_parse_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.4.3">coverage.py v7.4.3</a>,
-            created at 2024-03-11 22:05 +0000
+            created at 2024-03-11 22:11 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"/>
@@ -232,6 +232,17 @@
     <p class="run"><span class="n"><a id="t150" href="#t150">150</a></span><span class="t">    <span class="nam">t_float</span> <span class="op">=</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypPrimitive</span><span class="op">(</span><span class="nam">prim</span><span class="op">=</span><span class="nam">typs</span><span class="op">.</span><span class="nam">PrimitiveCod</span><span class="op">.</span><span class="nam">FLOAT</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t151" href="#t151">151</a></span><span class="t">    <span class="nam">typ</span><span class="op">.</span><span class="nam">add_typ</span><span class="op">(</span><span class="nam">t_float</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t152" href="#t152">152</a></span><span class="t">    <span class="key">assert</span> <span class="nam">len</span><span class="op">(</span><span class="nam">typ</span><span class="op">.</span><span class="nam">get_union_types</span><span class="op">)</span> <span class="op">==</span> <span class="num">2</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t153" href="#t153">153</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t154" href="#t154">154</a></span><span class="t">    <span class="com"># testing now a typ union with another union</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t155" href="#t155">155</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t156" href="#t156">156</a></span><span class="t">    <span class="nam">typ2</span> <span class="op">=</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypUnion</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t157" href="#t157">157</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t158" href="#t158">158</a></span><span class="t">    <span class="nam">typ2</span><span class="op">.</span><span class="nam">add_typ</span><span class="op">(</span><span class="nam">typs</span><span class="op">.</span><span class="nam">TypPrimitive</span><span class="op">(</span><span class="nam">typs</span><span class="op">.</span><span class="nam">PrimitiveCod</span><span class="op">.</span><span class="nam">FLOAT</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t159" href="#t159">159</a></span><span class="t">    <span class="nam">typ2</span><span class="op">.</span><span class="nam">add_typ</span><span class="op">(</span><span class="nam">typs</span><span class="op">.</span><span class="nam">TypPrimitive</span><span class="op">(</span><span class="nam">typs</span><span class="op">.</span><span class="nam">PrimitiveCod</span><span class="op">.</span><span class="nam">BOOL</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t160" href="#t160">160</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t161" href="#t161">161</a></span><span class="t">    <span class="nam">typ</span><span class="op">.</span><span class="nam">add_typ</span><span class="op">(</span><span class="nam">typ2</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t162" href="#t162">162</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t163" href="#t163">163</a></span><span class="t">    <span class="key">assert</span> <span class="nam">len</span><span class="op">(</span><span class="nam">typ</span><span class="op">.</span><span class="nam">get_union_types</span><span class="op">)</span> <span class="op">==</span> <span class="num">3</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -241,7 +252,7 @@
             <a id="nextFileLink" class="nav" href="d_a44f0ac069e85531_test_typs_parse_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.4.3">coverage.py v7.4.3</a>,
-            created at 2024-03-11 22:05 +0000
+            created at 2024-03-11 22:11 +0000
         </p>
     </div>
 </footer>
