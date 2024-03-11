@@ -31,13 +31,9 @@ class VarTypEOrigin:
 
 class VarTypTracker:
     '''
-    this shall substitute the hopefully deprecated NamesToTyps
-
-    hopefully
-
-    hopefully also with something better
+    VarTypTracker shall be used to hold typstores from different sources,
+    used to track the type that every variable is going through a function
     '''
-
 
     def __init__(
         self,

@@ -15,9 +15,7 @@ from markarth.convert.collect.ast_to_typ.ast_assign import (
 from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_iter
 from markarth.convert.typs.names_to_typs import (
     DictTypStore,
-    TypStore,
-    NamesToTyps,
-    VarNameSource
+    TypStore
 )
 from markarth.convert.collect.vartyp_tracker import (
     VarOrigin,
@@ -123,30 +121,11 @@ def _record_vartyp(
                 return CollisionEnum.GLOBAL_COLLISION
     else:
         return CollisionEnum.NO_COLLISION
-    
-
-def _record_collision(
-    varname : str,
-    collision_enum : CollisionEnum,
-    colliding_input_varnames : set[str],
-    colliding_global_varnames : set[str]
-) -> None:
-    '''
-    _record_collision evaluates the collision enum and accordingly eventually
-    add it to some sets
-    '''
-    match collision_enum:
-        case CollisionEnum.INPUT_COLLISION:
-            colliding_input_varnames.add(varname)
-        case CollisionEnum.GLOBAL_COLLISION:
-            colliding_global_varnames.add(varname)
 
 
-def collect_from_ast_body(
+def collect_from_func_ast(
     ast_body : list[ast.AST],
-    names_to_typs : NamesToTyps,
-    colliding_input_varnames : set[str],
-    colliding_global_varnames : set[str],
+    var_tracker : VarTypTracker,
     global_varnames : set[str],
     ignore_assignment_annotations : bool = False
 ):
@@ -160,72 +139,6 @@ def collect_from_ast_body(
     the function does not return anything specifically, but modifies inplace
     the names_to_typs provided in input
     '''
-    for stat in ast_body:
-
-        if is_assign(ast_expr = stat):
-            assign_result = assigned_typs(ast_expr = stat, name_typs = names_to_typs)
-
-            # handling the annotation by selectively setting the var_name var_typ
-            # generator according to ignoring the annotations
-            if ignore_assignment_annotations or assign_result.annotation is None:
-                # in case i'm set to ignore the annotation or no annotation
-                # was retrieved in the assignemnt, the generator corresponding
-                # is just going to be the varnames and the vartyps in the
-                # returned typstore
-                varname_vartyp_gen = (
-                    (varname, vartyp)
-                    for varname, vartyp
-                    in assign_result.assigned_typs.iter_typs()
-                )
-            else:
-                # in case i can use annotations and i have an annotation
-                # i just scroll through the variables (there should be only one
-                # actually) and relate them to the annotated typ
-                varname_vartyp_gen = (
-                    (varname, assign_result.annotation)
-                    for varname, _
-                    in assign_result.assigned_typs.iter_typs()
-                )
-
-            for varname, vartyp in varname_vartyp_gen:
-                coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
-                _record_collision(
-                    varname = varname,
-                    collision_enum = coll,
-                    colliding_input_varnames = colliding_input_varnames,
-                    colliding_global_varnames = colliding_global_varnames
-                )
-                
-        elif type(stat) == ast.For:
-            # TODO: here some code should be place to verify that this thing actually has a name
-            varname = stat.target.id
-            vartyp = typ_from_iter(stat.iter)
-            # here i collect the vartype found
-            coll = _record_vartyp(varname, vartyp, names_to_typs, global_varnames)
-            _record_collision(
-                varname = varname,
-                collision_enum = coll,
-                colliding_input_varnames = colliding_input_varnames,
-                colliding_global_varnames = colliding_global_varnames
-            )
-
-        if hasattr(stat, 'body'):
-            collect_from_ast_body(
-                ast_body = stat.body,
-                names_to_typs = names_to_typs,
-                colliding_input_varnames = colliding_input_varnames,
-                colliding_global_varnames = colliding_global_varnames,
-                global_varnames = global_varnames,
-                ignore_assignment_annotations = ignore_assignment_annotations
-            )
-
-
-def collect_from_func_ast(
-    ast_body : list[ast.AST],
-    var_tracker : VarTypTracker,
-    global_varnames : set[str],
-    ignore_assignment_annotations : bool = False
-):
     for stat in unnest_ast_body(ast_body):
 
         if is_assign(ast_expr = stat):

@@ -8,7 +8,6 @@ from markarth.convert.collect.func_collect import (
     return_typ_from_ast,
     collect_func_globals,
     collect_local_typs,
-    collect_from_ast_body,
     collect_from_func_ast,
     _record_vartyp,
     CollisionEnum
@@ -105,12 +104,6 @@ def test_record_vartyp():
 
 
 def test_collect_from_ast_body():
-    #names_to_typs = NamesToTyps(
-    #    local_typs = DictTypStore(),
-    #    input_typs = DictTypStore({'a':TypPrimitive(PrimitiveCod.FLOAT)}),
-    #    global_typs = DictTypStore({'b':TypPrimitive(PrimitiveCod.FLOAT)}),
-    #    call_typs = DictTypStore()
-    #)
 
     var_tracker = VarTypTracker(
         input_typs = DictTypStore({'a':TypPrimitive(PrimitiveCod.FLOAT)}),
@@ -151,15 +144,6 @@ def test_collect_from_ast_body_with_annotations():
     ast_body = ast_mod.body
 
     # first the test is run with ignore assignment annotations
-
-    # empty names_to_typs
-    #names_to_typs = NamesToTyps(
-    #    local_typs = DictTypStore(),
-    #    input_typs= DictTypStore(),
-    #    global_typs = DictTypStore(),
-    #    call_typs = DictTypStore()
-    #)
-
     var_tracker = VarTypTracker()
 
     colliding_input_varnames : set[str] = set()
@@ -185,14 +169,7 @@ def test_collect_from_ast_body_with_annotations():
     ast_mod = ast.parse(code)
     ast_body = ast_mod.body
 
-    # empty names_to_typs
-    #names_to_typs = NamesToTyps(
-    #    local_typs = DictTypStore(),
-    #    input_typs= DictTypStore(),
-    #    global_typs = DictTypStore(),
-    #    call_typs = DictTypStore()
-    #)
-
+    # empty var_tracker
     var_tracker = VarTypTracker()
 
     colliding_input_varnames : set[str] = set()
