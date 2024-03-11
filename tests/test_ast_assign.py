@@ -8,7 +8,7 @@ from markarth.convert.collect.ast_to_typ.ast_assign import (
     _add_target_to_typ_store
 )
 from markarth.convert.collect.vartyp_tracker import VarTypTracker
-from markarth.convert.typs.names_to_typs import DictTypStore
+from markarth.convert.typs.typ_store import DictTypStore
 from markarth.convert.typs import typs
 
 

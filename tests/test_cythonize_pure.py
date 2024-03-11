@@ -1,7 +1,7 @@
 import pytest
 
 from markarth.convert.typs.typs import PrimitiveCod, TypPrimitive
-from markarth.convert.typs.names_to_typs import DictTypStore
+from markarth.convert.typs.typ_store import DictTypStore
 from markarth.convert.collect.mod_collect import (
     collect_func_defs
 )

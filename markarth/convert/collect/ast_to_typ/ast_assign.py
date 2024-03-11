@@ -18,7 +18,7 @@ from markarth.convert.collect.ast_to_typ.ast_to_typ import (
 from markarth.convert.collect.vartyp_tracker import VarTypTracker
 from markarth.convert.typs import typs
 from markarth.convert.typs.typs_parse import parse_type_str
-from markarth.convert.typs.names_to_typs import (
+from markarth.convert.typs.typ_store import (
     TypStore,
     DictTypStore,
 )

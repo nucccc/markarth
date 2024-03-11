@@ -16,7 +16,7 @@ from markarth.convert.collect.func_collect import (
     LocalCollectionResult
 )
 from markarth.convert.typs.typs import Typ, TypAny
-from markarth.convert.typs.names_to_typs import DictTypStore, TypStore
+from markarth.convert.typs.typ_store import DictTypStore, TypStore
 from markarth.convert.cythonize.cy_options import ModOpts, FuncOpts, gen_default_mod_opts
 from markarth.convert.collect.ast_to_typ.ast_assign import (
     assigned_typs,

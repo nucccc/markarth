@@ -13,7 +13,7 @@ from markarth.convert.collect.func_collect import (
     CollisionEnum
 )
 from markarth.convert.collect.vartyp_tracker import VarTypTracker
-from markarth.convert.typs.names_to_typs import DictTypStore
+from markarth.convert.typs.typ_store import DictTypStore
 from markarth.convert.typs.typs import PrimitiveCod, TypPrimitive
 
 

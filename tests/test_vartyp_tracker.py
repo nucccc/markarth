@@ -1,7 +1,7 @@
 import pytest
 
 from markarth.convert.collect.vartyp_tracker import VarTypTracker, VarOrigin
-from markarth.convert.typs.names_to_typs import DictTypStore
+from markarth.convert.typs.typ_store import DictTypStore
 from markarth.convert.typs.typs import PrimitiveCod, TypPrimitive, TypAny
 
 

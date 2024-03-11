@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 
-from markarth.convert.typs.names_to_typs import DictTypStore, TypStore
+from markarth.convert.typs.typ_store import DictTypStore, TypStore
 from markarth.convert.typs.typs import Typ
 
 DEFAULT_TYP_STORE_TYPE = DictTypStore
@@ -28,6 +28,7 @@ class VarOrigin(Enum):
 class VarTypEOrigin:
     typ : Typ
     origin : VarOrigin
+
 
 class VarTypTracker:
     '''

@@ -13,7 +13,7 @@ from markarth.convert.collect.ast_to_typ.ast_assign import (
     is_assign
 )
 from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_iter
-from markarth.convert.typs.names_to_typs import (
+from markarth.convert.typs.typ_store import (
     DictTypStore,
     TypStore
 )
@@ -90,7 +90,7 @@ def _record_vartyp(
     global_varnames : set[str] = set()
 ) -> CollisionEnum:
     '''
-    _record_vartyp shall handle a new vartyp to the existing names_to_typs
+    _record_vartyp shall handle a new vartyp to the existing var_tracker
     '''
     typ_e_origin : VarTypEOrigin = var_tracker.get_vartyp_and_origin(varname) #names_to_typs.get_varname_typ_and_source(varname)
     if typ_e_origin is None:
@@ -137,7 +137,7 @@ def collect_from_func_ast(
     another body inside of it "like for example" a for loop
 
     the function does not return anything specifically, but modifies inplace
-    the names_to_typs provided in input
+    the var_tracker provided in input
     '''
     for stat in unnest_ast_body(ast_body):
 
