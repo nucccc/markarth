@@ -165,6 +165,26 @@ def test_eval_op_typ():
         right_typ = typs.TypPrimitive( typs.PrimitiveCod.FLOAT )
     ).is_float()
 
+    #tests with strings
+
+    assert eval_op_typ(
+        op = ast.Add(),
+        left_typ = typs.TypPrimitive( typs.PrimitiveCod.STR ),
+        right_typ = typs.TypPrimitive( typs.PrimitiveCod.STR )
+    ).is_str()
+
+    assert eval_op_typ(
+        op = ast.Add(),
+        left_typ = typs.TypPrimitive( typs.PrimitiveCod.INT ),
+        right_typ = typs.TypPrimitive( typs.PrimitiveCod.STR )
+    ).is_any()
+
+    assert eval_op_typ(
+        op = ast.Add(),
+        left_typ = typs.TypPrimitive( typs.PrimitiveCod.STR ),
+        right_typ = typs.TypPrimitive( typs.PrimitiveCod.INT )
+    ).is_any()
+
 
 def test_typ_from_call():
     code = 'a = int(7.0)'
