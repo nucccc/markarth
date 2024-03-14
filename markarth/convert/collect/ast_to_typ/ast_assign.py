@@ -110,7 +110,8 @@ def _add_target_to_typ_store(
     val_typ : typs.Typ
 ) -> TypStore:
     '''
-    _add_target_to_typ_store
+    _add_target_to_typ_store gets varnames out of a target and inserts
+    their types in a given typstore
     '''
     if type(target) == ast.Name:
         var_name = target.id
@@ -123,3 +124,23 @@ def _add_target_to_typ_store(
             # be done
             target_store.add_typ(var_name, typs.TypAny())
     return target_store
+
+
+def typ_store_from_target(
+    target : ast.Name | ast.Tuple,
+    val_typ : typs.Typ
+) -> TypStore:
+    '''
+    typ_store_from_target gets varnames out of a target and returns a typstore
+    with such variables
+    '''
+    assigned_typs : TypStore = DictTypStore()
+
+    _add_target_to_typ_store(
+        target = target,
+        target_store = assigned_typs,
+        val_typ = val_typ
+    )
+
+    return assigned_typs
+
