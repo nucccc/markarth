@@ -179,6 +179,23 @@ def mod8() -> tuple[ast.Module, list[str]]:
     return code_process.process_code(source_mod8)
 
 
+source_mod9 = '''
+def f1() -> float:
+    a : float = 0.34
+    for i, nf in enumerate([0.16, 1.12, 1.17, 118.0]):
+        a = i + a * nf
+    return a
+'''
+
+@pytest.fixture
+def code_mod9() -> str:
+    return source_mod9
+
+@pytest.fixture
+def mod9() -> tuple[ast.Module, list[str]]:
+    return code_process.process_code(source_mod8)
+
+
 source_statements1 = '''a = 7
 b = 5
 c = 3
