@@ -10,7 +10,8 @@ from enum import Enum
 from markarth.ast_utils.ast_utils import unnest_ast_statements, unnest_ast_body
 from markarth.convert.collect.ast_to_typ.ast_assign import (
     assigned_typs,
-    is_assign
+    is_assign,
+    typ_store_from_target
 )
 from markarth.convert.collect.ast_to_typ.ast_to_typ import ast_val_to_typ, typ_from_iter
 from markarth.convert.typs.typ_store import (
@@ -171,10 +172,13 @@ def collect_from_func_ast(
 
         elif type(stat) == ast.For:
             # TODO: here some code should be place to verify that this thing actually has a name
-            varname = stat.target.id
             vartyp = typ_from_iter(stat.iter)
-            # here i collect the vartype found
-            coll = _record_vartyp(varname, vartyp, var_tracker, global_varnames)
+
+            loop_typs = typ_store_from_target(target = stat.target, val_typ = vartyp)
+
+            for varname, vartyp in loop_typs.iter_typs():
+                # here i collect the vartype found
+                coll = _record_vartyp(varname, vartyp, var_tracker, global_varnames)
 
 @dataclass
 class LocalCollectionResult:
