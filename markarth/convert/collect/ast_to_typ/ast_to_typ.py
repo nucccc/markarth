@@ -96,6 +96,10 @@ def typ_from_call(
     typ_from_call shall return the type from a function call - basically
     checks if that func is an explicit call of 
     '''
+    # in case the function call is a method, this is a way to exclude it from
+    # processing until a way to obtain its name is developed
+    if not hasattr(call.func, 'id'):
+        return typs.TypAny()
     call_id = call.func.id
     #call_id = call.func.id if (hasattr(call, 'func') and hasattr(call.func, 'id')) else None
     #if call_id is None:
