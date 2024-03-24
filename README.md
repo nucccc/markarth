@@ -11,7 +11,7 @@
 | markarth/convert/collect/\_\_init\_\_.py              |        0 |        0 |    100% |           |
 | markarth/convert/collect/ast\_to\_typ/\_\_init\_\_.py |        0 |        0 |    100% |           |
 | markarth/convert/collect/ast\_to\_typ/ast\_assign.py  |       45 |        0 |    100% |           |
-| markarth/convert/collect/ast\_to\_typ/ast\_to\_typ.py |       57 |        0 |    100% |           |
+| markarth/convert/collect/ast\_to\_typ/ast\_to\_typ.py |       59 |        1 |     98% |       102 |
 | markarth/convert/collect/func\_collect.py             |       82 |        2 |     98% |   121-122 |
 | markarth/convert/collect/mod\_collect.py              |       69 |        2 |     97% |     92-93 |
 | markarth/convert/collect/vartyp\_tracker.py           |       52 |        0 |    100% |           |
@@ -43,7 +43,7 @@
 | tests/test\_typs.py                                   |      108 |        0 |    100% |           |
 | tests/test\_typs\_parse.py                            |       18 |        0 |    100% |           |
 | tests/test\_vartyp\_tracker.py                        |      138 |        0 |    100% |           |
-|                                             **TOTAL** | **1790** |   **19** | **99%** |           |
+|                                             **TOTAL** | **1792** |   **20** | **99%** |           |
 
 
 ## Setup coverage badge
