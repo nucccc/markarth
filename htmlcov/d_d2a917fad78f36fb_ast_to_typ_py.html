@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for markarth/convert/collect/ast_to_typ/ast_to_typ.py: 98%</title>
+    <title>Coverage for markarth/convert/collect/ast_to_typ/ast_to_typ.py: 95%</title>
     <link rel="icon" sizes="32x32" href="favicon_32.png">
     <link rel="stylesheet" href="style.css" type="text/css">
     <script type="text/javascript" src="coverage_html.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>markarth/convert/collect/ast_to_typ/ast_to_typ.py</b>:
-            <span class="pc_cov">98%</span>
+            <span class="pc_cov">95%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -54,9 +54,9 @@
             </div>
         </aside>
         <h2>
-            <span class="text">59 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">58<span class="text"> run</span></button>
-            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">1<span class="text"> missing</span></button>
+            <span class="text">63 statements &nbsp;</span>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">60<span class="text"> run</span></button>
+            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">3<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
         <p class="text">
@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="d_7ec6c45aa70b94eb_func_collect_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.4.4">coverage.py v7.4.4</a>,
-            created at 2024-03-24 09:15 +0000
+            created at 2024-03-24 11:22 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"/>
@@ -195,21 +195,25 @@
     <p class="run"><span class="n"><a id="t113" href="#t113">113</a></span><span class="t">            <span class="key">return</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypPrimitive</span><span class="op">(</span><span class="nam">typs</span><span class="op">.</span><span class="nam">PrimitiveCod</span><span class="op">.</span><span class="nam">FLOAT</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t114" href="#t114">114</a></span><span class="t">        <span class="key">case</span> <span class="str">'bool'</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t115" href="#t115">115</a></span><span class="t">            <span class="key">return</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypPrimitive</span><span class="op">(</span><span class="nam">typs</span><span class="op">.</span><span class="nam">PrimitiveCod</span><span class="op">.</span><span class="nam">BOOL</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t116" href="#t116">116</a></span><span class="t">    <span class="key">if</span> <span class="nam">var_tracker</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t117" href="#t117">117</a></span><span class="t">        <span class="nam">call_type</span> <span class="op">=</span> <span class="nam">var_tracker</span><span class="op">.</span><span class="nam">get_call_typ</span><span class="op">(</span><span class="nam">call_id</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t118" href="#t118">118</a></span><span class="t">        <span class="key">if</span> <span class="nam">call_type</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t119" href="#t119">119</a></span><span class="t">            <span class="key">return</span> <span class="nam">call_type</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t120" href="#t120">120</a></span><span class="t">    <span class="key">return</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypAny</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t121" href="#t121">121</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t122" href="#t122">122</a></span><span class="t"><span class="key">def</span> <span class="nam">typ_from_iter</span><span class="op">(</span><span class="nam">iter_stat</span> <span class="op">:</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">AST</span><span class="op">)</span> <span class="op">-></span> <span class="nam">typs</span><span class="op">.</span><span class="nam">Typ</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t123" href="#t123">123</a></span><span class="t">    <span class="str">'''</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t124" href="#t124">124</a></span><span class="t"><span class="str">    type_from_iter shall get the type of a variable "extracted"</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t125" href="#t125">125</a></span><span class="t"><span class="str">    out of an iterable statement</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t126" href="#t126">126</a></span><span class="t"><span class="str">    '''</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t127" href="#t127">127</a></span><span class="t">    <span class="key">if</span> <span class="nam">type</span><span class="op">(</span><span class="nam">iter_stat</span><span class="op">)</span> <span class="op">==</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">Call</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t128" href="#t128">128</a></span><span class="t">        <span class="key">if</span> <span class="nam">iter_stat</span><span class="op">.</span><span class="nam">func</span><span class="op">.</span><span class="nam">id</span> <span class="op">==</span> <span class="str">'range'</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t129" href="#t129">129</a></span><span class="t">            <span class="key">return</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypPrimitive</span><span class="op">(</span><span class="nam">typs</span><span class="op">.</span><span class="nam">PrimitiveCod</span><span class="op">.</span><span class="nam">INT</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t130" href="#t130">130</a></span><span class="t">    <span class="key">return</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypAny</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t116" href="#t116">116</a></span><span class="t">        <span class="key">case</span> <span class="str">'str'</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t117" href="#t117">117</a></span><span class="t">            <span class="key">return</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypPrimitive</span><span class="op">(</span><span class="nam">typs</span><span class="op">.</span><span class="nam">PrimitiveCod</span><span class="op">.</span><span class="nam">STR</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t118" href="#t118">118</a></span><span class="t">        <span class="key">case</span> <span class="str">'len'</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="mis show_mis"><span class="n"><a id="t119" href="#t119">119</a></span><span class="t">            <span class="key">return</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypPrimitive</span><span class="op">(</span><span class="nam">typs</span><span class="op">.</span><span class="nam">PrimitiveCod</span><span class="op">.</span><span class="nam">INT</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t120" href="#t120">120</a></span><span class="t">    <span class="key">if</span> <span class="nam">var_tracker</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t121" href="#t121">121</a></span><span class="t">        <span class="nam">call_type</span> <span class="op">=</span> <span class="nam">var_tracker</span><span class="op">.</span><span class="nam">get_call_typ</span><span class="op">(</span><span class="nam">call_id</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t122" href="#t122">122</a></span><span class="t">        <span class="key">if</span> <span class="nam">call_type</span> <span class="key">is</span> <span class="key">not</span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t123" href="#t123">123</a></span><span class="t">            <span class="key">return</span> <span class="nam">call_type</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t124" href="#t124">124</a></span><span class="t">    <span class="key">return</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypAny</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t125" href="#t125">125</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t126" href="#t126">126</a></span><span class="t"><span class="key">def</span> <span class="nam">typ_from_iter</span><span class="op">(</span><span class="nam">iter_stat</span> <span class="op">:</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">AST</span><span class="op">)</span> <span class="op">-></span> <span class="nam">typs</span><span class="op">.</span><span class="nam">Typ</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t127" href="#t127">127</a></span><span class="t">    <span class="str">'''</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t128" href="#t128">128</a></span><span class="t"><span class="str">    type_from_iter shall get the type of a variable "extracted"</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t129" href="#t129">129</a></span><span class="t"><span class="str">    out of an iterable statement</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t130" href="#t130">130</a></span><span class="t"><span class="str">    '''</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t131" href="#t131">131</a></span><span class="t">    <span class="key">if</span> <span class="nam">type</span><span class="op">(</span><span class="nam">iter_stat</span><span class="op">)</span> <span class="op">==</span> <span class="nam">ast</span><span class="op">.</span><span class="nam">Call</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t132" href="#t132">132</a></span><span class="t">        <span class="key">if</span> <span class="nam">iter_stat</span><span class="op">.</span><span class="nam">func</span><span class="op">.</span><span class="nam">id</span> <span class="op">==</span> <span class="str">'range'</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t133" href="#t133">133</a></span><span class="t">            <span class="key">return</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypPrimitive</span><span class="op">(</span><span class="nam">typs</span><span class="op">.</span><span class="nam">PrimitiveCod</span><span class="op">.</span><span class="nam">INT</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t134" href="#t134">134</a></span><span class="t">    <span class="key">return</span> <span class="nam">typs</span><span class="op">.</span><span class="nam">TypAny</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
 </main>
 <footer>
     <div class="content">
@@ -219,7 +223,7 @@
             <a id="nextFileLink" class="nav" href="d_7ec6c45aa70b94eb_func_collect_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.4.4">coverage.py v7.4.4</a>,
-            created at 2024-03-24 09:15 +0000
+            created at 2024-03-24 11:22 +0000
         </p>
     </div>
 </footer>

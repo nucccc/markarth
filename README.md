@@ -11,7 +11,7 @@
 | markarth/convert/collect/\_\_init\_\_.py              |        0 |        0 |    100% |           |
 | markarth/convert/collect/ast\_to\_typ/\_\_init\_\_.py |        0 |        0 |    100% |           |
 | markarth/convert/collect/ast\_to\_typ/ast\_assign.py  |       45 |        0 |    100% |           |
-| markarth/convert/collect/ast\_to\_typ/ast\_to\_typ.py |       59 |        1 |     98% |       102 |
+| markarth/convert/collect/ast\_to\_typ/ast\_to\_typ.py |       63 |        3 |     95% |102, 117, 119 |
 | markarth/convert/collect/func\_collect.py             |       82 |        2 |     98% |   121-122 |
 | markarth/convert/collect/mod\_collect.py              |       69 |        2 |     97% |     92-93 |
 | markarth/convert/collect/vartyp\_tracker.py           |       52 |        0 |    100% |           |
@@ -19,7 +19,7 @@
 | markarth/convert/cythonize/\_\_init\_\_.py            |        0 |        0 |    100% |           |
 | markarth/convert/cythonize/cy\_options.py             |       36 |        1 |     97% |        43 |
 | markarth/convert/cythonize/cy\_typs.py                |       28 |        0 |    100% |           |
-| markarth/convert/cythonize/pure.py                    |       86 |        0 |    100% |           |
+| markarth/convert/cythonize/pure.py                    |       97 |        3 |     97% |141, 143, 157 |
 | markarth/convert/preprocess/\_\_init\_\_.py           |        0 |        0 |    100% |           |
 | markarth/convert/preprocess/code\_process.py          |       32 |        2 |     94% |     49-50 |
 | markarth/convert/typs/\_\_init\_\_.py                 |        0 |        0 |    100% |           |
@@ -27,7 +27,7 @@
 | markarth/convert/typs/typ\_store.py                   |       34 |        0 |    100% |           |
 | markarth/convert/typs/typs.py                         |       98 |        3 |     97% |41, 60, 98 |
 | markarth/convert/typs/typs\_parse.py                  |        6 |        0 |    100% |           |
-| tests/conftest.py                                     |       78 |        9 |     88% |103, 130, 153, 175, 196, 209-210, 239-240 |
+| tests/conftest.py                                     |       85 |       10 |     88% |103, 130, 153, 175, 196, 225, 242-243, 272-273 |
 | tests/test\_ast\_assign.py                            |      111 |        0 |    100% |           |
 | tests/test\_ast\_to\_typ.py                           |      114 |        0 |    100% |           |
 | tests/test\_ast\_utils.py                             |       39 |        0 |    100% |           |
@@ -35,7 +35,7 @@
 | tests/test\_convert\_pure.py                          |       38 |        0 |    100% |           |
 | tests/test\_cy\_opts.py                               |       22 |        0 |    100% |           |
 | tests/test\_cy\_typs.py                               |       10 |        0 |    100% |           |
-| tests/test\_cythonize\_pure.py                        |       54 |        0 |    100% |           |
+| tests/test\_cythonize\_pure.py                        |       69 |        0 |    100% |           |
 | tests/test\_dict\_typ\_store.py                       |       71 |        0 |    100% |           |
 | tests/test\_func\_collect.py                          |       97 |        0 |    100% |           |
 | tests/test\_merge\_typs.py                            |      100 |        0 |    100% |           |
@@ -43,7 +43,7 @@
 | tests/test\_typs.py                                   |      108 |        0 |    100% |           |
 | tests/test\_typs\_parse.py                            |       18 |        0 |    100% |           |
 | tests/test\_vartyp\_tracker.py                        |      138 |        0 |    100% |           |
-|                                             **TOTAL** | **1792** |   **20** | **99%** |           |
+|                                             **TOTAL** | **1829** |   **26** | **99%** |           |
 
 
 ## Setup coverage badge
