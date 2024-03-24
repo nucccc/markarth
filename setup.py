@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='markarth',
-    version='0.0.3',
+    version='0.0.4',
     author='Domenico Nucera',
     description='Automatic code conversion from python to cython',
     long_description=long_description,
