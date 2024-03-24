@@ -113,6 +113,10 @@ def typ_from_call(
             return typs.TypPrimitive(typs.PrimitiveCod.FLOAT)
         case 'bool':
             return typs.TypPrimitive(typs.PrimitiveCod.BOOL)
+        case 'str':
+            return typs.TypPrimitive(typs.PrimitiveCod.STR)
+        case 'len':
+            return typs.TypPrimitive(typs.PrimitiveCod.INT)
     if var_tracker is not None:
         call_type = var_tracker.get_call_typ(call_id)
         if call_type is not None:

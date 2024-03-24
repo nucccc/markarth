@@ -1,5 +1,7 @@
 import pytest
 
+import ast
+
 from markarth.convert.typs.typs import PrimitiveCod, TypPrimitive
 from markarth.convert.typs.typ_store import DictTypStore
 from markarth.convert.collect.mod_collect import (
@@ -11,6 +13,7 @@ from markarth.convert.cythonize.pure import (
     typ_store_to_varnames,
     typ_store_to_cdeclares,
     gen_declare_line,
+    could_be_docstring,
     cdeclares_ins_point,
     sort_funcs_by_line
 )
@@ -140,7 +143,21 @@ def test_gen_declare_line():
     ) == 'vv = cython.declare(cython.float)'
 
 
-def test_cdeclares_ins_point(mod3):
+def test_could_be_docstring():
+    m = ast.parse('a = 3')
+    assert not could_be_docstring(m.body[0])
+
+    m = ast.parse('3')
+    assert not could_be_docstring(m.body[0])
+
+    m = ast.parse('"""beh"""')
+    assert could_be_docstring(m.body[0])
+
+    m = ast.parse('"string"')
+    assert could_be_docstring(m.body[0])
+
+
+def test_cdeclares_ins_point(mod3, mod10):
     mod_ast, _ = mod3
 
     func_asts = collect_func_defs(mod_ast)
@@ -148,6 +165,15 @@ def test_cdeclares_ins_point(mod3):
     assert cdeclares_ins_point(func_asts['f1']) == 5
     assert cdeclares_ins_point(func_asts['f2']) == 11
     assert cdeclares_ins_point(func_asts['f3']) == 15
+
+    # then a test with a code module modified to have some docstrings
+    mod_ast, _ = mod10
+
+    func_asts = collect_func_defs(mod_ast)
+
+    assert cdeclares_ins_point(func_asts['f1']) == 8
+    assert cdeclares_ins_point(func_asts['f2']) == 15
+    assert cdeclares_ins_point(func_asts['f3']) == 19
 
 
 def test_sort_funcs_by_line(mod3):

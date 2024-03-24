@@ -196,6 +196,39 @@ def mod9() -> tuple[ast.Module, list[str]]:
     return code_process.process_code(source_mod9)
 
 
+# this is the same as mod3 but with some docstring
+source_mod10 = '''a = 7
+b = 3.4
+
+def f1(g : int) -> float:
+    """
+    this is a docstring
+    """
+    global b
+    res = b * g
+    b = res
+    return res
+
+def f2() -> int:
+    r"""this is another docstring"""
+    res = 7 * a
+    return res
+
+def f3(g : int) -> int:
+    c = f2()
+    res = c * g
+    return res
+'''
+
+@pytest.fixture
+def code_mod10() -> str:
+    return source_mod10
+
+@pytest.fixture
+def mod10() -> tuple[ast.Module, list[str]]:
+    return code_process.process_code(source_mod10)
+
+
 source_statements1 = '''a = 7
 b = 5
 c = 3

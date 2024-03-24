@@ -130,10 +130,30 @@ class CyVarType:
     cy_type : str
 
 
+def could_be_docstring(stat : ast.AST) -> bool:
+    '''
+    could_be_docstring returns True if an ast statement could be seen as a
+    docstring
+    '''
+    if not type(stat) is ast.Expr:
+        return False
+    if not hasattr(stat, 'value'):
+        return False
+    if not hasattr(stat.value, 'n'):
+        return False
+    return type(stat.value.n) is str
+
+
 def cdeclares_ins_point(func_ast : ast.FunctionDef) -> int:
     '''
     cdeclares_ins_point shall return me the
     '''
+    # i loop through all the statements and return the line number of the first
+    # one not being a docstring
+    for stat in func_ast.body:
+        if not could_be_docstring(stat):
+            return stat.lineno
+    # by default i return the first line
     return func_ast.body[0].lineno
 
 
