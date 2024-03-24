@@ -84,9 +84,7 @@ def assigned_typs(
         # in such case it seems it is illegal for the target to be of
         # tuple type, it will be of type name
         target = ast_expr.target
-
-        target_var_name = target.id
-
+        
         left_typ = ast_val_to_typ(target, var_tracker)
         right_typ = ast_val_to_typ(ast_expr.value, var_tracker)
 
@@ -96,7 +94,11 @@ def assigned_typs(
             right_typ = right_typ
         )
 
-        assigned_typs.add_typ(target_var_name, val_typ)
+        _add_target_to_typ_store(
+            target = target,
+            target_store = assigned_typs,
+            val_typ = val_typ
+        )
     
     return AssignTypRes(
         assigned_typs = assigned_typs,
@@ -118,6 +120,8 @@ def _add_target_to_typ_store(
         target_store.add_typ(var_name, val_typ)
     elif type(target) == ast.Tuple:
         for elt in target.elts:
+            if type(elt) is not ast.Name:
+                continue
             var_name = elt.id
             # TODO: in case of a tuple at the moment i just put an any as the
             # typ, in the future a check on eventual container typs maybe shall

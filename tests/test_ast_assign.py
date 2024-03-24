@@ -203,3 +203,37 @@ def test_typ_store_from_target():
     c_typ = typ_store.get_typ('c')
     assert c_typ is not None
     assert c_typ.is_any()
+
+
+    # additionally there should be some tests regarding subscripts
+    mod = ast.parse('a[0], b, c = 7')
+
+    assignment = mod.body[0]
+
+    typ_store = typ_store_from_target(
+        target = assignment.targets[0],
+        val_typ = typs.TypPrimitive(typs.PrimitiveCod.INT)
+    )
+
+    assert len(typ_store) == 2
+
+    b_typ = typ_store.get_typ('b')
+    assert b_typ is not None
+    assert b_typ.is_any()
+
+    c_typ = typ_store.get_typ('c')
+    assert c_typ is not None
+    assert c_typ.is_any()
+
+
+    # additionally there should be some tests regarding subscripts
+    mod = ast.parse('a[0] += 7')
+
+    assignment = mod.body[0]
+
+    typ_store = typ_store_from_target(
+        target = assignment.target,
+        val_typ = typs.TypPrimitive(typs.PrimitiveCod.INT)
+    )
+
+    assert len(typ_store) == 0
