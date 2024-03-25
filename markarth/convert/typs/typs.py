@@ -90,6 +90,9 @@ class Typ:
     
     def is_union(self) -> bool:
         return False
+    
+    def is_list(self) -> bool:
+        return False
 
     def as_string(self) -> str:
         '''
@@ -193,4 +196,24 @@ class TypUnion(Typ):
 
     def as_string(self) -> str:
         return '|'.join(typ.as_string() for typ in self.union_types)
+
     
+class TypContainer(Typ):
+    '''
+    TypContainer shall be an abstract class for containers (lists)
+    '''
+
+    def is_container(self) -> bool:
+        return True
+
+
+class TypList(TypContainer):
+
+    def __init__(self, inner_typ : Typ = TypAny()):
+        self.inner_typ : Typ = inner_typ
+
+    def is_list(self) -> bool:
+        return True
+
+    def as_string(self) -> str:
+        return f'list[{self.inner_typ.as_string()}]'
