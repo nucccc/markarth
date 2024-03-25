@@ -25,6 +25,11 @@ def test_typs_parse():
     assert type(typ) == typs.TypAny
 
 
+def test_typs_parse_none():
+    none_typ = parse_type_str('None')
+    assert none_typ.is_none()
+
+
 def test_typs_parse_list():
     list_typ = parse_type_str('list')
     assert list_typ.is_list()
