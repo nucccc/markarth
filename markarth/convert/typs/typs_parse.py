@@ -10,6 +10,8 @@ from markarth.convert.typs import typs
 
 # TODO: maybe a preprocessing to remove spaces and other unuseful chars
 
+# TODO: some support for these old uppercase initial letter types would be good
+
 
 def parse_type_str(type_str : str) -> typs.Typ:
     '''
