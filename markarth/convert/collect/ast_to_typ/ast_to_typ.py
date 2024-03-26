@@ -128,7 +128,14 @@ def typ_from_iter(iter_stat : ast.AST) -> typs.Typ:
     type_from_iter shall get the type of a variable "extracted"
     out of an iterable statement
     '''
+    # TODO: test this against a for loop taking stuff froma method
     if type(iter_stat) == ast.Call:
         if iter_stat.func.id == 'range':
             return typs.TypPrimitive(typs.PrimitiveCod.INT)
+        elif iter_stat.func.id == 'enumerate':
+            # TODO: evaluate what's inside the enumerate
+            return typs.TypTuple(inner_typs=[
+                typs.TypPrimitive(typs.PrimitiveCod.INT),
+                typs.TypAny()
+            ])
     return typs.TypAny()
