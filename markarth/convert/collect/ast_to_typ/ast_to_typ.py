@@ -22,6 +22,8 @@ def ast_val_to_typ(
         return typ_from_constant(val)
     if type(val) == ast.BinOp:
         return typ_from_bin_op(val, var_tracker)
+    if type(val) == ast.Tuple:
+        return typ_from_tuple(ast_tup = val, var_tracker = var_tracker)
     if var_tracker is not None:
         if type(val) == ast.Name:
             supposed_typ = var_tracker.get_vartyp( val.id )
@@ -123,6 +125,7 @@ def typ_from_call(
             return call_type
     return typs.TypAny()
 
+
 def typ_from_iter(iter_stat : ast.AST) -> typs.Typ:
     '''
     type_from_iter shall get the type of a variable "extracted"
@@ -139,3 +142,17 @@ def typ_from_iter(iter_stat : ast.AST) -> typs.Typ:
                 typs.TypAny()
             ])
     return typs.TypAny()
+
+
+def typ_from_tuple(
+    ast_tup : ast.Tuple,
+    var_tracker : VarTypTracker | None = None
+) -> typs.TypTuple:
+    '''
+    typ_from_tuple returns a tuple typ from an ast tuple statement
+    '''
+    # for each of the tuple's elements i gather their typ
+    inner_typs = [
+        ast_val_to_typ(elt, var_tracker) for elt in ast_tup.elts
+    ]
+    return typs.TypTuple(inner_typs = inner_typs)
