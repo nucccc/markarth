@@ -262,6 +262,19 @@ source_func2 = '''def f(a : int, b : int) -> int:
 def func2() -> tuple[ast.FunctionDef, list[str]]:
     return code_process.process_func_code(source_func2)
 
+# this shall have an enumerate
+source_func3 = '''def f1(hl : list) -> float:
+    for i, stuff in enumerate(hl):
+        pass
+    return 0.07
+'''
+
+@pytest.fixture
+def func3() -> tuple[ast.FunctionDef, list[str]]:
+    return code_process.process_func_code(source_func3)
+
+
+
 source_statements2 ='''a = 3
 b = 7
 c = a + b

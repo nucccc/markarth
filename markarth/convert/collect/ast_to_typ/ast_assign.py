@@ -119,14 +119,18 @@ def _add_target_to_typ_store(
         var_name = target.id
         target_store.add_typ(var_name, val_typ)
     elif type(target) == ast.Tuple:
-        for elt in target.elts:
-            if type(elt) is not ast.Name:
-                continue
-            var_name = elt.id
-            # TODO: in case of a tuple at the moment i just put an any as the
-            # typ, in the future a check on eventual container typs maybe shall
-            # be done
-            target_store.add_typ(var_name, typs.TypAny())
+        if val_typ.is_tuple() and len(val_typ.inner_typs) == len(target.elts):
+            for elt, tup_typ in zip(target.elts, val_typ.inner_typs):
+                if type(elt) is not ast.Name:
+                    continue
+                var_name = elt.id
+                target_store.add_typ(var_name, tup_typ)
+        else:
+            for elt in target.elts:
+                if type(elt) is not ast.Name:
+                    continue
+                var_name = elt.id
+                target_store.add_typ(var_name, typs.TypAny())
     return target_store
 
 

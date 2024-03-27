@@ -56,14 +56,25 @@ def test_type_from_iter():
     m = ast.parse(code)
     f = m.body[0]
     assert typ_from_iter(f.iter).is_int()
+    
     code = '''for i in range(len([2.3,4.5])):\n\tpass'''
     m = ast.parse(code)
     f = m.body[0]
     assert typ_from_iter(f.iter).is_int()
+
     code = '''for i in boh:\n\tpass'''
     m = ast.parse(code)
     f = m.body[0]
     assert typ_from_iter(f.iter).is_any()
+
+    code = '''for i, boh in enumerate(what_a_list):\n\tpass'''
+    m = ast.parse(code)
+    f = m.body[0]
+    typ = typ_from_iter(f.iter)
+    assert typ.is_tuple()
+    assert len(typ.inner_typs) == 2
+    assert typ.inner_typs[0].is_int()
+    assert typ.inner_typs[1].is_any()
 
 def test_type_from_bin_op():
     op_code = '6 + 7'
