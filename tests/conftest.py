@@ -23,7 +23,7 @@ def func2() -> bool:
     pass'''
 
 @pytest.fixture
-def code1() -> tuple[ast.Module, list[str]]:
+def code1() -> tuple[ast.Module, list[str]]: # pragma: no cover
     return code_process.process_code(source_code1)
 
 source_mod2 = '''import json
@@ -35,7 +35,7 @@ c = 17
 '''
 
 @pytest.fixture
-def mod2() -> tuple[ast.Module, list[str]]:
+def mod2() -> tuple[ast.Module, list[str]]: # pragma: no cover
     return code_process.process_code(source_mod2)
 
 source_mod3 = '''a = 7
@@ -58,11 +58,11 @@ def f3(g : int) -> int:
 '''
 
 @pytest.fixture
-def code_mod3() -> str:
+def code_mod3() -> str: # pragma: no cover
     return source_mod3
 
 @pytest.fixture
-def mod3() -> tuple[ast.Module, list[str]]:
+def mod3() -> tuple[ast.Module, list[str]]: # pragma: no cover
     return code_process.process_code(source_mod3)
 
 source_mod4 = '''
@@ -79,11 +79,11 @@ def stuff(a : int, b : int, c : float = 0.4, d = None) -> int:
 '''
 
 @pytest.fixture
-def code_mod4() -> str:
+def code_mod4() -> str: # pragma: no cover
     return source_mod4
 
 @pytest.fixture
-def mod4() -> tuple[ast.Module, list[str]]:
+def mod4() -> tuple[ast.Module, list[str]]: # pragma: no cover
     return code_process.process_code(source_mod4)
 
 # mod5 mostly addresses expressions representing assignments
@@ -99,11 +99,11 @@ h : float = 3.5
 '''
 
 @pytest.fixture
-def code_mod5() -> str:
+def code_mod5() -> str: # pragma: no cover
     return source_mod5
 
 @pytest.fixture
-def mod5() -> tuple[ast.Module, list[str]]:
+def mod5() -> tuple[ast.Module, list[str]]: # pragma: no cover
     return code_process.process_code(source_mod5)
 
 
@@ -126,11 +126,11 @@ class a_class():
 '''
 
 @pytest.fixture
-def code_mod6() -> str:
+def code_mod6() -> str: # pragma: no cover
     return source_mod6
 
 @pytest.fixture
-def mod6() -> tuple[ast.Module, list[str]]:
+def mod6() -> tuple[ast.Module, list[str]]: # pragma: no cover
     return code_process.process_code(source_mod6)
 
 
@@ -145,11 +145,11 @@ def f1() -> float:
 '''
 
 @pytest.fixture
-def code_mod7() -> str:
+def code_mod7() -> str: # pragma: no cover
     return source_mod7
 
 @pytest.fixture
-def mod7() -> tuple[ast.Module, list[str]]:
+def mod7() -> tuple[ast.Module, list[str]]: # pragma: no cover
     return code_process.process_code(source_mod7)
 
 
@@ -171,11 +171,11 @@ def f1() -> float:
 '''
 
 @pytest.fixture
-def code_mod8() -> str:
+def code_mod8() -> str: # pragma: no cover
     return source_mod8
 
 @pytest.fixture
-def mod8() -> tuple[ast.Module, list[str]]:
+def mod8() -> tuple[ast.Module, list[str]]: # pragma: no cover
     return code_process.process_code(source_mod8)
 
 
@@ -188,11 +188,11 @@ def f1() -> float:
 '''
 
 @pytest.fixture
-def code_mod9() -> str:
+def code_mod9() -> str: # pragma: no cover
     return source_mod9
 
 @pytest.fixture
-def mod9() -> tuple[ast.Module, list[str]]:
+def mod9() -> tuple[ast.Module, list[str]]: # pragma: no cover
     return code_process.process_code(source_mod9)
 
 
@@ -221,11 +221,11 @@ def f3(g : int) -> int:
 '''
 
 @pytest.fixture
-def code_mod10() -> str:
+def code_mod10() -> str: # pragma: no cover
     return source_mod10
 
 @pytest.fixture
-def mod10() -> tuple[ast.Module, list[str]]:
+def mod10() -> tuple[ast.Module, list[str]]: # pragma: no cover
     return code_process.process_code(source_mod10)
 
 
@@ -238,7 +238,7 @@ e = 40
 '''
 
 @pytest.fixture
-def statements1() -> list[ast.AnnAssign|ast.Assign]:
+def statements1() -> list[ast.AnnAssign|ast.Assign]: # pragma: no cover
     parse_result = ast.parse(source_statements1)
     return parse_result.body
 
@@ -247,7 +247,7 @@ source_func1 = '''def f():
 '''
 
 @pytest.fixture
-def func1() -> tuple[ast.FunctionDef, list[str]]:
+def func1() -> tuple[ast.FunctionDef, list[str]]: # pragma: no cover
     return code_process.process_func_code(source_func1)
 
 source_func2 = '''def f(a : int, b : int) -> int:
@@ -259,8 +259,21 @@ source_func2 = '''def f(a : int, b : int) -> int:
 '''
 
 @pytest.fixture
-def func2() -> tuple[ast.FunctionDef, list[str]]:
+def func2() -> tuple[ast.FunctionDef, list[str]]: # pragma: no cover
     return code_process.process_func_code(source_func2)
+
+# this shall have an enumerate
+source_func3 = '''def f1(hl : list) -> float:
+    for i, stuff in enumerate(hl):
+        pass
+    return 0.07
+'''
+
+@pytest.fixture
+def func3() -> tuple[ast.FunctionDef, list[str]]: # pragma: no cover
+    return code_process.process_func_code(source_func3)
+
+
 
 source_statements2 ='''a = 3
 b = 7
@@ -268,6 +281,6 @@ c = a + b
 d = a + c'''
 
 @pytest.fixture
-def statements2() -> list[ast.AST]:
+def statements2() -> list[ast.AST]: # pragma: no cover
     parse_result = ast.parse(source_statements2)
     return parse_result.body
