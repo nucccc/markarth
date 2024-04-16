@@ -156,3 +156,23 @@ def typ_from_tuple(
         ast_val_to_typ(elt, var_tracker) for elt in ast_tup.elts
     ]
     return typs.TypTuple(inner_typs = inner_typs)
+
+def typ_from_listcomp(
+    lc : ast.ListComp,
+    var_tracker : VarTypTracker | None = None
+) -> typs.TypList:
+    '''
+    typ_from_listcomp is going to return a list type from a list
+    comprehension ast object
+    '''
+    # TODO: try to catch an inner typ
+
+    # i think i wanna try to unroll the comprehensions one by one
+    # from te first to the last, and fetch the typ from the iterable
+    for generator in lc.generators:
+        iter_typ = typ_from_iter(generator.iter)
+        # TODO: and here i stop myself as i need to think about
+        # what to do with the gather types, as this function may
+        # belong in a layer above like func_collect
+
+    return typs.TypList()
