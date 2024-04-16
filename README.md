@@ -27,7 +27,7 @@
 | markarth/convert/typs/typ\_store.py                   |       34 |        0 |    100% |           |
 | markarth/convert/typs/typs.py                         |       98 |        3 |     97% |41, 60, 98 |
 | markarth/convert/typs/typs\_parse.py                  |        6 |        0 |    100% |           |
-| tests/conftest.py                                     |       85 |       10 |     88% |103, 130, 153, 175, 196, 225, 242-243, 272-273 |
+| tests/conftest.py                                     |       41 |        0 |    100% |           |
 | tests/test\_ast\_assign.py                            |      125 |        0 |    100% |           |
 | tests/test\_ast\_to\_typ.py                           |      114 |        0 |    100% |           |
 | tests/test\_ast\_utils.py                             |       39 |        0 |    100% |           |
@@ -43,7 +43,7 @@
 | tests/test\_typs.py                                   |      108 |        0 |    100% |           |
 | tests/test\_typs\_parse.py                            |       18 |        0 |    100% |           |
 | tests/test\_vartyp\_tracker.py                        |      138 |        0 |    100% |           |
-|                                             **TOTAL** | **1844** |   **26** | **99%** |           |
+|                                             **TOTAL** | **1800** |   **16** | **99%** |           |
 
 
 ## Setup coverage badge
