@@ -150,6 +150,9 @@ def test_could_be_docstring():
     m = ast.parse('3')
     assert not could_be_docstring(m.body[0])
 
+    m = ast.parse('[i for i in range(4)]')
+    assert not could_be_docstring(m.body[0])
+
     m = ast.parse('"""beh"""')
     assert could_be_docstring(m.body[0])
 
@@ -174,6 +177,14 @@ def test_cdeclares_ins_point(mod3, mod10):
     assert cdeclares_ins_point(func_asts['f1']) == 8
     assert cdeclares_ins_point(func_asts['f2']) == 15
     assert cdeclares_ins_point(func_asts['f3']) == 19
+
+    # testing the case of a docstring as the only element of a code section
+    cod = """def func():\n\t'''a docstring'''"""
+    mod_ast = ast.parse(cod)
+    func_asts = collect_func_defs(mod_ast)
+
+    assert cdeclares_ins_point(func_asts['func']) == 2
+
 
 
 def test_sort_funcs_by_line(mod3):
