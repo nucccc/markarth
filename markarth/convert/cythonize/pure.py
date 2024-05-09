@@ -137,8 +137,8 @@ def could_be_docstring(stat : ast.AST) -> bool:
     '''
     if not type(stat) is ast.Expr:
         return False
-    if not hasattr(stat, 'value'):
-        return False
+    #if not hasattr(stat, 'value'):
+    #    return False
     if not hasattr(stat.value, 'n'):
         return False
     return type(stat.value.n) is str
