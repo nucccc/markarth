@@ -153,6 +153,9 @@ def test_could_be_docstring():
     m = ast.parse('[i for i in range(4)]')
     assert not could_be_docstring(m.body[0])
 
+    m = ast.parse('len([i for i in range(4)])')
+    assert not could_be_docstring(m.body[0])
+
     m = ast.parse('"""beh"""')
     assert could_be_docstring(m.body[0])
 
