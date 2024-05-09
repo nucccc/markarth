@@ -19,7 +19,7 @@
 | markarth/convert/cythonize/\_\_init\_\_.py            |        0 |        0 |    100% |           |
 | markarth/convert/cythonize/cy\_options.py             |       36 |        1 |     97% |        43 |
 | markarth/convert/cythonize/cy\_typs.py                |       28 |        0 |    100% |           |
-| markarth/convert/cythonize/pure.py                    |       97 |        3 |     97% |141, 143, 157 |
+| markarth/convert/cythonize/pure.py                    |       97 |        1 |     99% |       141 |
 | markarth/convert/preprocess/\_\_init\_\_.py           |        0 |        0 |    100% |           |
 | markarth/convert/preprocess/code\_process.py          |       32 |        2 |     94% |     49-50 |
 | markarth/convert/typs/\_\_init\_\_.py                 |        0 |        0 |    100% |           |
@@ -35,7 +35,7 @@
 | tests/test\_convert\_pure.py                          |       38 |        0 |    100% |           |
 | tests/test\_cy\_opts.py                               |       22 |        0 |    100% |           |
 | tests/test\_cy\_typs.py                               |       10 |        0 |    100% |           |
-| tests/test\_cythonize\_pure.py                        |       69 |        0 |    100% |           |
+| tests/test\_cythonize\_pure.py                        |       75 |        0 |    100% |           |
 | tests/test\_dict\_typ\_store.py                       |       71 |        0 |    100% |           |
 | tests/test\_func\_collect.py                          |       97 |        0 |    100% |           |
 | tests/test\_merge\_typs.py                            |      100 |        0 |    100% |           |
@@ -43,7 +43,7 @@
 | tests/test\_typs.py                                   |      108 |        0 |    100% |           |
 | tests/test\_typs\_parse.py                            |       18 |        0 |    100% |           |
 | tests/test\_vartyp\_tracker.py                        |      138 |        0 |    100% |           |
-|                                             **TOTAL** | **1810** |   **14** | **99%** |           |
+|                                             **TOTAL** | **1816** |   **12** | **99%** |           |
 
 
 ## Setup coverage badge
