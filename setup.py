@@ -18,7 +18,8 @@ setup(
         'coverage >= 7.3.2'
     ],
     classifiers=[
-        'Intended Audience :: Developers'
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
