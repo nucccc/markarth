@@ -19,7 +19,7 @@
 | markarth/convert/cythonize/\_\_init\_\_.py            |        0 |        0 |    100% |           |
 | markarth/convert/cythonize/cy\_options.py             |       36 |        1 |     97% |        43 |
 | markarth/convert/cythonize/cy\_typs.py                |       28 |        0 |    100% |           |
-| markarth/convert/cythonize/pure.py                    |       97 |        1 |     99% |       141 |
+| markarth/convert/cythonize/pure.py                    |       95 |        0 |    100% |           |
 | markarth/convert/preprocess/\_\_init\_\_.py           |        0 |        0 |    100% |           |
 | markarth/convert/preprocess/code\_process.py          |       29 |        0 |    100% |           |
 | markarth/convert/typs/\_\_init\_\_.py                 |        0 |        0 |    100% |           |
@@ -43,7 +43,7 @@
 | tests/test\_typs.py                                   |      114 |        0 |    100% |           |
 | tests/test\_typs\_parse.py                            |       18 |        0 |    100% |           |
 | tests/test\_vartyp\_tracker.py                        |      138 |        0 |    100% |           |
-|                                             **TOTAL** | **1819** |    **7** | **99%** |           |
+|                                             **TOTAL** | **1817** |    **6** | **99%** |           |
 
 
 ## Setup coverage badge
