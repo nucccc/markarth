@@ -2,6 +2,8 @@
 testing mod colection functions
 '''
 
+import ast
+
 import pytest
 
 from markarth.convert.collect.mod_collect import (
@@ -72,6 +74,21 @@ def test_collect_const_candidates(mod3):
     b_typ = const_candidates.get_typ('b')
     assert b_typ is not None
     assert b_typ.is_float()
+
+
+def test_collect_const_candidates_with_rep(mod3):
+    mod_ast = ast.parse('a = 3\na = 3.14')
+
+    const_candidates = collect_const_candidates(
+        mod_ast = mod_ast,
+        all_global_varnames = set()
+    )
+
+    assert len(const_candidates) == 1
+
+    a_typ = const_candidates.get_typ('a')
+    assert a_typ is not None
+    assert a_typ.is_any()
 
 
 def test_collect_call_typs(mod3):
