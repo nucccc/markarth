@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for markarth/convert/collect/mod_collect.py: 97%</title>
+    <title>Coverage for markarth/convert/collect/mod_collect.py: 100%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
     <link rel="stylesheet" href="style_cb_8e611ae1.css" type="text/css">
     <script src="coverage_html_cb_da166b87.js" defer></script>
@@ -12,7 +12,7 @@
     <div class="content">
         <h1>
             <span class="text">Coverage for </span><b>markarth/convert/collect/mod_collect.py</b>:
-            <span class="pc_cov">97%</span>
+            <span class="pc_cov">100%</span>
         </h1>
         <aside id="help_panel_wrapper">
             <input id="help_panel_state" type="checkbox">
@@ -55,8 +55,8 @@
         </aside>
         <h2>
             <span class="text">69 statements &nbsp;</span>
-            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">67<span class="text"> run</span></button>
-            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">2<span class="text"> missing</span></button>
+            <button type="button" class="run button_toggle_run" value="run" data-shortcut="r" title="Toggle lines run">69<span class="text"> run</span></button>
+            <button type="button" class="mis show_mis button_toggle_mis" value="mis" data-shortcut="m" title="Toggle lines missing">0<span class="text"> missing</span></button>
             <button type="button" class="exc show_exc button_toggle_exc" value="exc" data-shortcut="x" title="Toggle lines excluded">0<span class="text"> excluded</span></button>
         </h2>
         <p class="text">
@@ -65,7 +65,7 @@
             <a id="nextFileLink" class="nav" href="z_7ec6c45aa70b94eb_vartyp_tracker_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.5.1">coverage.py v7.5.1</a>,
-            created at 2024-05-09 19:43 +0000
+            created at 2024-05-23 21:05 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -171,8 +171,8 @@
     <p class="run"><span class="n"><a id="t89" href="#t89">89</a></span><span class="t">                    <span class="key">if</span> <span class="nam">vartyp</span><span class="op">.</span><span class="nam">is_primitive</span><span class="op">(</span><span class="op">)</span> <span class="key">and</span> <span class="nam">result</span><span class="op">.</span><span class="nam">get_typ</span><span class="op">(</span><span class="nam">varname</span><span class="op">)</span> <span class="key">is</span> <span class="key">None</span> <span class="key">and</span> <span class="nam">varname</span> <span class="key">not</span> <span class="key">in</span> <span class="nam">modified_vars</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t90" href="#t90">90</a></span><span class="t">                        <span class="nam">result</span><span class="op">.</span><span class="nam">add_typ</span><span class="op">(</span><span class="nam">varname</span><span class="op">,</span> <span class="nam">vartyp</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t91" href="#t91">91</a></span><span class="t">                    <span class="key">else</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t92" href="#t92">92</a></span><span class="t">                        <span class="nam">result</span><span class="op">.</span><span class="nam">add_typ</span><span class="op">(</span><span class="nam">varname</span><span class="op">,</span> <span class="nam">TypAny</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="mis show_mis"><span class="n"><a id="t93" href="#t93">93</a></span><span class="t">                        <span class="nam">modified_vars</span><span class="op">.</span><span class="nam">add</span><span class="op">(</span><span class="nam">varname</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t92" href="#t92">92</a></span><span class="t">                        <span class="nam">result</span><span class="op">.</span><span class="nam">add_typ</span><span class="op">(</span><span class="nam">varname</span><span class="op">,</span> <span class="nam">TypAny</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t93" href="#t93">93</a></span><span class="t">                        <span class="nam">modified_vars</span><span class="op">.</span><span class="nam">add</span><span class="op">(</span><span class="nam">varname</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t94" href="#t94">94</a></span><span class="t">                <span class="com"># by default global variable names are treated as any, as there</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">                <span class="com"># is no check regarding possible type modifications inside</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t96" href="#t96">96</a></span><span class="t">                <span class="com"># function bodies</span>&nbsp;</span><span class="r"></span></p>
@@ -262,7 +262,7 @@
             <a class="nav" href="z_7ec6c45aa70b94eb_vartyp_tracker_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.5.1">coverage.py v7.5.1</a>,
-            created at 2024-05-09 19:43 +0000
+            created at 2024-05-23 21:05 +0000
         </p>
     </div>
 </footer>
