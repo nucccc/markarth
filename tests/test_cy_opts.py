@@ -41,11 +41,14 @@ def test_parent_mod():
 
     assert func_opts2.default_float_cytyp == CyFloat.DOUBLE
     assert func_opts2.default_int_cytyp == CyInt.LONG
+    assert func_opts2.actual_ignore_assignment_annotations == False
 
     func_opts3 = FuncOpts(
         parent_mod=mod_opts,
-        internal_default_float_cytyp=CyFloat.FLOAT
+        internal_default_float_cytyp=CyFloat.FLOAT,
+        ignore_assignment_annotations=True
     )
 
     assert func_opts3.default_float_cytyp == CyFloat.FLOAT
     assert func_opts3.default_int_cytyp == CyInt.SHORT
+    assert func_opts3.actual_ignore_assignment_annotations == True
