@@ -229,6 +229,26 @@ def mod10() -> tuple[ast.Module, list[str]]: # pragma: no cover
     return code_process.process_code(source_mod10)
 
 
+# this test is for enumerates and containers
+source_mod11 = '''
+def f1(g : int) -> float:
+    l : list[int] = list(range(4,7))
+    a = 0
+    for i, elem in enumerate(l):
+        print(elem)
+        (l[i], a) = 3, i
+    return sum(l) * 3.4
+'''
+
+@pytest.fixture
+def code_mod11() -> str: # pragma: no cover
+    return source_mod11
+
+@pytest.fixture
+def mod11() -> tuple[ast.Module, list[str]]: # pragma: no cover
+    return code_process.process_code(source_mod11)
+
+
 source_statements1 = '''a = 7
 b = 5
 c = 3
@@ -272,7 +292,6 @@ source_func3 = '''def f1(hl : list) -> float:
 @pytest.fixture
 def func3() -> tuple[ast.FunctionDef, list[str]]: # pragma: no cover
     return code_process.process_func_code(source_func3)
-
 
 
 source_statements2 ='''a = 3

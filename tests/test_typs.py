@@ -108,6 +108,8 @@ def test_typ_unknown():
     assert not typ.is_container()
     assert not typ.is_none()
     assert not typ.is_primitive()
+    assert not typ.is_list()
+    assert not typ.is_tuple()
 
     assert typ.as_string() == 'any'
     
@@ -146,6 +148,8 @@ def test_typ_union():
     assert not typ.is_int()
     assert not typ.is_none()
     assert not typ.is_primitive()
+    assert not typ.is_list()
+    assert not typ.is_tuple()
 
     t_int1 = typs.TypPrimitive(prim=typs.PrimitiveCod.INT)
 
@@ -171,3 +175,73 @@ def test_typ_union():
     typ.add_typ(typ2)
 
     assert len(typ.get_union_types) == 3
+
+
+def test_typ_list():
+    typ = typs.TypList()
+
+    assert typ.is_container()
+    assert typ.is_list()
+    assert not typ.is_union()
+    assert not typ.is_str()
+    assert not typ.is_any()
+    assert not typ.is_bool()
+    assert not typ.is_float()
+    assert not typ.is_int()
+    assert not typ.is_none()
+    assert not typ.is_primitive()
+    assert not typ.is_tuple()
+
+    assert typ.as_string() == 'list[any]'
+
+    typ = typs.TypList(inner_typ=typs.TypPrimitive('str'))
+
+    assert typ.is_container()
+    assert typ.is_list()
+    assert not typ.is_union()
+    assert not typ.is_str()
+    assert not typ.is_any()
+    assert not typ.is_bool()
+    assert not typ.is_float()
+    assert not typ.is_int()
+    assert not typ.is_none()
+    assert not typ.is_primitive()
+    assert not typ.is_tuple()
+
+    assert typ.as_string() == 'list[str]'
+
+
+def test_typ_tuple():
+    typ = typs.TypTuple()
+
+    assert typ.is_container()
+    assert typ.is_tuple()
+    assert not typ.is_union()
+    assert not typ.is_str()
+    assert not typ.is_any()
+    assert not typ.is_bool()
+    assert not typ.is_float()
+    assert not typ.is_int()
+    assert not typ.is_none()
+    assert not typ.is_primitive()
+    assert not typ.is_list()
+
+    assert typ.as_string() == 'tuple'
+
+    typ = typs.TypTuple(inner_typs = [typs.TypAny(), typs.TypPrimitive('str'), typs.TypPrimitive('int')])
+
+    assert typ.is_container()
+    assert typ.is_tuple()
+    assert not typ.is_union()
+    assert not typ.is_str()
+    assert not typ.is_any()
+    assert not typ.is_bool()
+    assert not typ.is_float()
+    assert not typ.is_int()
+    assert not typ.is_none()
+    assert not typ.is_primitive()
+    assert not typ.is_list()
+
+    assert len(typ.inner_typs) == 3
+
+    assert typ.as_string() == 'tuple[any,str,int]'

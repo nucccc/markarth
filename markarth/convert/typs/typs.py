@@ -3,6 +3,7 @@ okay some class for the type could have been useful
 '''
 
 from enum import Enum
+from typing import Iterable
 
 class InvalidPrimitiveStr(Exception):
     'Raised when primitive type string is not valid'
@@ -89,6 +90,12 @@ class Typ:
         return False
     
     def is_union(self) -> bool:
+        return False
+    
+    def is_list(self) -> bool:
+        return False
+    
+    def is_tuple(self) -> bool:
         return False
 
     def as_string(self) -> str:
@@ -193,4 +200,38 @@ class TypUnion(Typ):
 
     def as_string(self) -> str:
         return '|'.join(typ.as_string() for typ in self.union_types)
+
     
+class TypContainer(Typ):
+    '''
+    TypContainer shall be an abstract class for containers (lists)
+    '''
+
+    def is_container(self) -> bool:
+        return True
+
+
+class TypList(TypContainer):
+
+    def __init__(self, inner_typ : Typ = TypAny()):
+        self.inner_typ : Typ = inner_typ
+
+    def is_list(self) -> bool:
+        return True
+
+    def as_string(self) -> str:
+        return f'list[{self.inner_typ.as_string()}]'
+
+
+class TypTuple(TypContainer):
+
+    def __init__(self, inner_typs : Iterable[Typ] | None = None):
+        self.inner_typs = [inner_typ for inner_typ in inner_typs] if inner_typs is not None else list()
+
+    def is_tuple(self) -> bool:
+        return True
+
+    def as_string(self) -> str:
+        if len(self.inner_typs) == 0:
+            return 'tuple'
+        return f'tuple[{",".join(inner_typ.as_string() for inner_typ in self.inner_typs)}]'

@@ -224,3 +224,17 @@ def test_func_collect2(func2):
     res_typ = local_coll.local_typs.get_typ('res')
     assert res_typ is not None
     assert res_typ.is_int()
+
+
+def test_func_collect3(func3):
+    func_ast3, _ = func3
+
+    local_coll = collect_local_typs(
+        func_ast = func_ast3
+    )
+
+    assert len(local_coll.local_typs) >= 1
+
+    c_typ = local_coll.local_typs.get_typ('i')
+    assert c_typ is not None
+    assert c_typ.is_int()

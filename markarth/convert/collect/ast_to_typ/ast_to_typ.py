@@ -22,6 +22,8 @@ def ast_val_to_typ(
         return typ_from_constant(val)
     if type(val) == ast.BinOp:
         return typ_from_bin_op(val, var_tracker)
+    if type(val) == ast.Tuple:
+        return typ_from_tuple(ast_tup = val, var_tracker = var_tracker)
     if var_tracker is not None:
         if type(val) == ast.Name:
             supposed_typ = var_tracker.get_vartyp( val.id )
@@ -123,12 +125,56 @@ def typ_from_call(
             return call_type
     return typs.TypAny()
 
+
 def typ_from_iter(iter_stat : ast.AST) -> typs.Typ:
     '''
     type_from_iter shall get the type of a variable "extracted"
     out of an iterable statement
     '''
+    # TODO: test this against a for loop taking stuff froma method
     if type(iter_stat) == ast.Call:
         if iter_stat.func.id == 'range':
             return typs.TypPrimitive(typs.PrimitiveCod.INT)
+        elif iter_stat.func.id == 'enumerate':
+            # TODO: evaluate what's inside the enumerate
+            return typs.TypTuple(inner_typs=[
+                typs.TypPrimitive(typs.PrimitiveCod.INT),
+                typs.TypAny()
+            ])
     return typs.TypAny()
+
+
+def typ_from_tuple(
+    ast_tup : ast.Tuple,
+    var_tracker : VarTypTracker | None = None
+) -> typs.TypTuple:
+    '''
+    typ_from_tuple returns a tuple typ from an ast tuple statement
+    '''
+    # for each of the tuple's elements i gather their typ
+    inner_typs = [
+        ast_val_to_typ(elt, var_tracker) for elt in ast_tup.elts
+    ]
+    return typs.TypTuple(inner_typs = inner_typs)
+
+
+# TO BE COMPLETED
+#def typ_from_listcomp(
+#    lc : ast.ListComp,
+#    var_tracker : VarTypTracker | None = None
+#) -> typs.TypList:
+#    '''
+#    typ_from_listcomp is going to return a list type from a list
+#    comprehension ast object
+#    '''
+    # TODO: try to catch an inner typ
+
+    # i think i wanna try to unroll the comprehensions one by one
+    # from te first to the last, and fetch the typ from the iterable
+#    for generator in lc.generators:
+#        iter_typ = typ_from_iter(generator.iter)
+        # TODO: and here i stop myself as i need to think about
+        # what to do with the gather types, as this function may
+        # belong in a layer above like func_collect
+
+#    return typs.TypList()

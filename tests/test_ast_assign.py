@@ -205,6 +205,35 @@ def test_typ_store_from_target():
     assert c_typ.is_any()
 
 
+    # then i test an assignment
+    mod = ast.parse('a, b, c = (7, 4, 6)')
+
+    assignment = mod.body[0]
+
+    typ_store = typ_store_from_target(
+        target = assignment.targets[0],
+        val_typ = typs.TypTuple(inner_typs=[
+            typs.TypPrimitive(typs.PrimitiveCod.INT),
+            typs.TypPrimitive(typs.PrimitiveCod.INT),
+            typs.TypPrimitive(typs.PrimitiveCod.INT)
+        ])
+    )
+
+    assert len(typ_store) == 3
+
+    a_typ = typ_store.get_typ('a')
+    assert a_typ is not None
+    assert a_typ.is_int()
+
+    b_typ = typ_store.get_typ('b')
+    assert b_typ is not None
+    assert b_typ.is_int()
+
+    c_typ = typ_store.get_typ('c')
+    assert c_typ is not None
+    assert c_typ.is_int()
+
+
     # additionally there should be some tests regarding subscripts
     mod = ast.parse('a[0], b, c = 7')
 

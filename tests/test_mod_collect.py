@@ -115,7 +115,7 @@ def test_collect_call_typs(mod3):
 
 
 def test_mod_collect(mod3):
-    mod_ast, _ = mod3
+    mod_ast, _ = mod3 # pragma: no cover 
 
     mod_coll_result = mod_collect(mod_ast)
 
@@ -148,3 +148,18 @@ def test_mod_collect(mod3):
     for typ_name , typ in f3_typs.iter_typs():
         print(typ_name)
     assert len(f3_typs) == 2
+
+
+def test_mod_collect(mod11):
+    mod_ast, _ = mod11
+
+    mod_coll_result = mod_collect(mod_ast)
+
+    func_colls = mod_coll_result.func_colls
+    assert 'f1' in func_colls.keys()
+
+    f1_typs = func_colls.get('f1').local_typs
+    assert len(f1_typs) == 4
+
+    assert f1_typs.get_typ('i').is_int()
+    assert f1_typs.get_typ('a').is_int()

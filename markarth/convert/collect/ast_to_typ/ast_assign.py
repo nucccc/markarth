@@ -60,7 +60,9 @@ def assigned_typs(
     '''
     # obtaining the annotation I'm going to return, being none in case
     # my assignment is not being annotated
-    annotation = parse_type_str(ast_expr.annotation.id) if type(ast_expr) == ast.AnnAssign else None
+    # TODO: I need a more general function to obtain the annotation from
+    # an object (not every annotation object has an "id" attribute)
+    annotation = parse_type_str(ast_expr.annotation.id) if type(ast_expr) == ast.AnnAssign and hasattr(ast_expr.annotation, 'id') else None
 
     val_typ = ast_val_to_typ(ast_expr.value, var_tracker)
 
@@ -119,14 +121,18 @@ def _add_target_to_typ_store(
         var_name = target.id
         target_store.add_typ(var_name, val_typ)
     elif type(target) == ast.Tuple:
-        for elt in target.elts:
-            if type(elt) is not ast.Name:
-                continue
-            var_name = elt.id
-            # TODO: in case of a tuple at the moment i just put an any as the
-            # typ, in the future a check on eventual container typs maybe shall
-            # be done
-            target_store.add_typ(var_name, typs.TypAny())
+        if val_typ.is_tuple() and len(val_typ.inner_typs) == len(target.elts):
+            for elt, tup_typ in zip(target.elts, val_typ.inner_typs):
+                if type(elt) is not ast.Name:
+                    continue
+                var_name = elt.id
+                target_store.add_typ(var_name, tup_typ)
+        else:
+            for elt in target.elts:
+                if type(elt) is not ast.Name:
+                    continue
+                var_name = elt.id
+                target_store.add_typ(var_name, typs.TypAny())
     return target_store
 
 

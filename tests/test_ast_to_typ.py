@@ -7,8 +7,10 @@ from markarth.convert.collect.ast_to_typ.ast_to_typ import (
     typ_from_iter,
     typ_from_call,
     ast_val_to_typ,
-    eval_op_typ
+    eval_op_typ,
+    typ_from_tuple
 )
+from markarth.convert.collect.vartyp_tracker import VarTypTracker
 from markarth.convert.typs import typs
 
 
@@ -56,14 +58,25 @@ def test_type_from_iter():
     m = ast.parse(code)
     f = m.body[0]
     assert typ_from_iter(f.iter).is_int()
+    
     code = '''for i in range(len([2.3,4.5])):\n\tpass'''
     m = ast.parse(code)
     f = m.body[0]
     assert typ_from_iter(f.iter).is_int()
+
     code = '''for i in boh:\n\tpass'''
     m = ast.parse(code)
     f = m.body[0]
     assert typ_from_iter(f.iter).is_any()
+
+    code = '''for i, boh in enumerate(what_a_list):\n\tpass'''
+    m = ast.parse(code)
+    f = m.body[0]
+    typ = typ_from_iter(f.iter)
+    assert typ.is_tuple()
+    assert len(typ.inner_typs) == 2
+    assert typ.inner_typs[0].is_int()
+    assert typ.inner_typs[1].is_any()
 
 def test_type_from_bin_op():
     op_code = '6 + 7'
@@ -237,3 +250,33 @@ def test_typ_from_call():
 
     call_typ = typ_from_call(call = call)
     assert call_typ.is_any()
+
+
+def test_typ_from_tuple():
+    code = 'a = (4, 5, 6.11)'
+    mod = ast.parse(code)
+    ast_tup = mod.body[0].value
+
+    typ = typ_from_tuple(ast_tup = ast_tup)
+
+    assert typ.is_tuple()
+    assert len(typ.inner_typs) == 3
+    assert typ.inner_typs[0].is_int()
+    assert typ.inner_typs[1].is_int()
+    assert typ.inner_typs[2].is_float()
+
+
+def test_typ_from_tuple_with_vartracker():
+    code = 'a = (4, a, 6.11)'
+    mod = ast.parse(code)
+    ast_tup = mod.body[0].value
+    vartyp_tracker = VarTypTracker()
+    vartyp_tracker.add_local_typ('a', typs.TypPrimitive(typs.PrimitiveCod.BOOL))
+
+    typ = typ_from_tuple(ast_tup = ast_tup, var_tracker = vartyp_tracker)
+
+    assert typ.is_tuple()
+    assert len(typ.inner_typs) == 3
+    assert typ.inner_typs[0].is_int()
+    assert typ.inner_typs[1].is_bool()
+    assert typ.inner_typs[2].is_float()
