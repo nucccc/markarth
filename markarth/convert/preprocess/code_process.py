@@ -40,14 +40,6 @@ def process_func_code(code : str) -> tuple[ast.FunctionDef, list[str]]:
     ast_code, codelines = process_code(code)
     func_ast = ast_code.body[0]
     return (func_ast, codelines)
-
-
-def process_file(filepath : str) -> tuple[ast.Module, list[str]]:
-    '''
-    process_file opens a python code file, returns its code being processed
-    '''
-    with open(filepath, 'r') as f:
-        return process_code(f.read())
     
 
 def indentation_pattern(

@@ -102,6 +102,14 @@ def test_record_vartyp():
     rec_coll = _record_vartyp('a', TypPrimitive(PrimitiveCod.INT), var_tracker)
     assert rec_coll == CollisionEnum.NO_COLLISION
 
+    #adding a pretty weird case to increase test coverage
+    var_tracker = VarTypTracker(
+        outer_typs=DictTypStore({'a':TypPrimitive(PrimitiveCod.FLOAT)})
+    )
+    
+    rec_coll = _record_vartyp('a', TypPrimitive(PrimitiveCod.INT), var_tracker, global_varnames={'a'})
+    assert rec_coll == CollisionEnum.GLOBAL_COLLISION
+
 
 def test_collect_from_ast_body():
 

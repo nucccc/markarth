@@ -60,7 +60,9 @@ def assigned_typs(
     '''
     # obtaining the annotation I'm going to return, being none in case
     # my assignment is not being annotated
-    annotation = parse_type_str(ast_expr.annotation.id) if type(ast_expr) == ast.AnnAssign else None
+    # TODO: I need a more general function to obtain the annotation from
+    # an object (not every annotation object has an "id" attribute)
+    annotation = parse_type_str(ast_expr.annotation.id) if type(ast_expr) == ast.AnnAssign and hasattr(ast_expr.annotation, 'id') else None
 
     val_typ = ast_val_to_typ(ast_expr.value, var_tracker)
 

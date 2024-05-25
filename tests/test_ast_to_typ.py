@@ -223,6 +223,27 @@ def test_typ_from_call():
     call_typ = typ_from_call(call = call)
     assert call_typ.is_bool()
 
+    code = 'a = str(7)'
+    mod = ast.parse(code)
+    call = mod.body[0].value
+
+    call_typ = typ_from_call(call = call)
+    assert call_typ.is_str()
+
+    code = 'a = len([1,2,3])'
+    mod = ast.parse(code)
+    call = mod.body[0].value
+
+    call_typ = typ_from_call(call = call)
+    assert call_typ.is_int()
+
+    code = 'a = np.mean()'
+    mod = ast.parse(code)
+    call = mod.body[0].value
+
+    call_typ = typ_from_call(call = call)
+    assert call_typ.is_any()
+
     code = 'a = asfasf(7)'
     mod = ast.parse(code)
     call = mod.body[0].value

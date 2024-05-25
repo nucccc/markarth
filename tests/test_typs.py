@@ -10,6 +10,9 @@ def test_str_to_prim_cod():
     assert typs.str_to_prim_cod('int') == typs.PrimitiveCod.INT
     assert typs.str_to_prim_cod('str') == typs.PrimitiveCod.STR
 
+    with pytest.raises(typs.InvalidPrimitiveStr):
+        typs.str_to_prim_cod('hakahakahaka')
+
     assert typs.str_to_prim_cod_or_none('bool') == typs.PrimitiveCod.BOOL
     assert typs.str_to_prim_cod_or_none('float') == typs.PrimitiveCod.FLOAT
     assert typs.str_to_prim_cod_or_none('int') == typs.PrimitiveCod.INT
@@ -23,6 +26,13 @@ def test_prim_cod_to_str():
     assert typs.prim_cod_to_str(typs.PrimitiveCod.FLOAT) == 'float'
     assert typs.prim_cod_to_str(typs.PrimitiveCod.INT) == 'int'
     assert typs.prim_cod_to_str(typs.PrimitiveCod.STR) == 'str'
+
+
+def test_typ():
+    typ = typs.Typ()
+
+    with pytest.raises(NotImplementedError):
+        typ.as_string()
 
 
 def test_typ_primitive():

@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setup(
     name='markarth',
-    version='0.0.4',
+    version='0.0.5',
     author='Domenico Nucera',
     description='Automatic code conversion from python to cython',
     long_description=long_description,
@@ -16,4 +16,19 @@ setup(
     install_requires=[
         'pydantic >= 2.4.2',
         'coverage >= 7.3.2'
-    ])
+    ],
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Programming Language :: Python :: 3.12',
+        'Topic :: Software Development :: Code Generators'
+    ]
+)

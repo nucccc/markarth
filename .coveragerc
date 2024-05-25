@@ -1,2 +1,5 @@
 [run]
 relative_files = true
+[coverage:run]
+omit =
+    tests/*

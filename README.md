@@ -57,17 +57,21 @@ def stuff(a : int, b : int, c : float = 0.4, d = None) -> int:
 
 ## Installation
 
-At the moment there is no PyPI package, so if someone really (really?) wants to run such thing, the repo should be cloned, to then run the `setup.py` script in the cloning folder 
+Markarth is available on the [PyPI index](https://pypi.org/project/markarth). You can install it using pip:
 
 ```
-git clone https://github.com/nucccc/markarth
-cd markarth
-pip install .
+pip install markarth
 ```
 
 ## Internal functioning
 
 It makes heavy usage of the `ast` module in order to parse python code, while leveraging type annotations to infer variable types, thus adding some declarations that with python would speed the code up.
+
+The module's functionality is divided in two main steps:
+ - one in which the code parsed with `ast` is analyzed to detect types of variables. Results of elementary operations are used, together with invocations of functions like `len()`.
+ - another in which the types collected are converted to cython codelines.
+
+There are additional functionalities to provide conversion options, in order to use `cython.double` instead of `cython.float` as type during conversion.
 
 ## Possible improvements
 
