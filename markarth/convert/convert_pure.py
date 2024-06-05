@@ -5,7 +5,7 @@ yeah let's play with stuff
 from markarth.convert.preprocess import code_process
 from markarth.convert.collect.mod_collect import mod_collect
 from markarth.convert.cythonize.cy_options import ModOpts, gen_default_mod_opts
-from markarth.convert.cythonize.pure import pure_cythonize
+from markarth.convert.cythonize.pure import cythonify_pure
 
 
 def convert_code(
@@ -19,7 +19,7 @@ def convert_code(
 
     mod_collect_res = mod_collect(ast_mod, m_opts)
 
-    new_code = pure_cythonize(
+    new_code = cythonify_pure(
         mod_ast = ast_mod,
         codelines = codelines,
         mod_coll = mod_collect_res,
