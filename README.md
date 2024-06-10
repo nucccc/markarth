@@ -2,32 +2,36 @@
 
 [Full report](https://htmlpreview.github.io/?https://github.com/nucccc/markarth/blob/python-coverage-comment-action-data/htmlcov/index.html)
 
-| Name                                                  |    Stmts |     Miss |    Cover |   Missing |
-|------------------------------------------------------ | -------: | -------: | -------: | --------: |
-| markarth/\_\_init\_\_.py                              |        1 |        0 |     100% |           |
-| markarth/ast\_utils/\_\_init\_\_.py                   |        1 |        0 |     100% |           |
-| markarth/ast\_utils/ast\_utils.py                     |       19 |        0 |     100% |           |
-| markarth/convert/\_\_init\_\_.py                      |        0 |        0 |     100% |           |
-| markarth/convert/collect/\_\_init\_\_.py              |        0 |        0 |     100% |           |
-| markarth/convert/collect/ast\_to\_typ/\_\_init\_\_.py |        0 |        0 |     100% |           |
-| markarth/convert/collect/ast\_to\_typ/ast\_assign.py  |       52 |        0 |     100% |           |
-| markarth/convert/collect/ast\_to\_typ/ast\_to\_typ.py |       70 |        0 |     100% |           |
-| markarth/convert/collect/func\_collect.py             |       82 |        0 |     100% |           |
-| markarth/convert/collect/mod\_collect.py              |       69 |        0 |     100% |           |
-| markarth/convert/collect/vartyp\_tracker.py           |       52 |        0 |     100% |           |
-| markarth/convert/convert\_pure.py                     |       11 |        0 |     100% |           |
-| markarth/convert/cythonize/\_\_init\_\_.py            |        0 |        0 |     100% |           |
-| markarth/convert/cythonize/cy\_options.py             |       36 |        0 |     100% |           |
-| markarth/convert/cythonize/cy\_typs.py                |       28 |        0 |     100% |           |
-| markarth/convert/cythonize/pure.py                    |       95 |        0 |     100% |           |
-| markarth/convert/preprocess/\_\_init\_\_.py           |        0 |        0 |     100% |           |
-| markarth/convert/preprocess/code\_process.py          |       29 |        0 |     100% |           |
-| markarth/convert/typs/\_\_init\_\_.py                 |        0 |        0 |     100% |           |
-| markarth/convert/typs/merge\_typs.py                  |       27 |        0 |     100% |           |
-| markarth/convert/typs/typ\_store.py                   |       34 |        0 |     100% |           |
-| markarth/convert/typs/typs.py                         |      122 |        0 |     100% |           |
-| markarth/convert/typs/typs\_parse.py                  |       14 |        0 |     100% |           |
-|                                             **TOTAL** |  **742** |    **0** | **100%** |           |
+| Name                                                   |    Stmts |     Miss |    Cover |   Missing |
+|------------------------------------------------------- | -------: | -------: | -------: | --------: |
+| markarth/\_\_init\_\_.py                               |        1 |        0 |     100% |           |
+| markarth/ast\_utils/\_\_init\_\_.py                    |        1 |        0 |     100% |           |
+| markarth/ast\_utils/ast\_utils.py                      |       19 |        0 |     100% |           |
+| markarth/convert/\_\_init\_\_.py                       |        0 |        0 |     100% |           |
+| markarth/convert/collect/\_\_init\_\_.py               |        0 |        0 |     100% |           |
+| markarth/convert/collect/ast\_to\_typ/\_\_init\_\_.py  |        0 |        0 |     100% |           |
+| markarth/convert/collect/ast\_to\_typ/ast\_assign.py   |       52 |        0 |     100% |           |
+| markarth/convert/collect/ast\_to\_typ/ast\_to\_typ.py  |       70 |        0 |     100% |           |
+| markarth/convert/collect/func\_collect.py              |       82 |        0 |     100% |           |
+| markarth/convert/collect/mod\_collect.py               |       69 |        0 |     100% |           |
+| markarth/convert/collect/vartyp\_tracker.py            |       52 |        0 |     100% |           |
+| markarth/convert/convert\_pure.py                      |       11 |        0 |     100% |           |
+| markarth/convert/cythonize/\_\_init\_\_.py             |        0 |        0 |     100% |           |
+| markarth/convert/cythonize/\_import.py                 |       24 |        0 |     100% |           |
+| markarth/convert/cythonize/base.py                     |       68 |        0 |     100% |           |
+| markarth/convert/cythonize/cy\_options.py              |       36 |        0 |     100% |           |
+| markarth/convert/cythonize/cy\_typs.py                 |       28 |        0 |     100% |           |
+| markarth/convert/cythonize/pure.py                     |        8 |        0 |     100% |           |
+| markarth/convert/cythonize/pure\_funcs/declare\_gen.py |       24 |        0 |     100% |           |
+| markarth/convert/cythonize/pure\_funcs/typs\_conv.py   |       18 |        0 |     100% |           |
+| markarth/convert/preprocess/\_\_init\_\_.py            |        0 |        0 |     100% |           |
+| markarth/convert/preprocess/code\_process.py           |       29 |        0 |     100% |           |
+| markarth/convert/typs/\_\_init\_\_.py                  |        0 |        0 |     100% |           |
+| markarth/convert/typs/merge\_typs.py                   |       27 |        0 |     100% |           |
+| markarth/convert/typs/typ\_store.py                    |       34 |        0 |     100% |           |
+| markarth/convert/typs/typs.py                          |      122 |        0 |     100% |           |
+| markarth/convert/typs/typs\_parse.py                   |       14 |        0 |     100% |           |
+|                                              **TOTAL** |  **789** |    **0** | **100%** |           |
 
 
 ## Setup coverage badge

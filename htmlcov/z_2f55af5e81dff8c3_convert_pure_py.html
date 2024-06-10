@@ -5,7 +5,7 @@
     <title>Coverage for markarth/convert/convert_pure.py: 100%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
     <link rel="stylesheet" href="style_cb_8e611ae1.css" type="text/css">
-    <script src="coverage_html_cb_da166b87.js" defer></script>
+    <script src="coverage_html_cb_6fb7b396.js" defer></script>
 </head>
 <body class="pyfile">
 <header>
@@ -62,10 +62,10 @@
         <p class="text">
             <a id="prevFileLink" class="nav" href="z_7ec6c45aa70b94eb_vartyp_tracker_py.html">&#xab; prev</a> &nbsp; &nbsp;
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
-            <a id="nextFileLink" class="nav" href="z_a7fd291134ca8db1_cy_options_py.html">&#xbb; next</a>
+            <a id="nextFileLink" class="nav" href="z_a7fd291134ca8db1__import_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.5.1">coverage.py v7.5.1</a>,
-            created at 2024-05-25 16:34 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.5.3">coverage.py v7.5.3</a>,
+            created at 2024-06-10 20:33 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -87,7 +87,7 @@
     <p class="run"><span class="n"><a id="t5" href="#t5">5</a></span><span class="t"><span class="key">from</span> <span class="nam">markarth</span><span class="op">.</span><span class="nam">convert</span><span class="op">.</span><span class="nam">preprocess</span> <span class="key">import</span> <span class="nam">code_process</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t"><span class="key">from</span> <span class="nam">markarth</span><span class="op">.</span><span class="nam">convert</span><span class="op">.</span><span class="nam">collect</span><span class="op">.</span><span class="nam">mod_collect</span> <span class="key">import</span> <span class="nam">mod_collect</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t"><span class="key">from</span> <span class="nam">markarth</span><span class="op">.</span><span class="nam">convert</span><span class="op">.</span><span class="nam">cythonize</span><span class="op">.</span><span class="nam">cy_options</span> <span class="key">import</span> <span class="nam">ModOpts</span><span class="op">,</span> <span class="nam">gen_default_mod_opts</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t"><span class="key">from</span> <span class="nam">markarth</span><span class="op">.</span><span class="nam">convert</span><span class="op">.</span><span class="nam">cythonize</span><span class="op">.</span><span class="nam">pure</span> <span class="key">import</span> <span class="nam">pure_cythonize</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t"><span class="key">from</span> <span class="nam">markarth</span><span class="op">.</span><span class="nam">convert</span><span class="op">.</span><span class="nam">cythonize</span><span class="op">.</span><span class="nam">pure</span> <span class="key">import</span> <span class="nam">cythonify_pure</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t"><span class="key">def</span> <span class="nam">convert_code</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
@@ -101,7 +101,7 @@
     <p class="pln"><span class="n"><a id="t19" href="#t19">19</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t20" href="#t20">20</a></span><span class="t">    <span class="nam">mod_collect_res</span> <span class="op">=</span> <span class="nam">mod_collect</span><span class="op">(</span><span class="nam">ast_mod</span><span class="op">,</span> <span class="nam">m_opts</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t21" href="#t21">21</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t">    <span class="nam">new_code</span> <span class="op">=</span> <span class="nam">pure_cythonize</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t">    <span class="nam">new_code</span> <span class="op">=</span> <span class="nam">cythonify_pure</span><span class="op">(</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t23" href="#t23">23</a></span><span class="t">        <span class="nam">mod_ast</span> <span class="op">=</span> <span class="nam">ast_mod</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t24" href="#t24">24</a></span><span class="t">        <span class="nam">codelines</span> <span class="op">=</span> <span class="nam">codelines</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t25" href="#t25">25</a></span><span class="t">        <span class="nam">mod_coll</span> <span class="op">=</span> <span class="nam">mod_collect_res</span><span class="op">,</span>&nbsp;</span><span class="r"></span></p>
@@ -115,10 +115,10 @@
         <p>
             <a class="nav" href="z_7ec6c45aa70b94eb_vartyp_tracker_py.html">&#xab; prev</a> &nbsp; &nbsp;
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
-            <a class="nav" href="z_a7fd291134ca8db1_cy_options_py.html">&#xbb; next</a>
+            <a class="nav" href="z_a7fd291134ca8db1__import_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.5.1">coverage.py v7.5.1</a>,
-            created at 2024-05-25 16:34 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.5.3">coverage.py v7.5.3</a>,
+            created at 2024-06-10 20:33 +0000
         </p>
     </div>
 </footer>
