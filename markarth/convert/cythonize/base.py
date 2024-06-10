@@ -55,6 +55,7 @@ def cythonify(
 
     # at first i shall check if cython is imported, and in such case i consider
     # its alias
+    alias = '' # TODO: remove this line once you're back pyx tests
     if clogic.cython_import_needed:
 
         is_cython_imported, alias, codeline_no = cython_imported_already(mod_ast)
@@ -63,8 +64,9 @@ def cythonify(
             alias = DEFAULT_CY_ALIAS
     # in case the conversion logic does not require me to have a cython import,
     # the alias variable is however set to be passed as a parameter to other functions
-    else:
-        alias = ''
+    # TODO: decomment below once you have tests for pyx
+#    else:
+#        alias = ''
 
     # function names sorted in order of appearance, as it's more practical to modify
     # them from the last to the first, so that last functions to be modified won't have

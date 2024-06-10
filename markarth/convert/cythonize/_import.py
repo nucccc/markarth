@@ -37,7 +37,7 @@ def cython_imported_already(mod_ast : ast.Module) -> tuple[bool, str, int]:
     return (False, '', 0)
 
 
-def gen_import_line(cy_alias : str | None) -> str:
+def gen_import_line(cy_alias : str | None = None) -> str:
     '''
     gen_import_line generates an import cython line
     '''
