@@ -9,6 +9,8 @@ from pydantic import BaseModel, Field
 
 from typing import Dict
 
+# TODO: a kinda type for imposed vars
+
 # yeah fields may be all optional, with default stuff and so on
 class FuncOpts(BaseModel):
     internal_default_int_cytyp : CyInt | None = Field(default = None, description='default c type to be used for integers')
