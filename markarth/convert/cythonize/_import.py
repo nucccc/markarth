@@ -55,6 +55,7 @@ def get_import_line_up_place(codelines : list[str], ast_mod : ast.Mod) -> int:
         if type(ast_stat) == ast.ImportFrom:
             if ast_stat.module == '__future__':
                 return ast_stat.lineno + 1
+    return 1
 
 def add_cython_import(
     codelines : list[str],
