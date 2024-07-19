@@ -95,7 +95,7 @@ def cythonify(
     )
 
     if clogic.cython_import_needed: 
-        codelines = add_cython_import(codelines = codelines, cy_alias = alias)
+        codelines = add_cython_import(codelines = codelines, cy_alias = alias, ast_mod = mod_ast)
 
     return '\n'.join(codelines)
 

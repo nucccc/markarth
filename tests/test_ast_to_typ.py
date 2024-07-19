@@ -204,8 +204,6 @@ def test_typ_from_call():
     mod = ast.parse(code)
     call = mod.body[0].value
 
-    print(type(call))
-
     call_typ = typ_from_call(call = call)
     assert call_typ.is_int()
 

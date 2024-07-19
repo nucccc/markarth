@@ -45,13 +45,26 @@ def gen_import_line(cy_alias : str | None = None) -> str:
         return f'import {CYTHON_MODULE_NAME}'
     return f'import {CYTHON_MODULE_NAME} as {cy_alias}'
 
+
+def get_import_line_up_place(codelines : list[str], ast_mod : ast.Mod) -> int:
+    '''
+    get_import_line_up_place determines the highest feasible insertion point
+    for the import line
+    '''
+    for ast_stat in ast_mod.body:
+        if type(ast_stat) == ast.ImportFrom:
+            if ast_stat.module == '__future__':
+                return ast_stat.lineno + 1
+
 def add_cython_import(
     codelines : list[str],
-    cy_alias : str | None
+    cy_alias : str | None,
+    ast_mod : ast.Mod
 ) -> list[str]:
     '''
     add_cython_import imports at the first line a codeline importing cython
     '''
+    insert_line = get_import_line_up_place(codelines, ast_mod)
     imp_line = gen_import_line(cy_alias)
-    codelines.insert(1, imp_line)
+    codelines.insert(insert_line, imp_line)
     return codelines
